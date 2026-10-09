@@ -93,11 +93,12 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Modern Default Card -->
                                 <Border Grid.Column="0" BorderBrush="{DynamicResource AppCardBorder}" BorderThickness="1"
-                                        Background="{DynamicResource AppCardBackground}" Padding="10" Margin="0,0,6,0">
+                                        Background="{DynamicResource AppCardBackground}" Padding="10" Margin="0,0,4,0">
                                     <RadioButton x:Name="RbThemeDefault" GroupName="AppThemeGroup" Cursor="Hand" Checked="OnThemeRadioChecked">
                                         <StackPanel Margin="6,0,0,0">
                                             <TextBlock Text="PRIME Sovereign" FontSize="12" FontWeight="SemiBold"
@@ -110,13 +111,29 @@
 
                                 <!-- Windows 95 Card -->
                                 <Border Grid.Column="1" BorderBrush="#808080" BorderThickness="2"
-                                        Background="#C0C0C0" Padding="10" Margin="6,0,0,0">
+                                        Background="#C0C0C0" Padding="10" Margin="4,0,4,0">
                                     <RadioButton x:Name="RbThemeWin95" GroupName="AppThemeGroup" Cursor="Hand" Checked="OnThemeRadioChecked">
                                         <StackPanel Margin="6,0,0,0">
                                             <TextBlock Text="Windows 95" FontSize="12" FontWeight="Bold" Foreground="#000080"
-                                                       FontFamily="MS Sans Serif, Tahoma, Arial, sans-serif" />
+                                                       FontFamily="Microsoft Sans Serif, Tahoma, sans-serif" />
                                             <TextBlock Text="Authentic 1995 desktop with 3D beveled silver frames, navy title bars, and sunken controls."
                                                        FontSize="11" Foreground="#000000" TextWrapping="Wrap" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                    </RadioButton>
+                                </Border>
+
+                                <!-- Retro 70s Vintage Card -->
+                                <Border Grid.Column="2" BorderBrush="#3D2314" BorderThickness="2"
+                                        Background="#FFF4E4" CornerRadius="6" Padding="10" Margin="4,0,0,0">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#3D2314" Direction="315" ShadowDepth="2" BlurRadius="0" Opacity="0.8" />
+                                    </Border.Effect>
+                                    <RadioButton x:Name="RbThemeRetro" GroupName="AppThemeGroup" Cursor="Hand" Checked="OnThemeRadioChecked">
+                                        <StackPanel Margin="6,0,0,0">
+                                            <TextBlock Text="Retro Vintage" FontSize="12" FontWeight="Bold" Foreground="#DE5D35"
+                                                       FontFamily="Cooper Black, Century Gothic, Georgia, serif" />
+                                            <TextBlock Text="70s warm sunset palette, chunky typography, and pop-out 3D solid drop shadows."
+                                                       FontSize="11" Foreground="#3D2314" TextWrapping="Wrap" Margin="0,3,0,0" />
                                         </StackPanel>
                                     </RadioButton>
                                 </Border>

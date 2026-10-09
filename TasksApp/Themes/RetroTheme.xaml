@@ -1,0 +1,266 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Retro 70s / Vintage Palette -->
+    <!-- Warm Mustard Gold, Burnt Rust/Orange, Cream Paper, Deep Chocolate Brown, Dusty Peach, Rose Blush -->
+    <SolidColorBrush x:Key="PrimeBlue" Color="#3D2314" />          <!-- Vintage Deep Cocoa Brown -->
+    <SolidColorBrush x:Key="PrimeBlueDark" Color="#28160B" />      <!-- Deep Espresso Shadow -->
+    <SolidColorBrush x:Key="PrimeWarmWhite" Color="#FFF7EB" />     <!-- Warm Cream Vintage Paper -->
+    <SolidColorBrush x:Key="PrimeGold" Color="#E58A38" />          <!-- Warm Retro Sunset Tangerine -->
+    <SolidColorBrush x:Key="PrimeYellow" Color="#F2B749" />        <!-- Golden 70s Sunflower Yellow -->
+    <SolidColorBrush x:Key="PrimeGray" Color="#3D2314" />          <!-- Vintage Cocoa Text -->
+    <SolidColorBrush x:Key="PrimeDeepInk" Color="#231309" />       <!-- Espresso Stroke -->
+    <SolidColorBrush x:Key="PrimeBorder" Color="#3D2314" />        <!-- Distinct 2px Retro Chocolate Border -->
+    <SolidColorBrush x:Key="PrimeSubtleBg" Color="#FBE8D3" />      <!-- Peach Sunbeam Cream -->
+
+    <!-- Semantic App Brushes -->
+    <SolidColorBrush x:Key="AppWindowBackground" Color="#FFF4E4" /> <!-- Warm Sunburst Cream Tint -->
+    
+    <!-- Title Bar: Retro Multi-Tone Orange / Rust Sunset Gradient -->
+    <LinearGradientBrush x:Key="AppTitleBarBackground" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#DE5D35" Offset="0.0" />
+        <GradientStop Color="#E58A38" Offset="0.5" />
+        <GradientStop Color="#F2B749" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="AppTitleBarForeground" Color="#FFF7EB" />
+    <SolidColorBrush x:Key="AppTitleBarBorder" Color="#3D2314" />
+    <SolidColorBrush x:Key="AppPanelBackground" Color="#FFF8EE" />
+    <SolidColorBrush x:Key="AppPanelBorder" Color="#3D2314" />
+    <SolidColorBrush x:Key="AppCardBackground" Color="#FFFDF9" />
+    <SolidColorBrush x:Key="AppCardBorder" Color="#3D2314" />
+    <SolidColorBrush x:Key="AppSurfaceBackground" Color="#FBE9D5" />
+    <SolidColorBrush x:Key="AppTextForeground" Color="#3D2314" />
+    <SolidColorBrush x:Key="AppMutedForeground" Color="#84563C" />
+    <SolidColorBrush x:Key="AppPrimaryColor" Color="#DE5D35" />    <!-- Retro Rust Terracotta -->
+    <SolidColorBrush x:Key="AppAccentColor" Color="#E58A38" />     <!-- Retro Sunset Tangerine -->
+    <SolidColorBrush x:Key="AppAccentForeground" Color="#FFF7EB" />
+    <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#E58A38" />
+    <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#3D2314" />
+
+    <!-- Dimensions & Metrics -->
+    <sys:Double x:Key="AppTitleBarHeight">48</sys:Double>
+    <sys:Double x:Key="AppCaptionHeight">48</sys:Double>
+    <sys:Double x:Key="AppTitleFontSize">20</sys:Double>
+    <FontWeight x:Key="AppTitleFontWeight">Bold</FontWeight>
+    <FontStyle x:Key="AppDisplayFontStyle">Normal</FontStyle>
+    <Thickness x:Key="AppWindowFrameThickness">3</Thickness>
+    <Thickness x:Key="AppPanelBorderThickness">2</Thickness>
+
+    <!-- Typography: 70s / Vintage Script & Heavy Headline with Clean Body -->
+    <FontFamily x:Key="AppBaseFontFamily">Segoe UI, Montserrat, Arial Rounded MT Bold, sans-serif</FontFamily>
+    <FontFamily x:Key="AppDisplayFontFamily">Cooper Black, Harlow Solid Italic, Century Gothic, Georgia, serif</FontFamily>
+    <FontFamily x:Key="AppTitleFontFamily">Cooper Black, Harlow Solid Italic, Century Gothic, Georgia, serif</FontFamily>
+    <FontFamily x:Key="AppMetricFontFamily">Cooper Black, Impact, Arial Black, sans-serif</FontFamily>
+
+    <!-- Indicators -->
+    <sys:Boolean x:Key="IsWin95">False</sys:Boolean>
+    <Visibility x:Key="Win95OnlyVis">Collapsed</Visibility>
+    <Visibility x:Key="ModernOnlyVis">Visible</Visibility>
+
+    <!-- Outer Window / Dialog Frame Style: Bold Vintage Chocolate Border with Warm 3D Offset Shadow -->
+    <Style x:Key="DialogOuterFrameStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFF4E4" />
+        <Setter Property="BorderBrush" Value="#3D2314" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#3D2314" Direction="315" ShadowDepth="4" BlurRadius="0" Opacity="0.9" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Retro 3D Hard Shadow Card / GroupBox Style (Pop-out 3D Block effect) -->
+    <Style x:Key="AppGroupBoxStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFFDF9" />
+        <Setter Property="BorderBrush" Value="#3D2314" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Margin" Value="0,0,4,16" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#3D2314" Direction="315" ShadowDepth="3" BlurRadius="0" Opacity="0.85" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Sunken / Nested Well Container Style with Crisp Retro 3D Shadow -->
+    <Style x:Key="AppSunkenBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFFDF9" />
+        <Setter Property="BorderBrush" Value="#3D2314" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#3D2314" Direction="315" ShadowDepth="3" BlurRadius="0" Opacity="0.85" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Title Bar Buttons -->
+    <Style x:Key="TitleBarButtonStyle" TargetType="Button">
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="#FFF7EB" />
+        <Setter Property="Width" Value="46" />
+        <Setter Property="Height" Value="48" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#33000000" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="TitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#B23820" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Title Bar Action Buttons (Bell & Settings) -->
+    <Style x:Key="TitleBarActionButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Margin" Value="0,0,4,0" />
+    </Style>
+
+    <!-- Retro 3D Pop Primary Action Button (Terracotta/Rust with crisp 3D solid drop shadow & press click) -->
+    <Style x:Key="PrimaryActionBtn" TargetType="Button">
+        <Setter Property="Background" Value="#DE5D35" />
+        <Setter Property="Foreground" Value="#FFF7EB" />
+        <Setter Property="FontFamily" Value="Cooper Black, Arial Black, Segoe UI, sans-serif" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderBrush" Value="#3D2314" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="0,0,3,3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <!-- Solid 3D Pop Drop Shadow Layer -->
+                        <Border x:Name="BtnShadowLayer" Background="#3D2314"
+                                CornerRadius="6" Margin="3,3,0,0" />
+                        <!-- Foreground Button Face -->
+                        <Border x:Name="BtnFace" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}"
+                                Margin="0,0,3,3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="BtnFace" Property="Background" Value="#E86E47" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="BtnShadowLayer" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="BtnFace" Property="Margin" Value="3,3,0,0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Retro 3D Pop Secondary Action Button (Warm Cream with Tangerine Accents) -->
+    <Style x:Key="SecondaryActionBtn" TargetType="Button">
+        <Setter Property="Background" Value="#FFFDF9" />
+        <Setter Property="Foreground" Value="#3D2314" />
+        <Setter Property="BorderBrush" Value="#3D2314" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="FontFamily" Value="Cooper Black, Arial Black, Segoe UI, sans-serif" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="0,0,3,3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <!-- Solid 3D Pop Drop Shadow Layer -->
+                        <Border x:Name="BtnShadowLayer" Background="#3D2314"
+                                CornerRadius="6" Margin="3,3,0,0" />
+                        <!-- Foreground Button Face -->
+                        <Border x:Name="BtnFace" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}"
+                                Margin="0,0,3,3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="BtnFace" Property="Background" Value="#FBE9D5" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="BtnShadowLayer" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="BtnFace" Property="Margin" Value="3,3,0,0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Retro 3D Preset Button -->
+    <Style x:Key="PresetButtonStyle" TargetType="Button" BasedOn="{StaticResource SecondaryActionBtn}">
+        <Setter Property="Margin" Value="0,0,6,6" />
+        <Setter Property="Padding" Value="10,5" />
+    </Style>
+
+    <!-- Retro Sunset Tangerine Action Button -->
+    <Style x:Key="GoldActionBtn" TargetType="Button" BasedOn="{StaticResource PrimaryActionBtn}">
+        <Setter Property="Background" Value="#E58A38" />
+        <Setter Property="Foreground" Value="#FFF7EB" />
+    </Style>
+
+    <!-- Retro 3D Sunken TextBox -->
+    <Style x:Key="AppTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="#FFFDF9" />
+        <Setter Property="Foreground" Value="#3D2314" />
+        <Setter Property="BorderBrush" Value="#3D2314" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="FontFamily" Value="Segoe UI, Montserrat, sans-serif" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#3D2314" Direction="315" ShadowDepth="2" BlurRadius="0" Opacity="0.6" />
+                        </Border.Effect>
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

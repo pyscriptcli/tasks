@@ -423,5 +423,40 @@ namespace TasksApp.Tests
             // Clean up
             ThemeManager.ApplyTheme(ThemeManager.DefaultTheme);
         }
+
+        [Fact]
+        public void UpdateSettings_PersistsRetroTheme_ToStorageService()
+        {
+            string customSettingsPath = Path.Combine(_testDir, "test_retro_settings.json");
+            var storage = new StorageService(customSettingsPath);
+            var reminder = new ReminderService();
+            var initialSettings = new AppSettings
+            {
+                DataDirectory = _testDir,
+                Theme = ThemeManager.DefaultTheme
+            };
+            storage.SaveSettings(initialSettings);
+
+            var vm = new MainViewModel(storage, reminder, initialSettings);
+            Assert.False(vm.IsWin95Theme);
+
+            var newSettings = new AppSettings
+            {
+                DataDirectory = _testDir,
+                Theme = ThemeManager.RetroTheme
+            };
+            vm.UpdateSettings(newSettings);
+
+            Assert.False(vm.IsWin95Theme);
+            Assert.True(ThemeManager.IsRetro);
+            Assert.Equal(ThemeManager.RetroTheme, ThemeManager.CurrentTheme);
+
+            // Verify reloaded from disk has Retro saved
+            var reloaded = storage.LoadSettings();
+            Assert.Equal(ThemeManager.RetroTheme, reloaded.Theme);
+
+            // Clean up
+            ThemeManager.ApplyTheme(ThemeManager.DefaultTheme);
+        }
     }
 }

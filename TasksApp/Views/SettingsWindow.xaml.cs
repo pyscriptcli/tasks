@@ -56,6 +56,10 @@ namespace TasksApp.Views
             {
                 RbThemeWin95.IsChecked = true;
             }
+            else if (string.Equals(UpdatedSettings.Theme, ThemeManager.RetroTheme, StringComparison.OrdinalIgnoreCase))
+            {
+                RbThemeRetro.IsChecked = true;
+            }
             else
             {
                 RbThemeDefault.IsChecked = true;
@@ -177,7 +181,19 @@ namespace TasksApp.Views
             UpdatedSettings.RemindersEnabled = ChkRemindersEnabled.IsChecked ?? true;
             UpdatedSettings.ReminderIntervalSeconds = totalSeconds;
             UpdatedSettings.AlwaysOnTop = ChkAlwaysOnTop.IsChecked ?? false;
-            UpdatedSettings.Theme = RbThemeWin95.IsChecked == true ? ThemeManager.Win95Theme : ThemeManager.DefaultTheme;
+            if (RbThemeWin95.IsChecked == true)
+            {
+                UpdatedSettings.Theme = ThemeManager.Win95Theme;
+            }
+            else if (RbThemeRetro.IsChecked == true)
+            {
+                UpdatedSettings.Theme = ThemeManager.RetroTheme;
+            }
+            else
+            {
+                UpdatedSettings.Theme = ThemeManager.DefaultTheme;
+            }
+
             ThemeManager.ApplyTheme(UpdatedSettings.Theme);
             _storageService.SaveSettings(UpdatedSettings);
 
@@ -188,7 +204,9 @@ namespace TasksApp.Views
         private void OnThemeRadioChecked(object sender, RoutedEventArgs e)
         {
             if (!IsLoaded) return;
-            string selected = RbThemeWin95.IsChecked == true ? ThemeManager.Win95Theme : ThemeManager.DefaultTheme;
+            string selected = RbThemeWin95.IsChecked == true
+                ? ThemeManager.Win95Theme
+                : (RbThemeRetro.IsChecked == true ? ThemeManager.RetroTheme : ThemeManager.DefaultTheme);
             ThemeManager.ApplyTheme(selected);
         }
 
