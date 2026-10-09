@@ -17,6 +17,10 @@ A high-performance, standalone Windows desktop task and daily notes manager buil
   - Notification bell in the title bar showing pending task status.
   - Scheduled reminder overlays with glowing animation and quick snooze/dismiss options.
   - Granular interval controls (hours/minutes/seconds) plus 15m, 30m, 1h, 2h, and 4h presets.
+- **Theme Switcher & Authentic Windows 95 Theme**:
+  - **PRIME Sovereign (Default)**: Modern, refined aesthetic with deep blue `#003366`, warm ivory, and sharp editorial typography.
+  - **Windows 95 Retro**: Complete retro transformation matching authentic 1995 styling — classic battleship silver `#C0C0C0`, navy `#000080` title gradient, 3D raised and sunken bevels, tactile button depression on click, square pixel caption buttons (`_`, `□`, `✕`), and `MS Sans Serif` system font.
+  - Instant live preview directly inside the Settings dialog without restarting.
 - **Lightweight Native Auto-Updater**:
   - Checks GitHub Releases (`pyscriptcli/tasks`) for new versions.
   - In-app notification badge when a new release is detected.

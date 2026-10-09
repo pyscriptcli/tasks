@@ -6,8 +6,8 @@
         Width="1060" Height="680"
         MinWidth="800" MinHeight="520"
         WindowStartupLocation="CenterScreen"
-        Background="#FFFCFB"
-        FontFamily="Montserrat, Segoe UI, sans-serif"
+        Background="{DynamicResource AppWindowBackground}"
+        FontFamily="{DynamicResource AppBaseFontFamily}"
         UseLayoutRounding="True"
         TextOptions.TextFormattingMode="Display">
 
@@ -19,129 +19,7 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
-        <!-- PRIME Philippines Palette (Palette of Sovereign Intelligence) -->
-        <SolidColorBrush x:Key="PrimeBlue" Color="#003366" />
-        <SolidColorBrush x:Key="PrimeBlueDark" Color="#002244" />
-        <SolidColorBrush x:Key="PrimeWarmWhite" Color="#FFFCFB" />
-        <SolidColorBrush x:Key="PrimeGold" Color="#C9A84C" />
-        <SolidColorBrush x:Key="PrimeYellow" Color="#FFBF00" />
-        <SolidColorBrush x:Key="PrimeGray" Color="#181D1E" />
-        <SolidColorBrush x:Key="PrimeDeepInk" Color="#0C0C0E" />
-        <SolidColorBrush x:Key="PrimeBorder" Color="#DDE2E6" />
-        <SolidColorBrush x:Key="PrimeSubtleBg" Color="#F5F7FA" />
-
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
-
-        <!-- Titlebar Controls Styles -->
-        <Style x:Key="TitleBarButtonStyle" TargetType="Button">
-            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="#FFFCFB" />
-            <Setter Property="Width" Value="46" />
-            <Setter Property="Height" Value="48" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#1A4A7A" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="TitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#C0392B" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Action Buttons (Sharp Square Corners CornerRadius="0") -->
-        <Style x:Key="PrimaryActionBtn" TargetType="Button">
-            <Setter Property="Background" Value="#003366" />
-            <Setter Property="Foreground" Value="#FFFCFB" />
-            <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Padding" Value="16,8" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="0" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#002244" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="SecondaryActionBtn" TargetType="Button">
-            <Setter Property="Background" Value="#FFFCFB" />
-            <Setter Property="Foreground" Value="#003366" />
-            <Setter Property="BorderBrush" Value="#003366" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Padding" Value="12,6" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F0F4F8" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="GoldActionBtn" TargetType="Button">
-            <Setter Property="Background" Value="#C9A84C" />
-            <Setter Property="Foreground" Value="#0C0C0E" />
-            <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Padding" Value="16,8" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="0" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#B5943B" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
 
         <!-- Glowing Animation Storyboard for Reminder (UR-023) -->
         <Storyboard x:Key="ReminderGlowAnimation" RepeatBehavior="Forever" AutoReverse="True">
@@ -173,7 +51,8 @@
             </Grid.RowDefinitions>
 
             <!-- 1. Custom Title Bar (UR-040, UR-041, UR-070) -->
-            <Border Grid.Row="0" Background="#003366" Panel.ZIndex="10">
+            <Border Grid.Row="0" Background="{DynamicResource AppTitleBarBackground}"
+                    BorderBrush="{DynamicResource AppTitleBarBorder}" BorderThickness="0,0,0,1" Panel.ZIndex="10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -182,7 +61,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <!-- App Icon (SVG Flat Yellow Sticky Note) & Title (Cormorant Garamond) -->
+                    <!-- App Icon (SVG Flat Yellow Sticky Note) & Title -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
                         <!-- SVG Sticky Note Vector Icon -->
                         <Viewbox Width="20" Height="20" Margin="0,0,10,0">
@@ -193,13 +72,15 @@
                                 <Path Data="M 15,15 L 21,15 L 15,21 Z" Fill="#E0A800" />
                                 <!-- Crisp Note Lines -->
                                 <Path Data="M 6,7.5 L 18,7.5 M 6,11.5 L 18,11.5 M 6,15.5 L 12,15.5"
-                                      Stroke="#003366" StrokeThickness="1.5"
+                                      Stroke="#000000" StrokeThickness="1.5"
                                       StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
                             </Canvas>
                         </Viewbox>
 
-                        <TextBlock Text="Tasks" Foreground="#FFFCFB" FontSize="19" FontWeight="Normal"
-                                   FontFamily="Cormorant Garamond, Georgia, serif" VerticalAlignment="Center" />
+                        <TextBlock Text="Tasks" Foreground="{DynamicResource AppTitleBarForeground}"
+                                   FontSize="{DynamicResource AppTitleFontSize}"
+                                   FontWeight="{DynamicResource AppTitleFontWeight}"
+                                   FontFamily="{DynamicResource AppTitleFontFamily}" VerticalAlignment="Center" />
                     </StackPanel>
 
                     <!-- Draggable Caption Area (UR-041) -->
@@ -228,18 +109,18 @@
 
                         <!-- Notification Bell SVG Button (Task Reminders) -->
                         <Button ToolTip="Task Reminders (View today's tasks)" Width="36" Height="36" Margin="0,0,4,0"
-                                Style="{StaticResource TitleBarButtonStyle}"
+                                Style="{DynamicResource TitleBarButtonStyle}"
                                 Command="{Binding ShowReminderCommand}">
                             <Grid>
                                 <!-- SVG Bell Icon -->
                                 <Viewbox Width="16" Height="16">
                                     <Canvas Width="24" Height="24">
                                         <Path Data="M 12,22 C 13.1,22 14,21.1 14,20 L 10,20 C 10,21.1 10.9,22 12,22 Z M 18,16 L 18,11 C 18,7.93 16.36,5.36 13.5,4.68 L 13.5,4 C 13.5,3.17 12.83,2.5 12,2.5 C 11.17,2.5 10.5,3.17 10.5,4 L 10.5,4.68 C 7.63,5.36 6,7.92 6,11 L 6,16 L 4,18 L 4,19 L 20,19 L 20,18 Z"
-                                              Fill="#FFFCFB" />
+                                              Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
                                     </Canvas>
                                 </Viewbox>
                                 <!-- Active Notification Dot Indicator (When there are pending tasks today) -->
-                                <Border Background="#C9A84C" Width="6" Height="6" CornerRadius="0"
+                                <Border Background="{DynamicResource AppAccentColor}" Width="6" Height="6" CornerRadius="0"
                                         HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-2,-2,0"
                                         Visibility="{Binding HasPendingTasksToday, Converter={StaticResource BoolToVis}}" />
                             </Grid>
@@ -247,44 +128,48 @@
 
                         <!-- Settings SVG Button -->
                         <Button ToolTip="Preferences &amp; Reminders" Width="36" Height="36"
-                                Style="{StaticResource TitleBarButtonStyle}"
+                                Style="{DynamicResource TitleBarButtonStyle}"
                                 Command="{Binding OpenSettingsCommand}">
                             <Viewbox Width="16" Height="16">
                                 <Canvas Width="24" Height="24">
                                     <Path Data="M 12,15 C 10.34,15 9,13.66 9,12 C 9,10.34 10.34,9 12,9 C 13.66,9 15,10.34 15,12 C 15,13.66 13.66,15 12,15 Z M 19.4,13 C 19.45,12.67 19.5,12.34 19.5,12 C 19.5,11.66 19.45,11.33 19.4,11 L 21.54,9.33 C 21.73,9.18 21.79,8.91 21.66,8.69 L 19.66,5.23 C 19.53,5.01 19.27,4.92 19.04,5.01 L 16.52,6.02 C 16,5.62 15.43,5.29 14.81,5.04 L 14.43,2.36 C 14.39,2.11 14.18,1.93 13.93,1.93 L 10.07,1.93 C 9.82,1.93 9.61,2.11 9.57,2.36 L 9.19,5.04 C 8.57,5.29 8,5.63 7.48,6.02 L 4.96,5.01 C 4.73,4.92 4.47,5.01 4.34,5.23 L 2.34,8.69 C 2.21,8.91 2.27,9.18 2.46,9.33 L 4.6,11 C 4.55,11.33 4.5,11.67 4.5,12 C 4.5,12.33 4.55,12.67 4.6,13 L 2.46,14.67 C 2.27,14.82 2.21,15.09 2.34,15.31 L 4.34,18.77 C 4.47,18.99 4.73,19.08 4.96,18.99 L 7.48,17.98 C 8,18.38 8.57,18.71 9.19,18.96 L 9.57,21.64 C 9.61,21.89 9.82,22.07 10.07,22.07 L 13.93,22.07 C 14.18,22.07 14.39,21.89 14.43,21.64 L 14.81,18.96 C 15.43,18.71 16,18.37 16.52,17.98 L 19.04,18.99 C 19.27,19.08 19.53,18.99 19.66,18.77 L 21.66,15.31 C 21.79,15.09 21.73,14.82 21.54,14.67 L 19.4,13 Z"
-                                          Fill="#FFFCFB" />
+                                          Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
                                 </Canvas>
                             </Viewbox>
                         </Button>
                     </StackPanel>
 
                     <!-- Standard Window Buttons: Min, Max, Close (SVG Vectors) -->
-                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
                         <!-- Minimize SVG -->
-                        <Button Style="{StaticResource TitleBarButtonStyle}" Click="OnMinimizeClick" ToolTip="Minimize">
+                        <Button Style="{DynamicResource TitleBarButtonStyle}" Click="OnMinimizeClick" ToolTip="Minimize">
                             <Viewbox Width="12" Height="12">
                                 <Canvas Width="24" Height="24">
-                                    <Path Data="M 3,13 L 21,13" Stroke="#FFFCFB" StrokeThickness="2.2" StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
+                                    <Path Data="M 3,13 L 21,13"
+                                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                          StrokeThickness="2.2" StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
                                 </Canvas>
                             </Viewbox>
                         </Button>
 
                         <!-- Maximize / Restore SVG -->
-                        <Button x:Name="BtnMaximize" Style="{StaticResource TitleBarButtonStyle}" Click="OnMaximizeClick" ToolTip="Maximize">
+                        <Button x:Name="BtnMaximize" Style="{DynamicResource TitleBarButtonStyle}" Click="OnMaximizeClick" ToolTip="Maximize">
                             <Viewbox Width="12" Height="12">
                                 <Canvas Width="24" Height="24">
                                     <Path x:Name="PathMaximize" Data="M 4,4 L 20,4 L 20,20 L 4,20 Z"
-                                          Stroke="#FFFCFB" StrokeThickness="2" Fill="Transparent" />
+                                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                          StrokeThickness="2" Fill="Transparent" />
                                 </Canvas>
                             </Viewbox>
                         </Button>
 
                         <!-- Close SVG -->
-                        <Button Style="{StaticResource TitleBarCloseButtonStyle}" Click="OnCloseClick" ToolTip="Close (Runs in background)">
+                        <Button Style="{DynamicResource TitleBarCloseButtonStyle}" Click="OnCloseClick" ToolTip="Close (Runs in background)">
                             <Viewbox Width="12" Height="12">
                                 <Canvas Width="24" Height="24">
-                                    <Path Data="M 5,5 L 19,19 M 19,5 L 5,19" Stroke="#FFFCFB" StrokeThickness="2.2"
-                                          StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
+                                    <Path Data="M 5,5 L 19,19 M 19,5 L 5,19"
+                                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                          StrokeThickness="2.2" StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
                                 </Canvas>
                             </Viewbox>
                         </Button>
@@ -293,7 +178,8 @@
             </Border>
 
             <!-- 2. Date Navigation & Actions Bar (UR-008, UR-009) -->
-            <Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#DDE2E6" BorderThickness="0,0,0,1" Padding="20,10">
+            <Border Grid.Row="1" Background="{DynamicResource AppPanelBackground}"
+                    BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,0,0,1" Padding="20,10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -304,66 +190,67 @@
                     <!-- Day Navigation Controls -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                         <!-- Previous Day SVG Chevron -->
-                        <Button Style="{StaticResource SecondaryActionBtn}" Command="{Binding PreviousDayCommand}"
+                        <Button Style="{DynamicResource SecondaryActionBtn}" Command="{Binding PreviousDayCommand}"
                                 ToolTip="Previous Day" Margin="0,0,6,0" Padding="8,6">
                             <Viewbox Width="10" Height="12">
                                 <Canvas Width="24" Height="24">
-                                    <Path Data="M 16,4 L 8,12 L 16,20" Stroke="#003366" StrokeThickness="3"
+                                    <Path Data="M 16,4 L 8,12 L 16,20" Stroke="{DynamicResource AppTextForeground}" StrokeThickness="3"
                                           StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
                                 </Canvas>
                             </Viewbox>
                         </Button>
 
                         <!-- Next Day SVG Chevron -->
-                        <Button Style="{StaticResource SecondaryActionBtn}" Command="{Binding NextDayCommand}"
+                        <Button Style="{DynamicResource SecondaryActionBtn}" Command="{Binding NextDayCommand}"
                                 ToolTip="Next Day" Margin="0,0,8,0" Padding="8,6">
                             <Viewbox Width="10" Height="12">
                                 <Canvas Width="24" Height="24">
-                                    <Path Data="M 8,4 L 16,12 L 8,20" Stroke="#003366" StrokeThickness="3"
+                                    <Path Data="M 8,4 L 16,12 L 8,20" Stroke="{DynamicResource AppTextForeground}" StrokeThickness="3"
                                           StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
                                 </Canvas>
                             </Viewbox>
                         </Button>
 
                         <!-- Jump to Today Button -->
-                        <Button Style="{StaticResource SecondaryActionBtn}" Command="{Binding JumpToTodayCommand}"
+                        <Button Style="{DynamicResource SecondaryActionBtn}" Command="{Binding JumpToTodayCommand}"
                                 Margin="0,0,14,0" Padding="12,6">
                             <TextBlock Text="TODAY" FontSize="11" FontWeight="SemiBold"
-                                       FontFamily="Montserrat, Segoe UI, sans-serif" />
+                                       FontFamily="{DynamicResource AppBaseFontFamily}" />
                         </Button>
 
-                        <!-- Active Date Title (Cormorant Garamond 300 Italic) -->
-                        <TextBlock Text="{Binding DisplayDateString}" FontSize="21" FontWeight="Normal" FontStyle="Italic"
-                                   FontFamily="Cormorant Garamond, Georgia, serif"
-                                   Foreground="#003366" VerticalAlignment="Center" Margin="0,0,10,0" />
+                        <!-- Active Date Title -->
+                        <TextBlock Text="{Binding DisplayDateString}" FontSize="21" FontWeight="Normal" FontStyle="{DynamicResource AppDisplayFontStyle}"
+                                   FontFamily="{DynamicResource AppDisplayFontFamily}"
+                                   Foreground="{DynamicResource AppTextForeground}" VerticalAlignment="Center" Margin="0,0,10,0" />
 
                         <!-- Date Picker Helper (UR-008: pick any day) -->
                         <DatePicker SelectedDate="{Binding CurrentDate, Mode=TwoWay}"
                                     VerticalAlignment="Center" Height="32" Width="130" Margin="4,0,0,0"
-                                    FontFamily="Montserrat, Segoe UI, sans-serif" FontSize="11"
-                                    BorderThickness="1" BorderBrush="#DDE2E6" Background="#FFFFFF"
+                                    FontFamily="{DynamicResource AppBaseFontFamily}" FontSize="11"
+                                    BorderThickness="1" BorderBrush="{DynamicResource AppPanelBorder}"
+                                    Background="{DynamicResource AppSurfaceBackground}"
                                     Cursor="Hand" ToolTip="Select any date from calendar (UR-008)" />
                     </StackPanel>
 
                     <!-- Task Statistics Chips & Add Task Button -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <!-- Pending Chip (SVG Clock + Bebas Neue Number) -->
-                        <Border Background="#F4F6F8" BorderBrush="#DDE2E6" BorderThickness="1" Padding="10,4" Margin="0,0,8,0">
+                        <!-- Pending Chip -->
+                        <Border Background="{DynamicResource AppSurfaceBackground}" BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="1" Padding="10,4" Margin="0,0,8,0">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <Viewbox Width="13" Height="13" Margin="0,0,6,0">
                                     <Canvas Width="24" Height="24">
                                         <Path Data="M 12,2 C 6.48,2 2,6.48 2,12 C 2,17.52 6.48,22 12,22 C 17.52,22 22,17.52 22,12 C 22,6.48 17.52,2 12,2 Z M 12,20 C 7.59,20 4,16.41 4,12 C 4,7.59 7.59,4 12,4 C 16.41,4 20,7.59 20,12 C 20,16.41 16.41,20 12,20 Z M 12.5,7 L 11,7 L 11,13 L 16.2,16.2 L 17,14.9 L 12.5,12.2 Z"
-                                              Fill="#003366" />
+                                              Fill="{DynamicResource AppPrimaryColor}" />
                                     </Canvas>
                                 </Viewbox>
-                                <TextBlock Text="PENDING " FontSize="10" FontWeight="Medium" Foreground="#555555" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding PendingCount}" FontSize="16" FontFamily="Bebas Neue, Impact, sans-serif"
-                                           Foreground="#003366" VerticalAlignment="Center" />
+                                <TextBlock Text="PENDING " FontSize="10" FontWeight="Medium" Foreground="{DynamicResource AppMutedForeground}" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding PendingCount}" FontSize="16" FontFamily="{DynamicResource AppMetricFontFamily}"
+                                           Foreground="{DynamicResource AppPrimaryColor}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Border>
 
-                        <!-- Done Chip (SVG Check-Circle + Bebas Neue Number) -->
-                        <Border Background="#F4F6F8" BorderBrush="#DDE2E6" BorderThickness="1" Padding="10,4" Margin="0,0,14,0">
+                        <!-- Done Chip -->
+                        <Border Background="{DynamicResource AppSurfaceBackground}" BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="1" Padding="10,4" Margin="0,0,14,0">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <Viewbox Width="13" Height="13" Margin="0,0,6,0">
                                     <Canvas Width="24" Height="24">
@@ -371,24 +258,26 @@
                                               Fill="#2E7D32" />
                                     </Canvas>
                                 </Viewbox>
-                                <TextBlock Text="DONE " FontSize="10" FontWeight="Medium" Foreground="#555555" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding CompletedCount}" FontSize="16" FontFamily="Bebas Neue, Impact, sans-serif"
+                                <TextBlock Text="DONE " FontSize="10" FontWeight="Medium" Foreground="{DynamicResource AppMutedForeground}" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding CompletedCount}" FontSize="16" FontFamily="{DynamicResource AppMetricFontFamily}"
                                            Foreground="#2E7D32" VerticalAlignment="Center" />
                             </StackPanel>
                         </Border>
 
                         <!-- Add Task Button (SVG Plus + UI Caps) -->
-                        <Button Style="{StaticResource PrimaryActionBtn}" Command="{Binding AddTaskCommand}"
+                        <Button Style="{DynamicResource PrimaryActionBtn}" Command="{Binding AddTaskCommand}"
                                 Height="36" Padding="16,0" Cursor="Hand" ToolTip="Add a new task for this day (Ctrl+N)">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <Viewbox Width="12" Height="12" Margin="0,0,8,0">
                                     <Canvas Width="24" Height="24">
-                                        <Path Data="M 12,4 L 12,20 M 4,12 L 20,12" Stroke="#FFFCFB" StrokeThickness="3"
+                                        <Path Data="M 12,4 L 12,20 M 4,12 L 20,12"
+                                              Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="3"
                                               StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
                                     </Canvas>
                                 </Viewbox>
                                 <TextBlock Text="ADD TASK" FontSize="11" FontWeight="SemiBold"
-                                           FontFamily="Montserrat, Segoe UI, sans-serif" VerticalAlignment="Center" />
+                                           FontFamily="{DynamicResource AppBaseFontFamily}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -404,7 +293,8 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Left Pane: Today's Tasks List (UR-004 to UR-007) -->
-                <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="#DDE2E6" BorderThickness="1">
+                <Border Grid.Column="0" Background="{DynamicResource AppPanelBackground}"
+                        BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="{DynamicResource AppPanelBorderThickness}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -412,15 +302,16 @@
                         </Grid.RowDefinitions>
 
                         <!-- Pane Header -->
-                        <Border Grid.Row="0" Background="#F8FAFC" BorderBrush="#DDE2E6" BorderThickness="0,0,0,1" Padding="14,10">
+                        <Border Grid.Row="0" Background="{DynamicResource AppPanelBackground}"
+                                BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,0,0,1" Padding="14,10">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{Binding TasksPaneTitle}" FontSize="11" FontWeight="Medium"
-                                           FontFamily="Montserrat, Segoe UI, sans-serif" Foreground="#003366" />
-                                <TextBlock Grid.Column="1" Text="Drag items to reorder" FontSize="11" Foreground="#888888" />
+                                           FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppPrimaryColor}" />
+                                <TextBlock Grid.Column="1" Text="Drag items to reorder" FontSize="11" Foreground="{DynamicResource AppMutedForeground}" />
                             </Grid>
                         </Border>
 
@@ -435,9 +326,9 @@
                                 </Canvas>
                             </Viewbox>
                             <TextBlock Text="No tasks scheduled for this day" FontSize="15" FontWeight="Normal"
-                                       FontFamily="Cormorant Garamond, Georgia, serif" Foreground="#003366" HorizontalAlignment="Center" />
-                            <TextBlock Text="Click below to add your first task" FontSize="12" Foreground="#888888" Margin="0,4,0,12" HorizontalAlignment="Center" />
-                            <Button Content="+ ADD TASK" Style="{StaticResource SecondaryActionBtn}"
+                                       FontFamily="{DynamicResource AppDisplayFontFamily}" Foreground="{DynamicResource AppPrimaryColor}" HorizontalAlignment="Center" />
+                            <TextBlock Text="Click below to add your first task" FontSize="12" Foreground="{DynamicResource AppMutedForeground}" Margin="0,4,0,12" HorizontalAlignment="Center" />
+                            <Button Content="+ ADD TASK" Style="{DynamicResource SecondaryActionBtn}"
                                     Command="{Binding AddTaskCommand}" Padding="18,8" HorizontalAlignment="Center" />
                         </StackPanel>
 
@@ -651,7 +542,8 @@
                 </Border>
 
                 <!-- Right Pane: Daily Notes (UR-010, UR-011) -->
-                <Border Grid.Column="2" Background="#FFFFFF" BorderBrush="#DDE2E6" BorderThickness="1">
+                <Border Grid.Column="2" Background="{DynamicResource AppPanelBackground}"
+                        BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="{DynamicResource AppPanelBorderThickness}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -659,7 +551,8 @@
                         </Grid.RowDefinitions>
 
                         <!-- Pane Header with SVG Document Icon and Saved Status -->
-                        <Border Grid.Row="0" Background="#F8FAFC" BorderBrush="#DDE2E6" BorderThickness="0,0,0,1" Padding="14,10">
+                        <Border Grid.Row="0" Background="{DynamicResource AppPanelBackground}"
+                                BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,0,0,1" Padding="14,10">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -669,11 +562,11 @@
                                     <Viewbox Width="12" Height="12" Margin="0,0,6,0">
                                         <Canvas Width="24" Height="24">
                                             <Path Data="M 14,2 L 6,2 C 4.9,2 4,2.9 4,4 L 4,20 C 4,21.1 4.9,22 6,22 L 18,22 C 19.1,22 20,21.1 20,20 L 20,8 Z M 13,3.5 L 18.5,9 L 13,9 Z"
-                                                  Fill="#003366" />
+                                                  Fill="{DynamicResource AppPrimaryColor}" />
                                         </Canvas>
                                     </Viewbox>
                                     <TextBlock Text="DAILY NOTES" FontSize="11" FontWeight="Medium"
-                                               FontFamily="Montserrat, Segoe UI, sans-serif" Foreground="#003366" />
+                                               FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppPrimaryColor}" />
                                 </StackPanel>
 
                                 <!-- Confirmation Indicator (SVG Checkmark + Saved text) -->
@@ -698,7 +591,7 @@
                                         </Canvas>
                                     </Viewbox>
                                     <TextBlock Text="{Binding NotesSaveStatus}" FontSize="11" FontWeight="SemiBold"
-                                               FontFamily="Montserrat, Segoe UI, sans-serif" Foreground="#2E7D32" />
+                                               FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="#2E7D32" />
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -706,16 +599,17 @@
                         <!-- Daily Notes Free Text Box (UR-010) -->
                         <TextBox Grid.Row="1" Text="{Binding DailyNotes, UpdateSourceTrigger=PropertyChanged}"
                                  AcceptsReturn="True" TextWrapping="Wrap"
-                                 Padding="16" FontSize="13" Foreground="#0C0C0E"
-                                 FontFamily="Montserrat, Segoe UI, sans-serif"
-                                 Background="#FFFFFF" BorderThickness="0"
+                                 Padding="16" FontSize="13" Foreground="{DynamicResource AppTextForeground}"
+                                 FontFamily="{DynamicResource AppBaseFontFamily}"
+                                 Background="{DynamicResource AppCardBackground}" BorderThickness="0"
                                  VerticalScrollBarVisibility="Auto" />
                     </Grid>
                 </Border>
             </Grid>
 
             <!-- 4. Status Bar -->
-            <Border Grid.Row="3" Background="#F8FAFC" BorderBrush="#DDE2E6" BorderThickness="0,1,0,0" Padding="16,4">
+            <Border Grid.Row="3" Background="{DynamicResource AppPanelBackground}"
+                    BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,1,0,0" Padding="16,4">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -833,7 +727,7 @@
         <!-- REMINDER OVERLAY DIALOG (UR-020, UR-021, UR-022, UR-024) -->
         <!-- ======================================================== -->
         <Border Background="#70000000" Visibility="{Binding IsReminderOverlayVisible, Converter={StaticResource BoolToVis}}" Panel.ZIndex="200">
-            <Border Background="#FFFCFB" BorderBrush="#003366" BorderThickness="2" Width="660" MaxHeight="520"
+            <Border Background="{DynamicResource AppPanelBackground}" BorderBrush="{DynamicResource AppTitleBarBackground}" BorderThickness="2" Width="660" MaxHeight="520"
                     VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid Margin="24">
                     <Grid.RowDefinitions>
@@ -844,7 +738,7 @@
                     </Grid.RowDefinitions>
 
                     <!-- Header with SVG Bell Alert -->
-                    <Border Grid.Row="0" BorderBrush="#003366" BorderThickness="0,0,0,2" Padding="0,0,0,10" Margin="0,0,0,12">
+                    <Border Grid.Row="0" BorderBrush="{DynamicResource AppTitleBarBackground}" BorderThickness="0,0,0,2" Padding="0,0,0,10" Margin="0,0,0,12">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -855,21 +749,21 @@
                                     <Viewbox Width="12" Height="12" Margin="0,0,6,0">
                                         <Canvas Width="24" Height="24">
                                             <Path Data="M 12,22 C 13.1,22 14,21.1 14,20 L 10,20 C 10,21.1 10.9,22 12,22 Z M 18,16 L 18,11 C 18,7.93 16.36,5.36 13.5,4.68 L 13.5,4 C 13.5,3.17 12.83,2.5 12,2.5 C 11.17,2.5 10.5,3.17 10.5,4 L 10.5,4.68 C 7.63,5.36 6,7.92 6,11 L 6,16 L 4,18 L 4,19 L 20,19 L 20,18 Z"
-                                                  Fill="#C9A84C" />
+                                                  Fill="{DynamicResource AppAccentColor}" />
                                         </Canvas>
                                     </Viewbox>
-                                    <TextBlock Text="TASK REMINDER" FontSize="11" FontWeight="Medium" Foreground="#C9A84C"
-                                               FontFamily="Montserrat, Segoe UI, sans-serif" />
+                                    <TextBlock Text="TASK REMINDER" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource AppAccentColor}"
+                                               FontFamily="{DynamicResource AppBaseFontFamily}" />
                                 </StackPanel>
                                 <TextBlock Text="Today's Tasks Summary" FontSize="24" FontWeight="Normal"
-                                           FontFamily="Cormorant Garamond, Georgia, serif" Foreground="#003366" />
+                                           FontFamily="{DynamicResource AppDisplayFontFamily}" Foreground="{DynamicResource AppPrimaryColor}" />
                             </StackPanel>
-                            <Border Grid.Column="1" Background="#003366" Padding="14,6" VerticalAlignment="Center">
+                            <Border Grid.Column="1" Background="{DynamicResource AppPrimaryColor}" Padding="14,6" VerticalAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding ReminderPendingCount}" FontSize="16"
-                                               FontFamily="Bebas Neue, Impact, sans-serif" Foreground="#C9A84C" Margin="0,0,4,0" />
+                                               FontFamily="{DynamicResource AppMetricFontFamily}" Foreground="{DynamicResource AppAccentForeground}" Margin="0,0,4,0" />
                                     <TextBlock Text="PENDING" FontSize="11" FontWeight="SemiBold"
-                                               FontFamily="Montserrat, Segoe UI, sans-serif" Foreground="#FFFCFB" VerticalAlignment="Center" />
+                                               FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppTitleBarForeground}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Border>
                         </Grid>
@@ -998,16 +892,16 @@
                             </Viewbox>
                             <TextBlock Text="SNOOZE: " FontSize="11" FontWeight="SemiBold"
                                        FontFamily="Montserrat, Segoe UI, sans-serif" Foreground="#555555" VerticalAlignment="Center" Margin="0,0,6,0" />
-                            <Button Content="10M" Style="{StaticResource SecondaryActionBtn}" Margin="0,0,4,0" Padding="8,4"
+                            <Button Content="10M" Style="{DynamicResource SecondaryActionBtn}" Margin="0,0,4,0" Padding="8,4"
                                     Command="{Binding SnoozeReminderCommand}" CommandParameter="10" />
-                            <Button Content="30M" Style="{StaticResource SecondaryActionBtn}" Margin="0,0,4,0" Padding="8,4"
+                            <Button Content="30M" Style="{DynamicResource SecondaryActionBtn}" Margin="0,0,4,0" Padding="8,4"
                                     Command="{Binding SnoozeReminderCommand}" CommandParameter="30" />
-                            <Button Content="1H" Style="{StaticResource SecondaryActionBtn}" Padding="8,4"
+                            <Button Content="1H" Style="{DynamicResource SecondaryActionBtn}" Padding="8,4"
                                     Command="{Binding SnoozeReminderCommand}" CommandParameter="60" />
                         </StackPanel>
 
                         <!-- Dismiss Button -->
-                        <Button Grid.Column="2" Content="DISMISS" Style="{StaticResource GoldActionBtn}"
+                        <Button Grid.Column="2" Content="DISMISS" Style="{DynamicResource GoldActionBtn}"
                                 Command="{Binding DismissReminderCommand}" />
                     </Grid>
                 </Grid>

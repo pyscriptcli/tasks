@@ -211,8 +211,46 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Section 3: Window Behavior -->
-                <Border BorderBrush="#E2E5E8" BorderThickness="1" Background="#FFFFFF" Padding="16">
+                <!-- Section 3: Appearance & Theme -->
+                <Border BorderBrush="#E2E5E8" BorderThickness="1" Background="#FFFFFF" Padding="16" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="APPEARANCE &amp; THEME" FontSize="11" FontWeight="SemiBold" Foreground="#003366" Margin="0,0,0,4" />
+                        <TextBlock Text="Choose between the modern PRIME Sovereign look and the nostalgic retro Windows 95 desktop experience."
+                                   FontSize="12" Foreground="#181D1E" Margin="0,0,0,14" />
+
+                        <Grid Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Modern Default Card -->
+                            <Border Grid.Column="0" BorderBrush="#D2D6DC" BorderThickness="1" Background="#FAFAFA" Padding="12" Margin="0,0,8,0">
+                                <RadioButton x:Name="RbThemeDefault" GroupName="AppThemeGroup" Cursor="Hand" Checked="OnThemeRadioChecked">
+                                    <StackPanel Margin="6,0,0,0">
+                                        <TextBlock Text="PRIME Sovereign" FontSize="12" FontWeight="SemiBold" Foreground="#003366" />
+                                        <TextBlock Text="Modern minimalist styling with deep blue, gold, and editorial typography."
+                                                   FontSize="11" Foreground="#555555" TextWrapping="Wrap" Margin="0,3,0,0" />
+                                    </StackPanel>
+                                </RadioButton>
+                            </Border>
+
+                            <!-- Windows 95 Card -->
+                            <Border Grid.Column="1" BorderBrush="#808080" BorderThickness="2" Background="#C0C0C0" Padding="12" Margin="8,0,0,0">
+                                <RadioButton x:Name="RbThemeWin95" GroupName="AppThemeGroup" Cursor="Hand" Checked="OnThemeRadioChecked">
+                                    <StackPanel Margin="6,0,0,0">
+                                        <TextBlock Text="Windows 95" FontSize="12" FontWeight="Bold" Foreground="#000080" FontFamily="MS Sans Serif, Tahoma, Arial, sans-serif" />
+                                        <TextBlock Text="Authentic 1995 desktop with 3D beveled silver frames, navy title bars, and sunken controls."
+                                                   FontSize="11" Foreground="#000000" TextWrapping="Wrap" Margin="0,3,0,0" />
+                                    </StackPanel>
+                                </RadioButton>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Section 4: Window Behavior -->
+                <Border BorderBrush="#E2E5E8" BorderThickness="1" Background="#FFFFFF" Padding="16" Margin="0,0,0,16">
                     <StackPanel>
                         <TextBlock Text="WINDOW BEHAVIOR" FontSize="11" FontWeight="SemiBold" Foreground="#003366" Margin="0,0,0,10" />
 

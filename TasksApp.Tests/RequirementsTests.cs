@@ -352,5 +352,42 @@ namespace TasksApp.Tests
             Assert.Equal(UpdateService.CurrentVersion, result.CurrentVersion);
             Assert.False(string.IsNullOrWhiteSpace(result.StatusMessage));
         }
+
+        [Fact]
+        public void ThemeManager_SwitchesThemesCorrectly()
+        {
+            ThemeManager.ApplyTheme(ThemeManager.Win95Theme);
+            Assert.True(ThemeManager.IsWin95);
+            Assert.Equal(ThemeManager.Win95Theme, ThemeManager.CurrentTheme);
+
+            ThemeManager.ApplyTheme(ThemeManager.DefaultTheme);
+            Assert.False(ThemeManager.IsWin95);
+            Assert.Equal(ThemeManager.DefaultTheme, ThemeManager.CurrentTheme);
+        }
+
+        [Fact]
+        public void AppSettings_StoresAndRetrievesThemeProperly()
+        {
+            string customSettingsPath = Path.Combine(_testDir, "test_settings.json");
+            var storage = new StorageService(customSettingsPath);
+            var settings = new AppSettings
+            {
+                DataDirectory = _testDir,
+                Theme = ThemeManager.Win95Theme
+            };
+
+            storage.SaveSettings(settings);
+            Assert.True(File.Exists(customSettingsPath), $"Settings file should exist at {customSettingsPath}");
+            string rawJson = File.ReadAllText(customSettingsPath);
+            Assert.Contains("Win95", rawJson);
+
+            var loaded = storage.LoadSettings();
+
+            Assert.Equal(ThemeManager.Win95Theme, loaded.Theme);
+
+            // Clean up
+            settings.Theme = ThemeManager.DefaultTheme;
+            storage.SaveSettings(settings);
+        }
     }
 }

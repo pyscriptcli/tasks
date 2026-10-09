@@ -202,6 +202,8 @@ namespace TasksApp.ViewModels
             }
         }
 
+        public bool IsWin95Theme => ThemeManager.IsWin95;
+
         public bool IsUpdateAvailable
         {
             get => _isUpdateAvailable;
@@ -289,6 +291,8 @@ namespace TasksApp.ViewModels
             DismissReminderCommand = new RelayCommand(ExecuteDismissReminder);
             SnoozeReminderCommand = new RelayCommand(p => ExecuteSnoozeReminder(p));
             OpenSettingsCommand = new RelayCommand(() => RequestOpenSettings?.Invoke());
+
+            ThemeManager.ThemeChanged += _ => OnPropertyChanged(nameof(IsWin95Theme));
         }
 
         public async Task InitializeStartupAsync()
@@ -599,9 +603,15 @@ namespace TasksApp.ViewModels
             bool pathChanged = !string.Equals(_settings.DataDirectory, newSettings.DataDirectory, StringComparison.OrdinalIgnoreCase);
             bool intervalChanged = _settings.ReminderIntervalSeconds != newSettings.ReminderIntervalSeconds;
             bool enabledChanged = _settings.RemindersEnabled != newSettings.RemindersEnabled;
+            bool themeChanged = !string.Equals(_settings.Theme, newSettings.Theme, StringComparison.OrdinalIgnoreCase);
 
             _settings = newSettings;
             _storageService.SaveSettings(_settings);
+
+            if (themeChanged)
+            {
+                ThemeManager.ApplyTheme(_settings.Theme);
+            }
 
             if (intervalChanged)
             {
@@ -621,6 +631,7 @@ namespace TasksApp.ViewModels
             OnPropertyChanged(nameof(Settings));
             OnPropertyChanged(nameof(RemindersEnabled));
             OnPropertyChanged(nameof(AlwaysOnTop));
+            OnPropertyChanged(nameof(IsWin95Theme));
         }
 
         protected void OnPropertyChanged([CallerMemberName] string? name = null)

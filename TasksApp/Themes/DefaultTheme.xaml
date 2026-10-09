@@ -1,0 +1,169 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- PRIME Sovereign Palette (Default) -->
+    <SolidColorBrush x:Key="PrimeBlue" Color="#003366" />
+    <SolidColorBrush x:Key="PrimeBlueDark" Color="#002244" />
+    <SolidColorBrush x:Key="PrimeWarmWhite" Color="#FFFCFB" />
+    <SolidColorBrush x:Key="PrimeGold" Color="#C9A84C" />
+    <SolidColorBrush x:Key="PrimeYellow" Color="#FFBF00" />
+    <SolidColorBrush x:Key="PrimeGray" Color="#181D1E" />
+    <SolidColorBrush x:Key="PrimeDeepInk" Color="#0C0C0E" />
+    <SolidColorBrush x:Key="PrimeBorder" Color="#DDE2E6" />
+    <SolidColorBrush x:Key="PrimeSubtleBg" Color="#F5F7FA" />
+
+    <!-- Semantic App Brushes -->
+    <SolidColorBrush x:Key="AppWindowBackground" Color="#FFFCFB" />
+    <SolidColorBrush x:Key="AppTitleBarBackground" Color="#003366" />
+    <SolidColorBrush x:Key="AppTitleBarForeground" Color="#FFFCFB" />
+    <SolidColorBrush x:Key="AppTitleBarBorder" Color="Transparent" />
+    <SolidColorBrush x:Key="AppPanelBackground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AppPanelBorder" Color="#DDE2E6" />
+    <SolidColorBrush x:Key="AppCardBackground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AppCardBorder" Color="#DDE2E6" />
+    <SolidColorBrush x:Key="AppSurfaceBackground" Color="#FAFAFA" />
+    <SolidColorBrush x:Key="AppTextForeground" Color="#0C0C0E" />
+    <SolidColorBrush x:Key="AppMutedForeground" Color="#555555" />
+    <SolidColorBrush x:Key="AppAccentColor" Color="#C9A84C" />
+    <SolidColorBrush x:Key="AppAccentForeground" Color="#0C0C0E" />
+    <SolidColorBrush x:Key="AppButtonBackground" Color="#003366" />
+    <SolidColorBrush x:Key="AppButtonForeground" Color="#FFFCFB" />
+    <SolidColorBrush x:Key="AppSecondaryButtonBackground" Color="#FFFCFB" />
+    <SolidColorBrush x:Key="AppSecondaryButtonForeground" Color="#003366" />
+    <SolidColorBrush x:Key="AppSecondaryButtonBorder" Color="#003366" />
+    <SolidColorBrush x:Key="AppSunkenOuterTopLeft" Color="#DDE2E6" />
+    <SolidColorBrush x:Key="AppSunkenInnerTopLeft" Color="#EAEAEA" />
+    <SolidColorBrush x:Key="AppSunkenOuterBottomRight" Color="#DDE2E6" />
+    <SolidColorBrush x:Key="AppSunkenInnerBottomRight" Color="#EAEAEA" />
+
+    <!-- Typography -->
+    <FontFamily x:Key="AppBaseFontFamily">Montserrat, Segoe UI, sans-serif</FontFamily>
+    <FontFamily x:Key="AppDisplayFontFamily">Cormorant Garamond, Georgia, serif</FontFamily>
+    <FontFamily x:Key="AppTitleFontFamily">Cormorant Garamond, Georgia, serif</FontFamily>
+    <FontFamily x:Key="AppMetricFontFamily">Bebas Neue, Impact, sans-serif</FontFamily>
+    <FontWeight x:Key="AppTitleFontWeight">Normal</FontWeight>
+    <sys:Double x:Key="AppTitleFontSize">19</sys:Double>
+    <FontStyle x:Key="AppDisplayFontStyle">Italic</FontStyle>
+
+    <!-- Indicators -->
+    <sys:Boolean x:Key="IsWin95">False</sys:Boolean>
+    <Visibility x:Key="Win95OnlyVis">Collapsed</Visibility>
+    <Visibility x:Key="ModernOnlyVis">Visible</Visibility>
+    <Thickness x:Key="AppWindowFrameThickness">0</Thickness>
+    <Thickness x:Key="AppPanelBorderThickness">1</Thickness>
+
+    <!-- Title Bar Buttons -->
+    <Style x:Key="TitleBarButtonStyle" TargetType="Button">
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="#FFFCFB" />
+        <Setter Property="Width" Value="46" />
+        <Setter Property="Height" Value="48" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#1A4A7A" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="TitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#C0392B" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Primary Action Button -->
+    <Style x:Key="PrimaryActionBtn" TargetType="Button">
+        <Setter Property="Background" Value="#003366" />
+        <Setter Property="Foreground" Value="#FFFCFB" />
+        <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="0" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#002244" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Secondary Action Button -->
+    <Style x:Key="SecondaryActionBtn" TargetType="Button">
+        <Setter Property="Background" Value="#FFFCFB" />
+        <Setter Property="Foreground" Value="#003366" />
+        <Setter Property="BorderBrush" Value="#003366" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#F0F4F8" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Gold Accent Button -->
+    <Style x:Key="GoldActionBtn" TargetType="Button">
+        <Setter Property="Background" Value="#C9A84C" />
+        <Setter Property="Foreground" Value="#0C0C0E" />
+        <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="0" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#B5943B" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

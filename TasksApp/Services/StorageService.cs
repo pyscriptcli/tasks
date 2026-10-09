@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using TasksApp.Models;
 
 namespace TasksApp.Services
@@ -14,20 +15,28 @@ namespace TasksApp.Services
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
             WriteIndented = true,
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals
         };
 
         private readonly string _settingsFilePath;
 
-        public StorageService()
+        public StorageService(string? customSettingsFilePath = null)
         {
-            string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string appDir = Path.Combine(appData, "TasksApp");
-            if (!Directory.Exists(appDir))
+            if (!string.IsNullOrWhiteSpace(customSettingsFilePath))
             {
-                Directory.CreateDirectory(appDir);
+                _settingsFilePath = customSettingsFilePath;
             }
-            _settingsFilePath = Path.Combine(appDir, "settings.json");
+            else
+            {
+                string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                string appDir = Path.Combine(appData, "TasksApp");
+                if (!Directory.Exists(appDir))
+                {
+                    Directory.CreateDirectory(appDir);
+                }
+                _settingsFilePath = Path.Combine(appDir, "settings.json");
+            }
         }
 
         public string GetDefaultDataDirectory()

@@ -37,5 +37,8 @@ namespace TasksApp.Models
 
         [JsonPropertyName("hasShownBackgroundCloseNotification")]
         public bool HasShownBackgroundCloseNotification { get; set; } = false;
+
+        [JsonPropertyName("theme")]
+        public string Theme { get; set; } = "Default";
     }
 }

@@ -20,11 +20,14 @@ namespace TasksApp.Views
         public bool MigrateFilesRequested { get; private set; }
         public string OriginalStoragePath { get; private set; }
 
+        public string OriginalTheme { get; private set; }
+
         public SettingsWindow(AppSettings currentSettings, StorageService storageService)
         {
             InitializeComponent();
             _storageService = storageService;
             OriginalStoragePath = currentSettings.DataDirectory;
+            OriginalTheme = currentSettings.Theme ?? ThemeManager.DefaultTheme;
 
             TxtCurrentVersion.Text = $"v{UpdateService.CurrentVersion}";
 
@@ -35,6 +38,7 @@ namespace TasksApp.Views
                 RemindersEnabled = currentSettings.RemindersEnabled,
                 ReminderIntervalSeconds = currentSettings.ReminderIntervalSeconds,
                 AlwaysOnTop = currentSettings.AlwaysOnTop,
+                Theme = currentSettings.Theme ?? ThemeManager.DefaultTheme,
                 HasCompletedFirstRun = currentSettings.HasCompletedFirstRun,
                 HasShownBackgroundCloseNotification = currentSettings.HasShownBackgroundCloseNotification,
                 WindowLeft = currentSettings.WindowLeft,
@@ -47,6 +51,15 @@ namespace TasksApp.Views
             TxtStoragePath.Text = UpdatedSettings.DataDirectory;
             ChkRemindersEnabled.IsChecked = UpdatedSettings.RemindersEnabled;
             ChkAlwaysOnTop.IsChecked = UpdatedSettings.AlwaysOnTop;
+
+            if (string.Equals(UpdatedSettings.Theme, ThemeManager.Win95Theme, StringComparison.OrdinalIgnoreCase))
+            {
+                RbThemeWin95.IsChecked = true;
+            }
+            else
+            {
+                RbThemeDefault.IsChecked = true;
+            }
 
             PopulateIntervalFields(UpdatedSettings.ReminderIntervalSeconds);
         }
@@ -164,9 +177,18 @@ namespace TasksApp.Views
             UpdatedSettings.RemindersEnabled = ChkRemindersEnabled.IsChecked ?? true;
             UpdatedSettings.ReminderIntervalSeconds = totalSeconds;
             UpdatedSettings.AlwaysOnTop = ChkAlwaysOnTop.IsChecked ?? false;
+            UpdatedSettings.Theme = RbThemeWin95.IsChecked == true ? ThemeManager.Win95Theme : ThemeManager.DefaultTheme;
+            ThemeManager.ApplyTheme(UpdatedSettings.Theme);
 
             DialogResult = true;
             Close();
+        }
+
+        private void OnThemeRadioChecked(object sender, RoutedEventArgs e)
+        {
+            if (!IsLoaded) return;
+            string selected = RbThemeWin95.IsChecked == true ? ThemeManager.Win95Theme : ThemeManager.DefaultTheme;
+            ThemeManager.ApplyTheme(selected);
         }
 
         private void ShowIntervalError(string message)
@@ -177,6 +199,7 @@ namespace TasksApp.Views
 
         private void OnCancelClick(object sender, RoutedEventArgs e)
         {
+            ThemeManager.ApplyTheme(OriginalTheme);
             DialogResult = false;
             Close();
         }

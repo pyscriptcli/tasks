@@ -32,6 +32,7 @@ namespace TasksApp
             _storageService = new StorageService();
             _reminderService = new ReminderService();
             _settings = _storageService.LoadSettings();
+            ThemeManager.ApplyTheme(_settings.Theme);
 
             // First Run Storage Prompt (UR-030)
             if (!_settings.HasCompletedFirstRun)
@@ -293,6 +294,11 @@ namespace TasksApp
             {
                 _viewModel.UpdateSettings(settingsWin.UpdatedSettings);
                 Topmost = _settings.AlwaysOnTop;
+                ThemeManager.ApplyTheme(_settings.Theme);
+            }
+            else
+            {
+                ThemeManager.ApplyTheme(_settings.Theme);
             }
         }
 
