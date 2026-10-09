@@ -105,34 +105,34 @@
                                     </Canvas>
                                 </Viewbox>
                                 <TextBlock Text="UPDATE READY" FontSize="10" FontWeight="Bold" Foreground="#003366"
-                                           FontFamily="Montserrat, Segoe UI, sans-serif" VerticalAlignment="Center" />
+                                           FontFamily="{DynamicResource AppBaseFontFamily}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
 
                         <!-- Notification Bell SVG Button (Task Reminders) -->
-                        <Button ToolTip="Task Reminders (View today's tasks)" Width="36" Height="36" Margin="0,0,4,0"
-                                Style="{DynamicResource TitleBarButtonStyle}"
+                        <Button ToolTip="Task Reminders (View today's tasks)"
+                                Style="{DynamicResource TitleBarActionButtonStyle}"
                                 Command="{Binding ShowReminderCommand}">
                             <Grid>
                                 <!-- SVG Bell Icon -->
-                                <Viewbox Width="16" Height="16">
+                                <Viewbox Width="12" Height="12">
                                     <Canvas Width="24" Height="24">
                                         <Path Data="M 12,22 C 13.1,22 14,21.1 14,20 L 10,20 C 10,21.1 10.9,22 12,22 Z M 18,16 L 18,11 C 18,7.93 16.36,5.36 13.5,4.68 L 13.5,4 C 13.5,3.17 12.83,2.5 12,2.5 C 11.17,2.5 10.5,3.17 10.5,4 L 10.5,4.68 C 7.63,5.36 6,7.92 6,11 L 6,16 L 4,18 L 4,19 L 20,19 L 20,18 Z"
                                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
                                     </Canvas>
                                 </Viewbox>
                                 <!-- Active Notification Dot Indicator (When there are pending tasks today) -->
-                                <Border Background="{DynamicResource AppAccentColor}" Width="6" Height="6" CornerRadius="0"
+                                <Border Background="{DynamicResource AppAccentColor}" Width="5" Height="5" CornerRadius="0"
                                         HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-2,-2,0"
                                         Visibility="{Binding HasPendingTasksToday, Converter={StaticResource BoolToVis}}" />
                             </Grid>
                         </Button>
 
                         <!-- Settings SVG Button -->
-                        <Button ToolTip="Preferences &amp; Reminders" Width="36" Height="36"
-                                Style="{DynamicResource TitleBarButtonStyle}"
+                        <Button ToolTip="Preferences &amp; Reminders"
+                                Style="{DynamicResource TitleBarActionButtonStyle}"
                                 Command="{Binding OpenSettingsCommand}">
-                            <Viewbox Width="16" Height="16">
+                            <Viewbox Width="12" Height="12">
                                 <Canvas Width="24" Height="24">
                                     <Path Data="M 12,15 C 10.34,15 9,13.66 9,12 C 9,10.34 10.34,9 12,9 C 13.66,9 15,10.34 15,12 C 15,13.66 13.66,15 12,15 Z M 19.4,13 C 19.45,12.67 19.5,12.34 19.5,12 C 19.5,11.66 19.45,11.33 19.4,11 L 21.54,9.33 C 21.73,9.18 21.79,8.91 21.66,8.69 L 19.66,5.23 C 19.53,5.01 19.27,4.92 19.04,5.01 L 16.52,6.02 C 16,5.62 15.43,5.29 14.81,5.04 L 14.43,2.36 C 14.39,2.11 14.18,1.93 13.93,1.93 L 10.07,1.93 C 9.82,1.93 9.61,2.11 9.57,2.36 L 9.19,5.04 C 8.57,5.29 8,5.63 7.48,6.02 L 4.96,5.01 C 4.73,4.92 4.47,5.01 4.34,5.23 L 2.34,8.69 C 2.21,8.91 2.27,9.18 2.46,9.33 L 4.6,11 C 4.55,11.33 4.5,11.67 4.5,12 C 4.5,12.33 4.55,12.67 4.6,13 L 2.46,14.67 C 2.27,14.82 2.21,15.09 2.34,15.31 L 4.34,18.77 C 4.47,18.99 4.73,19.08 4.96,18.99 L 7.48,17.98 C 8,18.38 8.57,18.71 9.19,18.96 L 9.57,21.64 C 9.61,21.89 9.82,22.07 10.07,22.07 L 13.93,22.07 C 14.18,22.07 14.39,21.89 14.43,21.64 L 14.81,18.96 C 15.43,18.71 16,18.37 16.52,17.98 L 19.04,18.99 C 19.27,19.08 19.53,18.99 19.66,18.77 L 21.66,15.31 C 21.79,15.09 21.73,14.82 21.54,14.67 L 19.4,13 Z"
                                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
@@ -358,9 +358,9 @@
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                     <Setter Property="Padding" Value="0" />
                                     <Setter Property="Margin" Value="0,0,0,1" />
-                                    <Setter Property="Background" Value="#FFFFFF" />
+                                    <Setter Property="Background" Value="{DynamicResource AppCardBackground}" />
                                     <Setter Property="BorderThickness" Value="0,0,0,1" />
-                                    <Setter Property="BorderBrush" Value="#EEF2F6" />
+                                    <Setter Property="BorderBrush" Value="{DynamicResource AppCardBorder}" />
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="ListBoxItem">
@@ -374,7 +374,7 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#F8FAFC" />
+                                            <Setter Property="Background" Value="{DynamicResource AppSurfaceBackground}" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -487,12 +487,12 @@
                                                             </Canvas>
                                                         </Viewbox>
                                                         <TextBlock Text="HIGH" FontSize="9" FontWeight="Bold"
-                                                                   FontFamily="Montserrat, Segoe UI, sans-serif" Foreground="#003366" />
+                                                                   FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppPrimaryColor}" />
                                                     </StackPanel>
                                                 </Border>
 
                                                 <!-- Carried Over Badge -->
-                                                <Border Background="#F4F6F8" BorderBrush="#003366" BorderThickness="1"
+                                                <Border Background="{DynamicResource AppSurfaceBackground}" BorderBrush="{DynamicResource AppPrimaryColor}" BorderThickness="1"
                                                         Padding="6,3" Margin="0,0,8,0"
                                                         ToolTip="{Binding CarriedOverFrom, StringFormat='Carried over from {0}'}">
                                                     <Border.Style>
@@ -509,11 +509,11 @@
                                                         <Viewbox Width="9" Height="9" Margin="0,0,4,0">
                                                             <Canvas Width="24" Height="24">
                                                                 <Path Data="M 12,4 L 10.59,5.41 L 16.17,11 L 4,11 L 4,13 L 16.17,13 L 10.59,18.59 L 12,20 L 20,12 Z"
-                                                                      Fill="#003366" />
+                                                                      Fill="{DynamicResource AppPrimaryColor}" />
                                                             </Canvas>
                                                         </Viewbox>
                                                         <TextBlock Text="CARRIED OVER" FontSize="9" FontWeight="SemiBold"
-                                                                   FontFamily="Montserrat, Segoe UI, sans-serif" Foreground="#003366" />
+                                                                   FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppPrimaryColor}" />
                                                     </StackPanel>
                                                 </Border>
 
@@ -525,7 +525,7 @@
                                                     <Viewbox Width="13" Height="13">
                                                         <Canvas Width="24" Height="24">
                                                             <Path Data="M 3,17.25 L 3,21 L 6.75,21 L 17.81,9.94 L 14.06,6.19 Z M 20.71,7.04 C 21.1,6.65 21.1,6.02 20.71,5.63 L 18.37,3.29 C 17.98,2.9 17.35,2.9 16.96,3.29 L 15.13,5.12 L 18.88,8.87 Z"
-                                                                  Fill="#003366" />
+                                                                  Fill="{DynamicResource AppPrimaryColor}" />
                                                         </Canvas>
                                                     </Viewbox>
                                                 </Button>
@@ -673,16 +673,16 @@
                                 <Path Data="M 3,3 L 21,3 L 21,15 L 15,21 L 3,21 Z" Fill="#FFBF00" />
                             </Canvas>
                         </Viewbox>
-                        <TextBlock Text="Tasks" Foreground="#FFFCFB" FontSize="19"
-                                   FontFamily="Cormorant Garamond, Georgia, serif" />
+                        <TextBlock Text="Tasks" Foreground="{DynamicResource AppTitleBarForeground}" FontSize="19"
+                                   FontFamily="{DynamicResource AppTitleFontFamily}" />
                     </StackPanel>
                 </Border>
 
                 <!-- Navigation Placeholder Bar -->
-                <Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#DDE2E6" BorderThickness="0,0,0,1" Padding="20,12">
+                <Border Grid.Row="1" Background="{DynamicResource AppPanelBackground}" BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,0,0,1" Padding="20,12">
                     <StackPanel Orientation="Horizontal">
-                        <Border Background="#E6ECF2" Width="80" Height="28" Margin="0,0,12,0" />
-                        <Border Background="#E6ECF2" Width="220" Height="28" />
+                        <Border Background="{DynamicResource AppSurfaceBackground}" Width="80" Height="28" Margin="0,0,12,0" />
+                        <Border Background="{DynamicResource AppSurfaceBackground}" Width="220" Height="28" />
                     </StackPanel>
                 </Border>
 
@@ -695,27 +695,27 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Left Skeleton -->
-                    <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="#DDE2E6" BorderThickness="1" Padding="16">
+                    <Border Grid.Column="0" Background="{DynamicResource AppCardBackground}" BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="1" Padding="16">
                         <StackPanel>
-                            <Border Background="#E6ECF2" Width="140" Height="16" HorizontalAlignment="Left" Margin="0,0,0,18" />
-                            <Border Background="#F0F4F8" Height="44" Margin="0,0,0,10" />
-                            <Border Background="#F0F4F8" Height="44" Margin="0,0,0,10" />
-                            <Border Background="#F0F4F8" Height="44" Margin="0,0,0,10" />
-                            <Border Background="#F0F4F8" Height="44" Margin="0,0,0,10" />
+                            <Border Background="{DynamicResource AppSurfaceBackground}" Width="140" Height="16" HorizontalAlignment="Left" Margin="0,0,0,18" />
+                            <Border Background="{DynamicResource AppSurfaceBackground}" Height="44" Margin="0,0,0,10" />
+                            <Border Background="{DynamicResource AppSurfaceBackground}" Height="44" Margin="0,0,0,10" />
+                            <Border Background="{DynamicResource AppSurfaceBackground}" Height="44" Margin="0,0,0,10" />
+                            <Border Background="{DynamicResource AppSurfaceBackground}" Height="44" Margin="0,0,0,10" />
                         </StackPanel>
                     </Border>
 
                     <!-- Right Skeleton -->
-                    <Border Grid.Column="2" Background="#FFFFFF" BorderBrush="#DDE2E6" BorderThickness="1" Padding="16">
+                    <Border Grid.Column="2" Background="{DynamicResource AppCardBackground}" BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="1" Padding="16">
                         <StackPanel>
-                            <Border Background="#E6ECF2" Width="120" Height="16" HorizontalAlignment="Left" Margin="0,0,0,18" />
-                            <Border Background="#F0F4F8" Height="140" />
+                            <Border Background="{DynamicResource AppSurfaceBackground}" Width="120" Height="16" HorizontalAlignment="Left" Margin="0,0,0,18" />
+                            <Border Background="{DynamicResource AppSurfaceBackground}" Height="140" />
                         </StackPanel>
                     </Border>
                 </Grid>
 
                 <!-- Progress Bar with Percentage -->
-                <Border Grid.Row="3" Background="#FFFFFF" BorderBrush="#DDE2E6" BorderThickness="0,1,0,0" Padding="24,14">
+                <Border Grid.Row="3" Background="{DynamicResource AppPanelBackground}" BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,1,0,0" Padding="24,14">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -726,9 +726,9 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding LoadingStatusText}" FontSize="12" Foreground="#003366" FontWeight="SemiBold" />
+                            <TextBlock Grid.Column="0" Text="{Binding LoadingStatusText}" FontSize="12" Foreground="{DynamicResource AppPrimaryColor}" FontWeight="SemiBold" />
                             <TextBlock Grid.Column="1" Text="{Binding LoadingProgress, StringFormat='{}{0}%'}" FontSize="14"
-                                       FontFamily="Bebas Neue, Impact, sans-serif" Foreground="#003366" />
+                                       FontFamily="{DynamicResource AppMetricFontFamily}" Foreground="{DynamicResource AppPrimaryColor}" />
                         </Grid>
                         <ProgressBar Grid.Row="1" Height="4" Value="{Binding LoadingProgress}" Maximum="100"
                                      Foreground="#003366" Background="#E6ECF2" BorderThickness="0" />
@@ -785,15 +785,15 @@
 
                     <!-- Subhead Description -->
                     <TextBlock Grid.Row="1" Text="Here is the current status of all tasks scheduled for today:"
-                               FontSize="13" Foreground="#181D1E" FontFamily="Montserrat, Segoe UI, sans-serif" Margin="0,0,0,12" />
+                               FontSize="13" Foreground="{DynamicResource AppTextForeground}" FontFamily="{DynamicResource AppBaseFontFamily}" Margin="0,0,0,12" />
 
                     <!-- Tasks List for Reminder (UR-021) -->
-                    <Border Grid.Row="2" Background="#FFFFFF" BorderBrush="#DDE2E6" BorderThickness="1" MaxHeight="260" Margin="0,0,0,18">
+                    <Border Grid.Row="2" Background="{DynamicResource AppCardBackground}" BorderBrush="{DynamicResource AppCardBorder}" BorderThickness="1" MaxHeight="260" Margin="0,0,0,18">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <ItemsControl ItemsSource="{Binding ReminderTasks}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Padding="12,8" BorderThickness="0,0,0,1" BorderBrush="#EEF2F6">
+                                        <Border Padding="12,8" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource AppPanelBorder}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
@@ -820,7 +820,7 @@
                                                         </Path>
                                                         <!-- Pending Circle SVG -->
                                                         <Path Data="M 12,2 C 6.48,2 2,6.48 2,12 C 2,17.52 6.48,22 12,22 C 17.52,22 22,17.52 22,12 C 22,6.48 17.52,2 12,2 Z M 12,20 C 7.59,20 4,16.41 4,12 C 4,7.59 7.59,4 12,4 C 16.41,4 20,7.59 20,12 C 20,16.41 16.41,20 12,20 Z"
-                                                              Fill="#003366">
+                                                              Fill="{DynamicResource AppPrimaryColor}">
                                                             <Path.Style>
                                                                 <Style TargetType="Path">
                                                                     <Setter Property="Visibility" Value="Visible" />
@@ -837,15 +837,15 @@
 
                                                 <!-- Title -->
                                                 <TextBlock Grid.Column="1" Text="{Binding Title}" FontSize="13"
-                                                           FontFamily="Montserrat, Segoe UI, sans-serif" VerticalAlignment="Center">
+                                                           FontFamily="{DynamicResource AppBaseFontFamily}" VerticalAlignment="Center">
                                                     <TextBlock.Style>
                                                         <Style TargetType="TextBlock">
                                                             <Setter Property="FontWeight" Value="SemiBold" />
-                                                            <Setter Property="Foreground" Value="#0C0C0E" />
+                                                            <Setter Property="Foreground" Value="{DynamicResource AppTextForeground}" />
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsCompleted}" Value="True">
                                                                     <Setter Property="TextDecorations" Value="Strikethrough" />
-                                                                    <Setter Property="Foreground" Value="#88929A" />
+                                                                    <Setter Property="Foreground" Value="{DynamicResource AppMutedForeground}" />
                                                                     <Setter Property="FontWeight" Value="Normal" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
@@ -857,7 +857,7 @@
                                                 <Border Grid.Column="2" Padding="6,2" VerticalAlignment="Center">
                                                     <Border.Style>
                                                         <Style TargetType="Border">
-                                                            <Setter Property="Background" Value="#FFF8E7" />
+                                                            <Setter Property="Background" Value="{DynamicResource AppSurfaceBackground}" />
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsCompleted}" Value="True">
                                                                     <Setter Property="Background" Value="#E8F5E9" />
@@ -865,11 +865,11 @@
                                                             </Style.Triggers>
                                                         </Style>
                                                     </Border.Style>
-                                                    <TextBlock FontSize="10" FontWeight="Bold" FontFamily="Montserrat, Segoe UI, sans-serif">
+                                                    <TextBlock FontSize="10" FontWeight="Bold" FontFamily="{DynamicResource AppBaseFontFamily}">
                                                         <TextBlock.Style>
                                                             <Style TargetType="TextBlock">
                                                                 <Setter Property="Text" Value="PENDING" />
-                                                                <Setter Property="Foreground" Value="#003366" />
+                                                                <Setter Property="Foreground" Value="{DynamicResource AppPrimaryColor}" />
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding IsCompleted}" Value="True">
                                                                         <Setter Property="Text" Value="DONE" />
@@ -901,11 +901,11 @@
                             <Viewbox Width="12" Height="12" Margin="0,0,6,0">
                                 <Canvas Width="24" Height="24">
                                     <Path Data="M 12,2 C 6.5,2 2,6.5 2,12 C 2,17.5 6.5,22 12,22 C 17.5,22 22,17.5 22,12 C 22,6.5 17.5,2 12,2 Z M 12.5,7 L 11,7 L 11,13 L 16,16 L 16.8,14.8 L 12.5,12.2 Z"
-                                          Fill="#555555" />
+                                          Fill="{DynamicResource AppMutedForeground}" />
                                 </Canvas>
                             </Viewbox>
                             <TextBlock Text="SNOOZE: " FontSize="11" FontWeight="SemiBold"
-                                       FontFamily="Montserrat, Segoe UI, sans-serif" Foreground="#555555" VerticalAlignment="Center" Margin="0,0,6,0" />
+                                       FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppMutedForeground}" VerticalAlignment="Center" Margin="0,0,6,0" />
                             <Button Content="10M" Style="{DynamicResource SecondaryActionBtn}" Margin="0,0,4,0" Padding="8,4"
                                     Command="{Binding SnoozeReminderCommand}" CommandParameter="10" />
                             <Button Content="30M" Style="{DynamicResource SecondaryActionBtn}" Margin="0,0,4,0" Padding="8,4"

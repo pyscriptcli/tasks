@@ -107,6 +107,13 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Title Bar Top Action Buttons (Bell & Settings) -->
+    <Style x:Key="TitleBarActionButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Margin" Value="0,0,4,0" />
+    </Style>
+
     <!-- Primary Action Button -->
     <Style x:Key="PrimaryActionBtn" TargetType="Button">
         <Setter Property="Background" Value="#003366" />

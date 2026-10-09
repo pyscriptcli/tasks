@@ -210,7 +210,7 @@ namespace TasksApp.Views
             BtnCheckUpdates.IsEnabled = false;
             BtnCheckUpdates.Content = "CHECKING...";
             TxtUpdateStatus.Visibility = Visibility.Visible;
-            TxtUpdateStatus.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0x00, 0x33, 0x66));
+            TxtUpdateStatus.SetResourceReference(System.Windows.Controls.TextBlock.ForegroundProperty, "AppPrimaryColor");
             TxtUpdateStatus.Text = "Connecting to GitHub (pyscriptcli/tasks)...";
             PnlUpdateAvailable.Visibility = Visibility.Collapsed;
             PbUpdateProgress.Visibility = Visibility.Collapsed;

@@ -46,10 +46,10 @@
     <Thickness x:Key="AppPanelBorderThickness">2</Thickness>
 
     <!-- Typography (Win95 System) -->
-    <FontFamily x:Key="AppBaseFontFamily">MS Sans Serif, Tahoma, Segoe UI, Arial, sans-serif</FontFamily>
-    <FontFamily x:Key="AppDisplayFontFamily">MS Sans Serif, Tahoma, Segoe UI, Arial, sans-serif</FontFamily>
-    <FontFamily x:Key="AppTitleFontFamily">MS Sans Serif, Tahoma, Segoe UI, Arial, sans-serif</FontFamily>
-    <FontFamily x:Key="AppMetricFontFamily">MS Sans Serif, Tahoma, Segoe UI, Arial, sans-serif</FontFamily>
+    <FontFamily x:Key="AppBaseFontFamily">Microsoft Sans Serif, MS Sans Serif, Tahoma, Arial, sans-serif</FontFamily>
+    <FontFamily x:Key="AppDisplayFontFamily">Microsoft Sans Serif, MS Sans Serif, Tahoma, Arial, sans-serif</FontFamily>
+    <FontFamily x:Key="AppTitleFontFamily">Microsoft Sans Serif, MS Sans Serif, Tahoma, Arial, sans-serif</FontFamily>
+    <FontFamily x:Key="AppMetricFontFamily">Microsoft Sans Serif, MS Sans Serif, Tahoma, Arial, sans-serif</FontFamily>
 
     <!-- Indicators -->
     <sys:Boolean x:Key="IsWin95">True</sys:Boolean>
@@ -110,7 +110,7 @@
     <Style x:Key="PrimaryActionBtn" TargetType="Button">
         <Setter Property="Background" Value="#C0C0C0" />
         <Setter Property="Foreground" Value="#000000" />
-        <Setter Property="FontFamily" Value="MS Sans Serif, Tahoma, Segoe UI, sans-serif" />
+        <Setter Property="FontFamily" Value="Microsoft Sans Serif, MS Sans Serif, Tahoma, sans-serif" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="Padding" Value="12,4" />
@@ -200,13 +200,20 @@
         </Setter>
     </Style>
 
+    <!-- Title Bar Top Action Button (Bell & Settings in Win95) -->
+    <Style x:Key="TitleBarActionButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+        <Setter Property="Width" Value="22" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Margin" Value="2,0,2,0" />
+    </Style>
+
     <Style x:Key="TitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}" />
 
     <!-- Win95 Sunken TextBox Style -->
     <Style x:Key="AppTextBoxStyle" TargetType="TextBox">
         <Setter Property="Background" Value="#FFFFFF" />
         <Setter Property="Foreground" Value="#000000" />
-        <Setter Property="FontFamily" Value="MS Sans Serif, Tahoma, Segoe UI, sans-serif" />
+        <Setter Property="FontFamily" Value="Microsoft Sans Serif, MS Sans Serif, Tahoma, sans-serif" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="Padding" Value="4,2" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -230,7 +237,7 @@
     <Style TargetType="CheckBox">
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Foreground" Value="#000000" />
-        <Setter Property="FontFamily" Value="MS Sans Serif, Tahoma, Segoe UI, sans-serif" />
+        <Setter Property="FontFamily" Value="Microsoft Sans Serif, MS Sans Serif, Tahoma, sans-serif" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="Template">
             <Setter.Value>
@@ -267,7 +274,7 @@
     <Style TargetType="RadioButton">
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Foreground" Value="#000000" />
-        <Setter Property="FontFamily" Value="MS Sans Serif, Tahoma, Segoe UI, sans-serif" />
+        <Setter Property="FontFamily" Value="Microsoft Sans Serif, MS Sans Serif, Tahoma, sans-serif" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="Template">
             <Setter.Value>
