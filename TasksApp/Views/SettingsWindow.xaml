@@ -1,0 +1,284 @@
+<Window x:Class="TasksApp.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Settings"
+        Width="720" Height="480"
+        MinWidth="600" MinHeight="400"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResizeWithGrip"
+        Background="#FFFCFB"
+        FontFamily="Montserrat, Segoe UI, sans-serif"
+        UseLayoutRounding="True">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="PrimeBlue" Color="#003366" />
+        <SolidColorBrush x:Key="PrimeWarmWhite" Color="#FFFCFB" />
+        <SolidColorBrush x:Key="PrimeGold" Color="#C9A84C" />
+        <SolidColorBrush x:Key="PrimeGray" Color="#181D1E" />
+        <SolidColorBrush x:Key="PrimeBorder" Color="#D2D6DC" />
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#003366" />
+            <Setter Property="Foreground" Value="#FFFCFB" />
+            <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Padding" Value="20,10" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                CornerRadius="0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#002244" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFFCFB" />
+            <Setter Property="Foreground" Value="#003366" />
+            <Setter Property="BorderBrush" Value="#003366" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Padding" Value="14,8" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                CornerRadius="0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F0F4F8" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PresetButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#F4F6F8" />
+            <Setter Property="Foreground" Value="#003366" />
+            <Setter Property="BorderBrush" Value="#D2D6DC" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="Margin" Value="0,0,6,0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                CornerRadius="0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E6EDF5" />
+                    <Setter Property="BorderBrush" Value="#003366" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" BorderBrush="#003366" BorderThickness="0,0,0,2" Padding="0,0,0,12" Margin="0,0,0,16">
+            <StackPanel>
+                <TextBlock Text="PREFERENCES" FontSize="11" FontWeight="Medium" Foreground="#C9A84C"
+                           FontFamily="Montserrat, Segoe UI, sans-serif" Margin="0,0,0,2" />
+                <TextBlock Text="Settings" FontSize="24" FontWeight="Normal" Foreground="#003366"
+                           FontFamily="Cormorant Garamond, Georgia, serif" />
+            </StackPanel>
+        </Border>
+
+        <!-- Content Sections -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,16">
+            <StackPanel>
+                <!-- Section 1: Storage Location -->
+                <Border BorderBrush="#E2E5E8" BorderThickness="1" Background="#FFFFFF" Padding="16" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="STORAGE LOCATION" FontSize="11" FontWeight="SemiBold" Foreground="#003366" Margin="0,0,0,4" />
+                        <TextBlock Text="Files for daily tasks and notes are stored as readable files in this directory."
+                                   FontSize="12" Foreground="#181D1E" Margin="0,0,0,10" />
+
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="TxtStoragePath" Grid.Column="0" Height="36" Padding="8,6"
+                                     FontSize="12" Foreground="#0C0C0E" Background="#FAFAFA"
+                                     BorderBrush="#D2D6DC" BorderThickness="1" VerticalContentAlignment="Center" />
+                            <Button Grid.Column="1" Content="Browse..." Margin="8,0,0,0" Height="36"
+                                    Style="{StaticResource SecondaryButtonStyle}" Click="OnBrowseStorageClick" />
+                        </Grid>
+
+                        <CheckBox x:Name="ChkMigrateFiles" Content="Copy existing tasks and notes to new folder if changed"
+                                  FontSize="12" Foreground="#181D1E" IsChecked="True" Cursor="Hand" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Section 2: Reminders -->
+                <Border BorderBrush="#E2E5E8" BorderThickness="1" Background="#FFFFFF" Padding="16" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="TASK REMINDERS" FontSize="11" FontWeight="SemiBold" Foreground="#003366" Margin="0,0,0,4" />
+                        <TextBlock Text="Periodically brings up a summary of today's tasks so you never lose track of open work."
+                                   FontSize="12" Foreground="#181D1E" Margin="0,0,0,12" />
+
+                        <!-- Toggle -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <CheckBox x:Name="ChkRemindersEnabled" VerticalAlignment="Center" Cursor="Hand">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                            <TextBlock Text="Enable task reminders" FontSize="13" FontWeight="SemiBold"
+                                       Foreground="#003366" Margin="8,0,0,0" VerticalAlignment="Center"
+                                       Cursor="Hand" MouseLeftButtonDown="OnToggleRemindersLabelClick" />
+                        </StackPanel>
+
+                        <!-- Interval Inputs -->
+                        <TextBlock Text="REMINDER INTERVAL" FontSize="11" FontWeight="SemiBold" Foreground="#181D1E" Margin="0,0,0,6" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <StackPanel Margin="0,0,12,0">
+                                <TextBlock Text="Hours" FontSize="10" Foreground="#555555" Margin="0,0,0,2" />
+                                <TextBox x:Name="TxtHours" Width="64" Height="34" Padding="6,4" TextAlignment="Center"
+                                         FontSize="16" FontFamily="Bebas Neue, Impact, sans-serif"
+                                         BorderBrush="#D2D6DC" BorderThickness="1" />
+                            </StackPanel>
+
+                            <StackPanel Margin="0,0,12,0">
+                                <TextBlock Text="Minutes" FontSize="10" Foreground="#555555" Margin="0,0,0,2" />
+                                <TextBox x:Name="TxtMinutes" Width="64" Height="34" Padding="6,4" TextAlignment="Center"
+                                         FontSize="16" FontFamily="Bebas Neue, Impact, sans-serif"
+                                         BorderBrush="#D2D6DC" BorderThickness="1" />
+                            </StackPanel>
+
+                            <StackPanel Margin="0,0,12,0">
+                                <TextBlock Text="Seconds" FontSize="10" Foreground="#555555" Margin="0,0,0,2" />
+                                <TextBox x:Name="TxtSeconds" Width="64" Height="34" Padding="6,4" TextAlignment="Center"
+                                         FontSize="16" FontFamily="Bebas Neue, Impact, sans-serif"
+                                         BorderBrush="#D2D6DC" BorderThickness="1" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Presets -->
+                        <TextBlock Text="PRESETS" FontSize="11" FontWeight="SemiBold" Foreground="#181D1E" Margin="0,0,0,6" />
+                        <WrapPanel Margin="0,0,0,6">
+                            <Button Content="15 MIN" Style="{StaticResource PresetButtonStyle}" Click="OnPreset15MinClick" />
+                            <Button Content="30 MIN" Style="{StaticResource PresetButtonStyle}" Click="OnPreset30MinClick" />
+                            <Button Content="1 HOUR" Style="{StaticResource PresetButtonStyle}" Click="OnPreset1HourClick" />
+                            <Button Content="2 HOURS" Style="{StaticResource PresetButtonStyle}" Click="OnPreset2HoursClick" />
+                            <Button Content="4 HOURS" Style="{StaticResource PresetButtonStyle}" Click="OnPreset4HoursClick" />
+                        </WrapPanel>
+
+                        <TextBlock x:Name="TxtIntervalError" Text="" Foreground="#C02020" FontSize="12" Margin="0,4,0,0" Visibility="Collapsed" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Section 3: Window Behavior -->
+                <Border BorderBrush="#E2E5E8" BorderThickness="1" Background="#FFFFFF" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="WINDOW BEHAVIOR" FontSize="11" FontWeight="SemiBold" Foreground="#003366" Margin="0,0,0,10" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox x:Name="ChkAlwaysOnTop" VerticalAlignment="Center" Cursor="Hand" />
+                            <TextBlock Text="Keep window always on top (off by default)" FontSize="12"
+                                       Foreground="#181D1E" Margin="8,0,0,0" VerticalAlignment="Center"
+                                       Cursor="Hand" MouseLeftButtonDown="OnToggleAlwaysOnTopLabelClick" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Section 4: Software Updates -->
+                <Border BorderBrush="#E2E5E8" BorderThickness="1" Background="#FFFFFF" Padding="16" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="SOFTWARE UPDATES" FontSize="11" FontWeight="SemiBold" Foreground="#003366" Margin="0,0,0,4" />
+                        <TextBlock Text="Check GitHub repository (pyscriptcli/tasks) for new releases and updates."
+                                   FontSize="12" Foreground="#181D1E" Margin="0,0,0,10" />
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Center">
+                            <TextBlock Text="CURRENT VERSION:" FontSize="10" FontWeight="SemiBold" Foreground="#555555" VerticalAlignment="Center" Margin="0,0,6,0" />
+                            <Border Background="#F4F6F8" BorderBrush="#D2D6DC" BorderThickness="1" Padding="6,2" Margin="0,0,12,0">
+                                <TextBlock x:Name="TxtCurrentVersion" Text="v1.0.0" FontSize="11" FontWeight="Bold" Foreground="#003366" />
+                            </Border>
+
+                            <Button x:Name="BtnCheckUpdates" Content="CHECK FOR UPDATES" Style="{StaticResource SecondaryButtonStyle}"
+                                    Padding="12,6" FontSize="11" Click="OnCheckUpdatesClick" />
+                        </StackPanel>
+
+                        <!-- Status text -->
+                        <TextBlock x:Name="TxtUpdateStatus" Text="" FontSize="12" Foreground="#003366" Margin="0,4,0,0"
+                                   Visibility="Collapsed" TextWrapping="Wrap" />
+
+                        <!-- Progress Bar during download -->
+                        <ProgressBar x:Name="PbUpdateProgress" Height="4" Margin="0,8,0,4" Minimum="0" Maximum="100"
+                                     Foreground="#003366" Background="#E2E5E8" BorderThickness="0" Visibility="Collapsed" />
+
+                        <!-- Available Update Panel -->
+                        <Border x:Name="PnlUpdateAvailable" BorderBrush="#C9A84C" BorderThickness="1" Background="#FFFDF9"
+                                Padding="12" Margin="0,10,0,0" Visibility="Collapsed">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="UPDATE READY:" FontSize="10" FontWeight="Bold" Foreground="#C9A84C" VerticalAlignment="Center" Margin="0,0,6,0" />
+                                    <TextBlock x:Name="TxtNewVersionTag" Text="v1.1.0" FontSize="12" FontWeight="Bold" Foreground="#003366" />
+                                </StackPanel>
+                                <TextBlock x:Name="TxtReleaseNotes" Text="" FontSize="11" Foreground="#333333" Margin="0,0,0,10" TextWrapping="Wrap" MaxHeight="80" />
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="BtnInstallUpdate" Content="DOWNLOAD &amp; INSTALL UPDATE"
+                                            Style="{StaticResource PrimaryButtonStyle}" Padding="14,8" FontSize="11"
+                                            Click="OnInstallUpdateClick" />
+                                    <Button x:Name="BtnViewReleasePage" Content="VIEW ON GITHUB"
+                                            Style="{StaticResource SecondaryButtonStyle}" Margin="8,0,0,0" Padding="12,8" FontSize="11"
+                                            Click="OnViewReleasePageClick" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="CANCEL" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,10,0" Click="OnCancelClick" />
+            <Button Content="SAVE PREFERENCES" Style="{StaticResource PrimaryButtonStyle}" Click="OnSaveClick" />
+        </StackPanel>
+    </Grid>
+</Window>

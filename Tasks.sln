@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksApp", "TasksApp\TasksApp.csproj", "{9F0D92F7-0804-44F9-B349-C3FBFCF229BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksApp.Tests", "TasksApp.Tests\TasksApp.Tests.csproj", "{36C80905-CB61-48FF-ADD9-54C5DD4B6AC0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F0D92F7-0804-44F9-B349-C3FBFCF229BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F0D92F7-0804-44F9-B349-C3FBFCF229BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F0D92F7-0804-44F9-B349-C3FBFCF229BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F0D92F7-0804-44F9-B349-C3FBFCF229BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36C80905-CB61-48FF-ADD9-54C5DD4B6AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36C80905-CB61-48FF-ADD9-54C5DD4B6AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36C80905-CB61-48FF-ADD9-54C5DD4B6AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36C80905-CB61-48FF-ADD9-54C5DD4B6AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
