@@ -389,5 +389,39 @@ namespace TasksApp.Tests
             settings.Theme = ThemeManager.DefaultTheme;
             storage.SaveSettings(settings);
         }
+
+        [Fact]
+        public void UpdateSettings_PersistsWin95Theme_ToStorageService()
+        {
+            string customSettingsPath = Path.Combine(_testDir, "test_vm_settings.json");
+            var storage = new StorageService(customSettingsPath);
+            var reminder = new ReminderService();
+            var initialSettings = new AppSettings
+            {
+                DataDirectory = _testDir,
+                Theme = ThemeManager.DefaultTheme
+            };
+            storage.SaveSettings(initialSettings);
+
+            var vm = new MainViewModel(storage, reminder, initialSettings);
+            Assert.False(vm.IsWin95Theme);
+
+            var newSettings = new AppSettings
+            {
+                DataDirectory = _testDir,
+                Theme = ThemeManager.Win95Theme
+            };
+            vm.UpdateSettings(newSettings);
+
+            Assert.True(vm.IsWin95Theme);
+            Assert.True(ThemeManager.IsWin95);
+
+            // Verify reloaded from disk has Win95 saved
+            var reloaded = storage.LoadSettings();
+            Assert.Equal(ThemeManager.Win95Theme, reloaded.Theme);
+
+            // Clean up
+            ThemeManager.ApplyTheme(ThemeManager.DefaultTheme);
+        }
     }
 }

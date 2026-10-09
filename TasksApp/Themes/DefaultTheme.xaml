@@ -25,33 +25,54 @@
     <SolidColorBrush x:Key="AppSurfaceBackground" Color="#FAFAFA" />
     <SolidColorBrush x:Key="AppTextForeground" Color="#0C0C0E" />
     <SolidColorBrush x:Key="AppMutedForeground" Color="#555555" />
+    <SolidColorBrush x:Key="AppPrimaryColor" Color="#003366" />
     <SolidColorBrush x:Key="AppAccentColor" Color="#C9A84C" />
     <SolidColorBrush x:Key="AppAccentForeground" Color="#0C0C0E" />
-    <SolidColorBrush x:Key="AppButtonBackground" Color="#003366" />
-    <SolidColorBrush x:Key="AppButtonForeground" Color="#FFFCFB" />
-    <SolidColorBrush x:Key="AppSecondaryButtonBackground" Color="#FFFCFB" />
-    <SolidColorBrush x:Key="AppSecondaryButtonForeground" Color="#003366" />
-    <SolidColorBrush x:Key="AppSecondaryButtonBorder" Color="#003366" />
-    <SolidColorBrush x:Key="AppSunkenOuterTopLeft" Color="#DDE2E6" />
-    <SolidColorBrush x:Key="AppSunkenInnerTopLeft" Color="#EAEAEA" />
-    <SolidColorBrush x:Key="AppSunkenOuterBottomRight" Color="#DDE2E6" />
-    <SolidColorBrush x:Key="AppSunkenInnerBottomRight" Color="#EAEAEA" />
+    <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#C9A84C" />
+    <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#003366" />
+
+    <!-- Dimensions & Metrics -->
+    <sys:Double x:Key="AppTitleBarHeight">48</sys:Double>
+    <sys:Double x:Key="AppCaptionHeight">48</sys:Double>
+    <sys:Double x:Key="AppTitleFontSize">19</sys:Double>
+    <FontWeight x:Key="AppTitleFontWeight">Normal</FontWeight>
+    <FontStyle x:Key="AppDisplayFontStyle">Italic</FontStyle>
+    <Thickness x:Key="AppWindowFrameThickness">0</Thickness>
+    <Thickness x:Key="AppPanelBorderThickness">1</Thickness>
 
     <!-- Typography -->
     <FontFamily x:Key="AppBaseFontFamily">Montserrat, Segoe UI, sans-serif</FontFamily>
     <FontFamily x:Key="AppDisplayFontFamily">Cormorant Garamond, Georgia, serif</FontFamily>
     <FontFamily x:Key="AppTitleFontFamily">Cormorant Garamond, Georgia, serif</FontFamily>
     <FontFamily x:Key="AppMetricFontFamily">Bebas Neue, Impact, sans-serif</FontFamily>
-    <FontWeight x:Key="AppTitleFontWeight">Normal</FontWeight>
-    <sys:Double x:Key="AppTitleFontSize">19</sys:Double>
-    <FontStyle x:Key="AppDisplayFontStyle">Italic</FontStyle>
 
     <!-- Indicators -->
     <sys:Boolean x:Key="IsWin95">False</sys:Boolean>
     <Visibility x:Key="Win95OnlyVis">Collapsed</Visibility>
     <Visibility x:Key="ModernOnlyVis">Visible</Visibility>
-    <Thickness x:Key="AppWindowFrameThickness">0</Thickness>
-    <Thickness x:Key="AppPanelBorderThickness">1</Thickness>
+
+    <!-- Outer Window / Dialog Frame Style -->
+    <Style x:Key="DialogOuterFrameStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFFCFB" />
+        <Setter Property="BorderBrush" Value="#003366" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <!-- GroupBox / Card Style -->
+    <Style x:Key="AppGroupBoxStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFFFFF" />
+        <Setter Property="BorderBrush" Value="#E2E5E8" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Margin" Value="0,0,0,16" />
+    </Style>
+
+    <!-- 3D Sunken Well / Container Style -->
+    <Style x:Key="AppSunkenBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFFFFF" />
+        <Setter Property="BorderBrush" Value="#DDE2E6" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
 
     <!-- Title Bar Buttons -->
     <Style x:Key="TitleBarButtonStyle" TargetType="Button">
@@ -140,7 +161,37 @@
         </Style.Triggers>
     </Style>
 
-    <!-- Gold Accent Button -->
+    <!-- Preset Pill Button -->
+    <Style x:Key="PresetButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#F4F6F8" />
+        <Setter Property="Foreground" Value="#003366" />
+        <Setter Property="BorderBrush" Value="#D2D6DC" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="Margin" Value="0,0,6,0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#E6EDF5" />
+                <Setter Property="BorderBrush" Value="#003366" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Gold Action Button -->
     <Style x:Key="GoldActionBtn" TargetType="Button">
         <Setter Property="Background" Value="#C9A84C" />
         <Setter Property="Foreground" Value="#0C0C0E" />
@@ -164,6 +215,18 @@
                 <Setter Property="Background" Value="#B5943B" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <!-- Standard TextBox Style -->
+    <Style x:Key="AppTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="#FAFAFA" />
+        <Setter Property="Foreground" Value="#0C0C0E" />
+        <Setter Property="BorderBrush" Value="#D2D6DC" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
 </ResourceDictionary>

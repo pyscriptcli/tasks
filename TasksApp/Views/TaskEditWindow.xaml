@@ -3,160 +3,140 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Edit Task"
         Width="640" Height="480"
-        MinWidth="520" MinHeight="420"
+        MinWidth="520" MinHeight="400"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResizeWithGrip"
-        Background="#FFFCFB"
-        FontFamily="Montserrat, Segoe UI, sans-serif"
-        UseLayoutRounding="True">
+        WindowStyle="None"
+        Background="{DynamicResource AppWindowBackground}"
+        FontFamily="{DynamicResource AppBaseFontFamily}"
+        UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display">
 
-    <Window.Resources>
-        <SolidColorBrush x:Key="PrimeBlue" Color="#003366" />
-        <SolidColorBrush x:Key="PrimeWarmWhite" Color="#FFFCFB" />
-        <SolidColorBrush x:Key="PrimeGold" Color="#C9A84C" />
-        <SolidColorBrush x:Key="PrimeGray" Color="#181D1E" />
-        <SolidColorBrush x:Key="PrimeBorder" Color="#D2D6DC" />
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="{DynamicResource AppCaptionHeight}"
+                      ResizeBorderThickness="5"
+                      GlassFrameThickness="0"
+                      CornerRadius="0" />
+    </WindowChrome.WindowChrome>
 
-        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#003366" />
-            <Setter Property="Foreground" Value="#FFFCFB" />
-            <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Padding" Value="20,10" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                CornerRadius="0"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#002244" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#FFFCFB" />
-            <Setter Property="Foreground" Value="#003366" />
-            <Setter Property="BorderBrush" Value="#003366" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="FontFamily" Value="Montserrat, Segoe UI, sans-serif" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Padding" Value="16,8" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                CornerRadius="0"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F0F4F8" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-
-    <Grid Margin="24">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <!-- Header -->
-        <Border Grid.Row="0" BorderBrush="#003366" BorderThickness="0,0,0,2" Padding="0,0,0,10" Margin="0,0,0,16">
-            <StackPanel>
-                <TextBlock Text="TASK DETAILS" FontSize="11" FontWeight="Medium" Foreground="#C9A84C"
-                           FontFamily="Montserrat, Segoe UI, sans-serif" Margin="0,0,0,2" />
-                <TextBlock Text="Edit Task" FontSize="24" FontWeight="Normal" Foreground="#003366"
-                           FontFamily="Cormorant Garamond, Georgia, serif" />
-            </StackPanel>
-        </Border>
-
-        <!-- Title Field -->
-        <StackPanel Grid.Row="1" Margin="0,0,0,14">
-            <TextBlock Text="TITLE" FontSize="11" FontWeight="SemiBold" Foreground="#181D1E"
-                       FontFamily="Montserrat, Segoe UI, sans-serif" Margin="0,0,0,4" />
-            <TextBox x:Name="TxtTitle" Height="36" Padding="10,6" FontSize="13" Foreground="#0C0C0E"
-                     FontFamily="Montserrat, Segoe UI, sans-serif"
-                     Background="#FFFFFF" BorderBrush="#D2D6DC" BorderThickness="1" VerticalContentAlignment="Center" />
-        </StackPanel>
-
-        <!-- Date Field -->
-        <StackPanel Grid.Row="2" Margin="0,0,0,14">
-            <TextBlock Text="DATE" FontSize="11" FontWeight="SemiBold" Foreground="#181D1E"
-                       FontFamily="Montserrat, Segoe UI, sans-serif" Margin="0,0,0,4" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <DatePicker x:Name="DpTaskDate" Grid.Column="0" Height="36"
-                            FontFamily="Montserrat, Segoe UI, sans-serif" FontSize="13"
-                            BorderBrush="#D2D6DC" BorderThickness="1" Background="#FFFFFF"
-                            VerticalContentAlignment="Center" />
-                <Button Grid.Column="1" Content="TODAY" Style="{StaticResource SecondaryButtonStyle}"
-                        Margin="8,0,0,0" Height="36" Padding="12,0" Click="OnDateTodayClick" />
-                <Button Grid.Column="2" Content="TOMORROW" Style="{StaticResource SecondaryButtonStyle}"
-                        Margin="6,0,0,0" Height="36" Padding="12,0" Click="OnDateTomorrowClick" />
-            </Grid>
-        </StackPanel>
-
-        <!-- Details Field -->
-        <Grid Grid.Row="3" Margin="0,0,0,14">
+    <Border Style="{DynamicResource DialogOuterFrameStyle}">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" /> <!-- Custom Title Bar -->
+                <RowDefinition Height="*" />    <!-- Content -->
+                <RowDefinition Height="Auto" /> <!-- Footer -->
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="DETAILS (OPTIONAL)" FontSize="11" FontWeight="SemiBold" Foreground="#181D1E"
-                       FontFamily="Montserrat, Segoe UI, sans-serif" Margin="0,0,0,4" />
-            <TextBox x:Name="TxtDetails" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap"
-                     FontFamily="Montserrat, Segoe UI, sans-serif"
-                     Padding="10,8" FontSize="13" Foreground="#0C0C0E" Background="#FFFFFF"
-                     BorderBrush="#D2D6DC" BorderThickness="1" VerticalScrollBarVisibility="Auto" />
+
+            <!-- 1. Window Title Bar -->
+            <Border Grid.Row="0" Height="{DynamicResource AppTitleBarHeight}"
+                    Background="{DynamicResource AppTitleBarBackground}"
+                    BorderBrush="{DynamicResource AppTitleBarBorder}"
+                    BorderThickness="0,0,0,1" Padding="8,0,4,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Viewbox Width="14" Height="14" Margin="0,0,8,0">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M 3,17.25 L 3,21 L 6.75,21 L 17.81,9.94 L 14.06,6.19 L 3,17.25 Z M 20.71,7.04 C 21.1,6.65 21.1,6.02 20.71,5.63 L 18.37,3.29 C 17.98,2.9 17.35,2.9 16.96,3.29 L 15.13,5.12 L 18.88,8.87 L 20.71,7.04 Z" Fill="#FFFFFF" />
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Text="Edit Task"
+                                   FontFamily="{DynamicResource AppTitleFontFamily}"
+                                   FontSize="{DynamicResource AppTitleFontSize}"
+                                   FontWeight="{DynamicResource AppTitleFontWeight}"
+                                   Foreground="{DynamicResource AppTitleBarForeground}"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <Button Grid.Column="1" Style="{DynamicResource TitleBarCloseButtonStyle}"
+                            Click="OnCancelClick" ToolTip="Close"
+                            WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Grid>
+                            <Viewbox Width="10" Height="10" Visibility="{DynamicResource ModernOnlyVis}">
+                                <Canvas Width="24" Height="24">
+                                    <Path Data="M 5,5 L 19,19 M 19,5 L 5,19"
+                                          Stroke="{DynamicResource AppTitleBarForeground}"
+                                          StrokeThickness="2.2" StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
+                                </Canvas>
+                            </Viewbox>
+                            <TextBlock Text="✕" FontSize="10" FontWeight="Bold" Foreground="#000000"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Visibility="{DynamicResource Win95OnlyVis}" />
+                        </Grid>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- 2. Form Content -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20,16">
+                <StackPanel>
+                    <!-- Title Field -->
+                    <Border Style="{DynamicResource AppGroupBoxStyle}">
+                        <StackPanel>
+                            <TextBlock Text="TASK TITLE" FontSize="11" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppPrimaryColor}" Margin="0,0,0,4" />
+                            <TextBox x:Name="TxtTitle" Height="30" FontSize="12"
+                                     Style="{DynamicResource AppTextBoxStyle}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Date Field -->
+                    <Border Style="{DynamicResource AppGroupBoxStyle}">
+                        <StackPanel>
+                            <TextBlock Text="TARGET DATE" FontSize="11" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppPrimaryColor}" Margin="0,0,0,4" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <DatePicker x:Name="DpTaskDate" Grid.Column="0" Height="28"
+                                            FontFamily="{DynamicResource AppBaseFontFamily}" FontSize="11"
+                                            VerticalContentAlignment="Center" />
+                                <Button Grid.Column="1" Content="TODAY" Style="{DynamicResource SecondaryActionBtn}"
+                                        Margin="8,0,0,0" Height="28" Padding="10,0" Click="OnDateTodayClick" />
+                                <Button Grid.Column="2" Content="TOMORROW" Style="{DynamicResource SecondaryActionBtn}"
+                                        Margin="6,0,0,0" Height="28" Padding="10,0" Click="OnDateTomorrowClick" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Details Field -->
+                    <Border Style="{DynamicResource AppGroupBoxStyle}">
+                        <StackPanel>
+                            <TextBlock Text="DETAILS (OPTIONAL)" FontSize="11" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppPrimaryColor}" Margin="0,0,0,4" />
+                            <TextBox x:Name="TxtDetails" AcceptsReturn="True" TextWrapping="Wrap"
+                                     Height="80" VerticalScrollBarVisibility="Auto"
+                                     Style="{DynamicResource AppTextBoxStyle}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Priority Option -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0,0,6">
+                        <CheckBox x:Name="ChkHighPriority" VerticalAlignment="Center" Cursor="Hand" />
+                        <TextBlock Text="Mark as high priority" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AppPrimaryColor}"
+                                   Margin="8,0,0,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="OnPriorityLabelClick" />
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 3. Footer Action Buttons -->
+            <Border Grid.Row="2" Background="{DynamicResource AppPanelBackground}"
+                    BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,1,0,0" Padding="16,10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="CANCEL" Style="{DynamicResource SecondaryActionBtn}"
+                            Margin="0,0,8,0" Padding="14,6" Click="OnCancelClick" />
+                    <Button Content="SAVE CHANGES" Style="{DynamicResource PrimaryActionBtn}"
+                            Padding="18,6" Click="OnSaveClick" />
+                </StackPanel>
+            </Border>
         </Grid>
-
-        <!-- Priority Option -->
-        <StackPanel Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,18">
-            <CheckBox x:Name="ChkHighPriority" VerticalAlignment="Center" Cursor="Hand">
-                <CheckBox.LayoutTransform>
-                    <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
-                </CheckBox.LayoutTransform>
-            </CheckBox>
-            <TextBlock Text="Mark as high priority" FontSize="13" FontWeight="SemiBold" Foreground="#003366"
-                       FontFamily="Montserrat, Segoe UI, sans-serif"
-                       Margin="8,0,0,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="OnPriorityLabelClick" />
-        </StackPanel>
-
-        <!-- Footer Buttons -->
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="CANCEL" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,10,0" Click="OnCancelClick" />
-            <Button Content="SAVE CHANGES" Style="{StaticResource PrimaryButtonStyle}" Click="OnSaveClick" />
-        </StackPanel>
-    </Grid>
+    </Border>
 </Window>

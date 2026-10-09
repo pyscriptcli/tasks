@@ -16,7 +16,7 @@ namespace TasksApp
     {
         private readonly StorageService _storageService;
         private readonly ReminderService _reminderService;
-        private readonly AppSettings _settings;
+        private AppSettings _settings;
         private readonly MainViewModel _viewModel;
         private readonly TrayIconManager _trayManager;
 
@@ -66,6 +66,18 @@ namespace TasksApp
             RestoreWindowBounds();
             Loaded += MainWindow_Loaded;
             StateChanged += MainWindow_StateChanged;
+
+            ThemeManager.ThemeChanged += OnThemeChanged;
+            OnThemeChanged(_settings.Theme);
+        }
+
+        private void OnThemeChanged(string newTheme)
+        {
+            var chrome = System.Windows.Shell.WindowChrome.GetWindowChrome(this);
+            if (chrome != null)
+            {
+                chrome.CaptionHeight = ThemeManager.IsWin95 ? 26 : 48;
+            }
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -121,10 +133,12 @@ namespace TasksApp
             if (WindowState == WindowState.Maximized)
             {
                 PathMaximize.Data = System.Windows.Media.Geometry.Parse("M 2,0 L 10,0 L 10,8 L 8,8 L 8,10 L 0,10 L 0,2 L 2,2 Z M 2,2 L 8,2 L 8,8 L 2,8 Z");
+                TxtWin95Maximize.Text = "❐";
             }
             else
             {
                 PathMaximize.Data = System.Windows.Media.Geometry.Parse("M 0,0 L 10,0 L 10,10 L 0,10 Z");
+                TxtWin95Maximize.Text = "□";
             }
         }
 
@@ -169,6 +183,7 @@ namespace TasksApp
                 _viewModel.SaveCurrentTasks();
                 SaveWindowBounds();
                 _trayManager.Dispose();
+                ThemeManager.ThemeChanged -= OnThemeChanged;
                 base.OnClosing(e);
             }
         }
@@ -292,7 +307,8 @@ namespace TasksApp
             var settingsWin = new SettingsWindow(_settings, _storageService) { Owner = this };
             if (settingsWin.ShowDialog() == true)
             {
-                _viewModel.UpdateSettings(settingsWin.UpdatedSettings);
+                _settings = settingsWin.UpdatedSettings;
+                _viewModel.UpdateSettings(_settings);
                 Topmost = _settings.AlwaysOnTop;
                 ThemeManager.ApplyTheme(_settings.Theme);
             }

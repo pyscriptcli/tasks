@@ -66,5 +66,11 @@ namespace TasksApp.Views
                 TxtError.Visibility = Visibility.Visible;
             }
         }
+
+        private void OnCloseClick(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
     }
 }

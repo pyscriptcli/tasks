@@ -179,6 +179,7 @@ namespace TasksApp.Views
             UpdatedSettings.AlwaysOnTop = ChkAlwaysOnTop.IsChecked ?? false;
             UpdatedSettings.Theme = RbThemeWin95.IsChecked == true ? ThemeManager.Win95Theme : ThemeManager.DefaultTheme;
             ThemeManager.ApplyTheme(UpdatedSettings.Theme);
+            _storageService.SaveSettings(UpdatedSettings);
 
             DialogResult = true;
             Close();

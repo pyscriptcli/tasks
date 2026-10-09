@@ -41,18 +41,20 @@
             </Border.Effect>
         </Border>
 
-        <!-- Primary Layout Grid -->
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="48" />  <!-- Title Bar -->
-                <RowDefinition Height="Auto" /> <!-- Date & Action Bar -->
-                <RowDefinition Height="*" />    <!-- Main 2-Pane Content Area -->
-                <RowDefinition Height="28" />  <!-- Status Bar -->
-            </Grid.RowDefinitions>
+        <!-- Primary Layout Grid Wrapped in Dynamic Outer Frame (3D Beveled in Win95) -->
+        <Border Style="{DynamicResource DialogOuterFrameStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" /> <!-- Title Bar -->
+                    <RowDefinition Height="Auto" /> <!-- Date & Action Bar -->
+                    <RowDefinition Height="*" />    <!-- Main 2-Pane Content Area -->
+                    <RowDefinition Height="Auto" /> <!-- Status Bar -->
+                </Grid.RowDefinitions>
 
-            <!-- 1. Custom Title Bar (UR-040, UR-041, UR-070) -->
-            <Border Grid.Row="0" Background="{DynamicResource AppTitleBarBackground}"
-                    BorderBrush="{DynamicResource AppTitleBarBorder}" BorderThickness="0,0,0,1" Panel.ZIndex="10">
+                <!-- 1. Custom Title Bar (UR-040, UR-041, UR-070) -->
+                <Border Grid.Row="0" Height="{DynamicResource AppTitleBarHeight}"
+                        Background="{DynamicResource AppTitleBarBackground}"
+                        BorderBrush="{DynamicResource AppTitleBarBorder}" BorderThickness="0,0,0,1" Panel.ZIndex="10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -139,39 +141,48 @@
                         </Button>
                     </StackPanel>
 
-                    <!-- Standard Window Buttons: Min, Max, Close (SVG Vectors) -->
+                    <!-- Standard Window Buttons: Min, Max, Close -->
                     <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                        <!-- Minimize SVG -->
+                        <!-- Minimize Button -->
                         <Button Style="{DynamicResource TitleBarButtonStyle}" Click="OnMinimizeClick" ToolTip="Minimize">
-                            <Viewbox Width="12" Height="12">
-                                <Canvas Width="24" Height="24">
-                                    <Path Data="M 3,13 L 21,13"
-                                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                                          StrokeThickness="2.2" StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
-                                </Canvas>
-                            </Viewbox>
+                            <Grid>
+                                <Viewbox Width="12" Height="12" Visibility="{DynamicResource ModernOnlyVis}">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M 3,13 L 21,13"
+                                              Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="2.2" StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Text="_" FontSize="11" FontWeight="Bold" Foreground="#000000" VerticalAlignment="Bottom" Margin="0,0,0,3" HorizontalAlignment="Center" Visibility="{DynamicResource Win95OnlyVis}" />
+                            </Grid>
                         </Button>
 
-                        <!-- Maximize / Restore SVG -->
+                        <!-- Maximize / Restore Button -->
                         <Button x:Name="BtnMaximize" Style="{DynamicResource TitleBarButtonStyle}" Click="OnMaximizeClick" ToolTip="Maximize">
-                            <Viewbox Width="12" Height="12">
-                                <Canvas Width="24" Height="24">
-                                    <Path x:Name="PathMaximize" Data="M 4,4 L 20,4 L 20,20 L 4,20 Z"
-                                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                                          StrokeThickness="2" Fill="Transparent" />
-                                </Canvas>
-                            </Viewbox>
+                            <Grid>
+                                <Viewbox Width="12" Height="12" Visibility="{DynamicResource ModernOnlyVis}">
+                                    <Canvas Width="24" Height="24">
+                                        <Path x:Name="PathMaximize" Data="M 4,4 L 20,4 L 20,20 L 4,20 Z"
+                                              Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="2" Fill="Transparent" />
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock x:Name="TxtWin95Maximize" Text="□" FontSize="11" FontWeight="Bold" Foreground="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{DynamicResource Win95OnlyVis}" />
+                            </Grid>
                         </Button>
 
-                        <!-- Close SVG -->
+                        <!-- Close Button -->
                         <Button Style="{DynamicResource TitleBarCloseButtonStyle}" Click="OnCloseClick" ToolTip="Close (Runs in background)">
-                            <Viewbox Width="12" Height="12">
-                                <Canvas Width="24" Height="24">
-                                    <Path Data="M 5,5 L 19,19 M 19,5 L 5,19"
-                                          Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                                          StrokeThickness="2.2" StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
-                                </Canvas>
-                            </Viewbox>
+                            <Grid>
+                                <Viewbox Width="12" Height="12" Visibility="{DynamicResource ModernOnlyVis}">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M 5,5 L 19,19 M 19,5 L 5,19"
+                                              Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                              StrokeThickness="2.2" StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock Text="✕" FontSize="10" FontWeight="Bold" Foreground="#000000" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{DynamicResource Win95OnlyVis}" />
+                            </Grid>
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -235,7 +246,7 @@
                     <!-- Task Statistics Chips & Add Task Button -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                         <!-- Pending Chip -->
-                        <Border Background="{DynamicResource AppSurfaceBackground}" BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="1" Padding="10,4" Margin="0,0,8,0">
+                        <Border Style="{DynamicResource AppSunkenBorderStyle}" Padding="8,3" Margin="0,0,8,0">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <Viewbox Width="13" Height="13" Margin="0,0,6,0">
                                     <Canvas Width="24" Height="24">
@@ -243,14 +254,14 @@
                                               Fill="{DynamicResource AppPrimaryColor}" />
                                     </Canvas>
                                 </Viewbox>
-                                <TextBlock Text="PENDING " FontSize="10" FontWeight="Medium" Foreground="{DynamicResource AppMutedForeground}" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding PendingCount}" FontSize="16" FontFamily="{DynamicResource AppMetricFontFamily}"
+                                <TextBlock Text="PENDING " FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AppMutedForeground}" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding PendingCount}" FontSize="15" FontFamily="{DynamicResource AppMetricFontFamily}"
                                            Foreground="{DynamicResource AppPrimaryColor}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Border>
 
                         <!-- Done Chip -->
-                        <Border Background="{DynamicResource AppSurfaceBackground}" BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="1" Padding="10,4" Margin="0,0,14,0">
+                        <Border Style="{DynamicResource AppSunkenBorderStyle}" Padding="8,3" Margin="0,0,14,0">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <Viewbox Width="13" Height="13" Margin="0,0,6,0">
                                     <Canvas Width="24" Height="24">
@@ -258,8 +269,8 @@
                                               Fill="#2E7D32" />
                                     </Canvas>
                                 </Viewbox>
-                                <TextBlock Text="DONE " FontSize="10" FontWeight="Medium" Foreground="{DynamicResource AppMutedForeground}" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding CompletedCount}" FontSize="16" FontFamily="{DynamicResource AppMetricFontFamily}"
+                                <TextBlock Text="DONE " FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AppMutedForeground}" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding CompletedCount}" FontSize="15" FontFamily="{DynamicResource AppMetricFontFamily}"
                                            Foreground="#2E7D32" VerticalAlignment="Center" />
                             </StackPanel>
                         </Border>
@@ -293,8 +304,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Left Pane: Today's Tasks List (UR-004 to UR-007) -->
-                <Border Grid.Column="0" Background="{DynamicResource AppPanelBackground}"
-                        BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="{DynamicResource AppPanelBorderThickness}">
+                <Border Grid.Column="0" Style="{DynamicResource AppSunkenBorderStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -415,16 +425,16 @@
                                             <!-- Title & Details Content (UR-001, UR-002) -->
                                             <StackPanel Grid.Column="3" VerticalAlignment="Center">
                                                 <!-- Title with Strikethrough Logic -->
-                                                <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold"
-                                                           FontFamily="Montserrat, Segoe UI, sans-serif"
+                                                <TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold"
+                                                           FontFamily="{DynamicResource AppBaseFontFamily}"
                                                            TextTrimming="CharacterEllipsis">
                                                     <TextBlock.Style>
                                                         <Style TargetType="TextBlock">
-                                                            <Setter Property="Foreground" Value="#0C0C0E" />
+                                                            <Setter Property="Foreground" Value="{DynamicResource AppTextForeground}" />
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsCompleted}" Value="True">
                                                                     <Setter Property="TextDecorations" Value="Strikethrough" />
-                                                                    <Setter Property="Foreground" Value="#88929A" />
+                                                                    <Setter Property="Foreground" Value="{DynamicResource AppMutedForeground}" />
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
@@ -433,8 +443,8 @@
 
                                                 <!-- Optional Details -->
                                                 <TextBlock Text="{Binding Details}" FontSize="11" TextWrapping="Wrap"
-                                                           FontFamily="Montserrat, Segoe UI, sans-serif"
-                                                           Foreground="#555555" Margin="0,3,0,0">
+                                                           FontFamily="{DynamicResource AppBaseFontFamily}"
+                                                           Foreground="{DynamicResource AppMutedForeground}" Margin="0,3,0,0">
                                                     <TextBlock.Style>
                                                         <Style TargetType="TextBlock">
                                                             <Setter Property="Visibility" Value="Visible" />
@@ -542,8 +552,7 @@
                 </Border>
 
                 <!-- Right Pane: Daily Notes (UR-010, UR-011) -->
-                <Border Grid.Column="2" Background="{DynamicResource AppPanelBackground}"
-                        BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="{DynamicResource AppPanelBorderThickness}">
+                <Border Grid.Column="2" Style="{DynamicResource AppSunkenBorderStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -609,35 +618,40 @@
 
             <!-- 4. Status Bar -->
             <Border Grid.Row="3" Background="{DynamicResource AppPanelBackground}"
-                    BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,1,0,0" Padding="16,4">
+                    BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,1,0,0" Padding="8,2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Storage: " FontSize="11" Foreground="#888888" />
-                        <TextBlock Text="{Binding Settings.DataDirectory}" FontSize="11" Foreground="#555555" TextTrimming="CharacterEllipsis" MaxWidth="500" />
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Reminders: " FontSize="11" Foreground="#888888" />
-                        <TextBlock Text="{Binding RemindersEnabled, Converter={x:Null}, StringFormat='Active'}" FontSize="11" FontWeight="SemiBold" Foreground="#003366">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Text" Value="Active" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RemindersEnabled}" Value="False">
-                                            <Setter Property="Text" Value="Off" />
-                                            <Setter Property="Foreground" Value="#888888" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </StackPanel>
+                    <Border Grid.Column="0" Style="{DynamicResource AppSunkenBorderStyle}" Padding="8,2" Margin="0,0,6,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Storage: " FontSize="11" Foreground="{DynamicResource AppMutedForeground}" />
+                            <TextBlock Text="{Binding Settings.DataDirectory}" FontSize="11" Foreground="{DynamicResource AppTextForeground}" TextTrimming="CharacterEllipsis" MaxWidth="500" />
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="1" Style="{DynamicResource AppSunkenBorderStyle}" Padding="8,2">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Reminders: " FontSize="11" Foreground="{DynamicResource AppMutedForeground}" />
+                            <TextBlock Text="{Binding RemindersEnabled, Converter={x:Null}, StringFormat='Active'}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AppPrimaryColor}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="Active" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RemindersEnabled}" Value="False">
+                                                <Setter Property="Text" Value="Off" />
+                                                <Setter Property="Foreground" Value="{DynamicResource AppMutedForeground}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </Border>
-        </Grid>
+            </Grid>
+        </Border>
 
         <!-- ======================================================== -->
         <!-- SKELETON PLACEHOLDER LOADING SCREEN (UR-060, UR-061) -->
@@ -727,7 +741,7 @@
         <!-- REMINDER OVERLAY DIALOG (UR-020, UR-021, UR-022, UR-024) -->
         <!-- ======================================================== -->
         <Border Background="#70000000" Visibility="{Binding IsReminderOverlayVisible, Converter={StaticResource BoolToVis}}" Panel.ZIndex="200">
-            <Border Background="{DynamicResource AppPanelBackground}" BorderBrush="{DynamicResource AppTitleBarBackground}" BorderThickness="2" Width="660" MaxHeight="520"
+            <Border Style="{DynamicResource DialogOuterFrameStyle}" Width="660" MaxHeight="520"
                     VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid Margin="24">
                     <Grid.RowDefinitions>
