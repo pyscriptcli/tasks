@@ -1,0 +1,337 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- CRT Phosphor Green Monochrome Terminal Palette -->
+    <!-- Authentic 1980s P1 Phosphor CRT Green, Pitch Cathode Black, and Inverted Blocks -->
+    <SolidColorBrush x:Key="PrimeBlue" Color="#00FF66" />          <!-- Vibrant Phosphor Terminal Green -->
+    <SolidColorBrush x:Key="PrimeBlueDark" Color="#003B14" />      <!-- Deep CRT Phosphor Shadow -->
+    <SolidColorBrush x:Key="PrimeWarmWhite" Color="#00FF66" />     <!-- All-Green Monochrome Terminal Text -->
+    <SolidColorBrush x:Key="PrimeGold" Color="#33FF88" />          <!-- Luminous Phosphor Green Accent -->
+    <SolidColorBrush x:Key="PrimeYellow" Color="#00FF66" />        <!-- Electric Green -->
+    <SolidColorBrush x:Key="PrimeGray" Color="#00FF66" />          <!-- Terminal Green -->
+    <SolidColorBrush x:Key="PrimeDeepInk" Color="#000000" />       <!-- Pitch Black for Inverted Text -->
+    <SolidColorBrush x:Key="PrimeBorder" Color="#00FF66" />        <!-- 1px/2px Vector Terminal Wireframe Line -->
+    <SolidColorBrush x:Key="PrimeSubtleBg" Color="#050E05" />      <!-- Dim Dark CRT Cathode Well -->
+
+    <!-- Semantic App Brushes -->
+    <SolidColorBrush x:Key="AppWindowBackground" Color="#020602" /> <!-- Deep CRT Screen Black -->
+    
+    <!-- Title Bar: Pitch CRT Green-Black Frame with Vector Phosphor Border -->
+    <LinearGradientBrush x:Key="AppTitleBarBackground" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#081408" Offset="0.0" />
+        <GradientStop Color="#030803" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="AppTitleBarForeground" Color="#00FF66" />
+    <SolidColorBrush x:Key="AppTitleBarBorder" Color="#00FF66" />
+    <SolidColorBrush x:Key="AppPanelBackground" Color="#020602" />
+    <SolidColorBrush x:Key="AppPanelBorder" Color="#00FF66" />
+    <SolidColorBrush x:Key="AppCardBackground" Color="#040A04" />
+    <SolidColorBrush x:Key="AppCardBorder" Color="#00FF66" />
+    <SolidColorBrush x:Key="AppSurfaceBackground" Color="#091709" />
+    <SolidColorBrush x:Key="AppTextForeground" Color="#00FF66" />
+    <SolidColorBrush x:Key="AppMutedForeground" Color="#00993E" />    <!-- Muted / Dimmed Secondary Green -->
+    <SolidColorBrush x:Key="AppPrimaryColor" Color="#00FF66" />
+    <SolidColorBrush x:Key="AppAccentColor" Color="#00FF66" />
+    <SolidColorBrush x:Key="AppAccentForeground" Color="#000000" />   <!-- High Contrast Inverted: Black on Green -->
+    <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#00FF66" />
+    <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#00FF66" />
+
+    <!-- Dimensions & Metrics -->
+    <sys:Double x:Key="AppTitleBarHeight">38</sys:Double>
+    <sys:Double x:Key="AppCaptionHeight">38</sys:Double>
+    <sys:Double x:Key="AppTitleFontSize">14</sys:Double>
+    <FontWeight x:Key="AppTitleFontWeight">Bold</FontWeight>
+    <FontStyle x:Key="AppDisplayFontStyle">Normal</FontStyle>
+    <Thickness x:Key="AppWindowFrameThickness">2</Thickness>
+    <Thickness x:Key="AppPanelBorderThickness">1.5</Thickness>
+
+    <!-- Typography: Authentic CRT Monospaced Dot-Matrix / Terminal Fonts -->
+    <FontFamily x:Key="AppBaseFontFamily">Consolas, 'Cascadia Mono', 'Courier New', 'Lucida Console', monospace</FontFamily>
+    <FontFamily x:Key="AppDisplayFontFamily">Consolas, 'Cascadia Mono', 'Courier New', 'Lucida Console', monospace</FontFamily>
+    <FontFamily x:Key="AppTitleFontFamily">Consolas, 'Cascadia Mono', 'Courier New', 'Lucida Console', monospace</FontFamily>
+    <FontFamily x:Key="AppMetricFontFamily">Consolas, 'Cascadia Mono', 'Courier New', 'Lucida Console', monospace</FontFamily>
+
+    <!-- Indicators -->
+    <sys:Boolean x:Key="IsWin95">False</sys:Boolean>
+    <Visibility x:Key="Win95OnlyVis">Collapsed</Visibility>
+    <Visibility x:Key="ModernOnlyVis">Visible</Visibility>
+
+    <!-- Outer Window / Dialog Frame Style: Vector CRT Wireframe with Phosphor Glow -->
+    <Style x:Key="DialogOuterFrameStyle" TargetType="Border">
+        <Setter Property="Background" Value="#020602" />
+        <Setter Property="BorderBrush" Value="#00FF66" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#00FF66" Direction="0" ShadowDepth="0" BlurRadius="6" Opacity="0.55" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Terminal Wireframe GroupBox / Card Style (like NEXT SCHEDULE and DRYLAND BARN bounding boxes) -->
+    <Style x:Key="AppGroupBoxStyle" TargetType="Border">
+        <Setter Property="Background" Value="#040A04" />
+        <Setter Property="BorderBrush" Value="#00FF66" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Padding" Value="14" />
+        <Setter Property="Margin" Value="0,0,0,14" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#00FF66" Direction="0" ShadowDepth="0" BlurRadius="4" Opacity="0.45" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Terminal Sunken / Embedded Container Box -->
+    <Style x:Key="AppSunkenBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="#020602" />
+        <Setter Property="BorderBrush" Value="#00FF66" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="0" />
+    </Style>
+
+    <!-- Title Bar Buttons: Vector Wireframe CRT Buttons -->
+    <Style x:Key="TitleBarButtonStyle" TargetType="Button">
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="#00FF66" />
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="38" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontFamily" Value="Consolas, 'Cascadia Mono', monospace" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="BtnBorder" Background="{TemplateBinding Background}" Padding="2">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#00FF66" />
+                            <Setter Property="Foreground" Value="#000000" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#00CC55" />
+                            <Setter Property="Foreground" Value="#000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#00FF66" />
+                <Setter Property="Foreground" Value="#000000" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Title Bar Top Action Button (Bell & Settings) -->
+    <Style x:Key="TitleBarActionButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Margin" Value="0,0,4,0" />
+    </Style>
+
+    <!-- Primary Action Button: Solid High-Contrast Inverted Block (like [ OFF ] & [ DIRECTORY ]) -->
+    <Style x:Key="PrimaryActionBtn" TargetType="Button">
+        <Setter Property="Background" Value="#00FF66" />
+        <Setter Property="Foreground" Value="#000000" />
+        <Setter Property="FontFamily" Value="Consolas, 'Cascadia Mono', monospace" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="14,6" />
+        <Setter Property="BorderBrush" Value="#00FF66" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Face" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="0" Padding="{TemplateBinding Padding}">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#00FF66" Direction="0" ShadowDepth="0" BlurRadius="5" Opacity="0.5" />
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Face" Property="Background" Value="#33FF88" />
+                            <Setter TargetName="Face" Property="BorderBrush" Value="#33FF88" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Face" Property="Background" Value="#00CC55" />
+                            <Setter TargetName="Face" Property="BorderBrush" Value="#00CC55" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Secondary Action Button: Crisp Vector Wireframe Button (like [ SET UP SCHEDULE ] & [ DRYLAND SW ]) -->
+    <Style x:Key="SecondaryActionBtn" TargetType="Button">
+        <Setter Property="Background" Value="#030803" />
+        <Setter Property="Foreground" Value="#00FF66" />
+        <Setter Property="BorderBrush" Value="#00FF66" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="FontFamily" Value="Consolas, 'Cascadia Mono', monospace" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Padding" Value="12,5" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Face" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="0" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- On Hover: Inverts to Solid Green Block with Black Text (CRT cursor highlight) -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Face" Property="Background" Value="#00FF66" />
+                            <Setter Property="Foreground" Value="#000000" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Face" Property="Background" Value="#00993E" />
+                            <Setter Property="Foreground" Value="#000000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Preset Terminal Button: Compact wireframe button [ 1h ] [ 30m ] -->
+    <Style x:Key="PresetButtonStyle" TargetType="Button" BasedOn="{StaticResource SecondaryActionBtn}">
+        <Setter Property="Margin" Value="0,0,6,0" />
+        <Setter Property="Padding" Value="10,4" />
+    </Style>
+
+    <!-- Gold / Highlight Action Button: Inverted High-Contrast Phosphor Block -->
+    <Style x:Key="GoldActionBtn" TargetType="Button" BasedOn="{StaticResource PrimaryActionBtn}" />
+
+    <!-- Terminal CRT Input Well: Black Cathode Well with Vector Green Border & Caret -->
+    <Style x:Key="AppTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="#020602" />
+        <Setter Property="Foreground" Value="#00FF66" />
+        <Setter Property="CaretBrush" Value="#00FF66" />
+        <Setter Property="BorderBrush" Value="#00FF66" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="FontFamily" Value="Consolas, 'Cascadia Mono', 'Lucida Console', monospace" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="8,5" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="0">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#00FF66" Direction="0" ShadowDepth="0" BlurRadius="3" Opacity="0.4" />
+                        </Border.Effect>
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="#33FF88" />
+                            <Setter TargetName="Bd" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#33FF88" Direction="0" ShadowDepth="0" BlurRadius="6" Opacity="0.75" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Terminal CheckBox: Sharp Wireframe Square [ ] and Inverted Solid Check [X] -->
+    <Style TargetType="CheckBox">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="#00FF66" />
+        <Setter Property="FontFamily" Value="Consolas, 'Cascadia Mono', monospace" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border x:Name="Box" Width="14" Height="14" BorderBrush="#00FF66" BorderThickness="1.5" Background="#020602">
+                            <Path x:Name="CheckMark" Data="M 2,6 L 5,9 L 10,2"
+                                  Stroke="#00FF66" StrokeThickness="2"
+                                  StrokeStartLineCap="Square" StrokeEndLineCap="Square"
+                                  Visibility="Collapsed" Margin="0,1,0,0" />
+                        </Border>
+                        <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Box" Property="BorderBrush" Value="#33FF88" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Terminal RadioButton: Sharp Wireframe Bracket Circle with Glowing Center Dot -->
+    <Style TargetType="RadioButton">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="#00FF66" />
+        <Setter Property="FontFamily" Value="Consolas, 'Cascadia Mono', monospace" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Grid Width="14" Height="14" VerticalAlignment="Center">
+                            <Ellipse x:Name="Ring" Stroke="#00FF66" StrokeThickness="1.5" Fill="#020602" />
+                            <Ellipse x:Name="Dot" Width="6" Height="6" Fill="#00FF66" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                        <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Dot" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Ring" Property="Stroke" Value="#33FF88" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ToolTip: Monospace Terminal Message Box -->
+    <Style TargetType="ToolTip">
+        <Setter Property="Background" Value="#030803" />
+        <Setter Property="Foreground" Value="#00FF66" />
+        <Setter Property="BorderBrush" Value="#00FF66" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="FontFamily" Value="Consolas, 'Cascadia Mono', monospace" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Padding" Value="6,4" />
+    </Style>
+
+</ResourceDictionary>
