@@ -842,6 +842,9 @@
                                    FontSize="{DynamicResource AppTitleFontSize}"
                                    FontWeight="{DynamicResource AppTitleFontWeight}"
                                    FontFamily="{DynamicResource AppTitleFontFamily}" VerticalAlignment="Center" />
+                        <Border Background="{DynamicResource AppAccentColor}" CornerRadius="3" Padding="5,1" Margin="8,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding AppVersionDisplay}" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource AppAccentForeground}" />
+                        </Border>
                         <TextBlock Text=" 🎃 🕸️ 🦇" FontSize="14" Foreground="#FFFDF8" VerticalAlignment="Center"
                                    Visibility="{DynamicResource HalloweenOnlyVis}" Margin="6,0,0,0" ToolTip="Halloween Jack-o'-Lantern Theme" />
                         <TextBlock Text=" 🎄 ❄️ ⛄ 🎅" FontSize="14" Foreground="#FFFDF8" VerticalAlignment="Center"

@@ -736,5 +736,44 @@ namespace TasksApp.Tests
             string loadedNotes = storage.LoadNotesForDate(activeDir, date);
             Assert.Equal("Important site meeting note.", loadedNotes);
         }
+
+        [Fact]
+        public void ChristmasTheme_CanBeSavedAndLoadedInSettings()
+        {
+            string customSettingsFile = Path.Combine(_testDir, "test_settings.json");
+            var storage = new StorageService(customSettingsFile);
+
+            var settings = new AppSettings
+            {
+                DataDirectory = _testDir,
+                Theme = ThemeManager.ChristmasTheme
+            };
+
+            storage.SaveSettings(settings);
+
+            var loaded = storage.LoadSettings();
+            Assert.Equal(ThemeManager.ChristmasTheme, loaded.Theme);
+            Assert.Equal("Christmas", loaded.Theme);
+        }
+
+        [Fact]
+        public void UpdateService_VersionComparison_ValidatesCurrentVersionAgainstTags()
+        {
+            string current = UpdateService.CurrentVersion;
+            Assert.False(string.IsNullOrWhiteSpace(current));
+            Assert.True(UpdateService.TryParseVersion(current, out var currentVer));
+
+            // Same major version is not newer
+            Assert.False(UpdateService.IsVersionNewer($"v{current}", current));
+            Assert.False(UpdateService.IsVersionNewer(current, current));
+
+            // Older version is not newer
+            Assert.False(UpdateService.IsVersionNewer("v6", "7"));
+            Assert.False(UpdateService.IsVersionNewer("v5", "7"));
+
+            // Newer version is newer
+            Assert.True(UpdateService.IsVersionNewer("v8", "7"));
+            Assert.True(UpdateService.IsVersionNewer("v10", "7"));
+        }
     }
 }

@@ -216,6 +216,8 @@ namespace TasksApp.ViewModels
             set { _availableUpdateVersion = value; OnPropertyChanged(); }
         }
 
+        public string AppVersionDisplay => $"v{UpdateService.CurrentVersion.TrimStart('v', 'V')}";
+
         public bool RemindersEnabled
         {
             get => _settings.RemindersEnabled;

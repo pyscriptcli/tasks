@@ -209,6 +209,10 @@ namespace TasksApp.Views
             {
                 UpdatedSettings.Theme = ThemeManager.HalloweenTheme;
             }
+            else if (RbThemeChristmas.IsChecked == true)
+            {
+                UpdatedSettings.Theme = ThemeManager.ChristmasTheme;
+            }
             else
             {
                 UpdatedSettings.Theme = ThemeManager.DefaultTheme;

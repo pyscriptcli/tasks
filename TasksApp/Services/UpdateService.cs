@@ -12,7 +12,18 @@ namespace TasksApp.Services
 {
     public class UpdateService
     {
-        public const string CurrentVersion = "5";
+        public static string CurrentVersion
+        {
+            get
+            {
+                var asmVer = typeof(UpdateService).Assembly.GetName().Version;
+                if (asmVer != null && asmVer.Major > 0)
+                {
+                    return asmVer.Major.ToString();
+                }
+                return "7";
+            }
+        }
         public const string GitHubRepo = "pyscriptcli/tasks";
         private const string LatestReleaseApiUrl = $"https://api.github.com/repos/{GitHubRepo}/releases/latest";
 
@@ -189,9 +200,16 @@ namespace TasksApp.Services
 
             // Silent Windows PowerShell script:
             // 1. Waits for current process PID to exit cleanly (up to 15 seconds)
-            // 2. Safely retries overwriting current executable with new version (handles Windows file unlocking)
-            // 3. Starts the new executable
-            string script = $"-NoProfile -WindowStyle Hidden -Command \"try {{ Wait-Process -Id {pid} -Timeout 15 -ErrorAction SilentlyContinue; for ($i=0; $i -lt 30; $i++) {{ try {{ Move-Item -LiteralPath '{escapedNew}' -Destination '{escapedCurrent}' -Force -ErrorAction Stop; break; }} catch {{ Start-Sleep -Milliseconds 400; }} }}; Start-Process -FilePath '{escapedCurrent}'; }} catch {{ }}\"";
+            // 2. Terminates any orphaned Tasks instances that could hold locks
+            // 3. Reliably copies new executable over current executable with retry (handles file release)
+            // 4. Cleans up downloaded temporary file
+            // 5. Starts the updated executable with normal window style
+            string script = $"-NoProfile -WindowStyle Hidden -Command \"try {{ " +
+                $"Wait-Process -Id {pid} -Timeout 15 -ErrorAction SilentlyContinue; " +
+                $"Get-Process -Name Tasks -ErrorAction SilentlyContinue | Where-Object {{ $_.Id -ne {pid} }} | Stop-Process -Force -ErrorAction SilentlyContinue; " +
+                $"for ($i=0; $i -lt 30; $i++) {{ try {{ Copy-Item -LiteralPath '{escapedNew}' -Destination '{escapedCurrent}' -Force -ErrorAction Stop; Remove-Item -LiteralPath '{escapedNew}' -Force -ErrorAction SilentlyContinue; break; }} catch {{ Start-Sleep -Milliseconds 400; }} }}; " +
+                $"Start-Process -FilePath '{escapedCurrent}' -WindowStyle Normal; " +
+                $"}} catch {{ }}\"";
 
             var startInfo = new ProcessStartInfo("powershell.exe", script)
             {
