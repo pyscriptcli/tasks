@@ -495,9 +495,9 @@ namespace TasksApp.Tests
         }
 
         [Fact]
-        public void UpdateSettings_PersistsCocoTheme_ToStorageService()
+        public void UpdateSettings_PersistsHalloweenTheme_ToStorageService()
         {
-            string customSettingsPath = Path.Combine(_testDir, "test_coco_settings.json");
+            string customSettingsPath = Path.Combine(_testDir, "test_halloween_settings.json");
             var storage = new StorageService(customSettingsPath);
             var reminder = new ReminderService();
             var initialSettings = new AppSettings
@@ -513,17 +513,17 @@ namespace TasksApp.Tests
             var newSettings = new AppSettings
             {
                 DataDirectory = _testDir,
-                Theme = ThemeManager.CocoTheme
+                Theme = ThemeManager.HalloweenTheme
             };
             vm.UpdateSettings(newSettings);
 
             Assert.False(vm.IsWin95Theme);
-            Assert.True(ThemeManager.IsCoco);
-            Assert.Equal(ThemeManager.CocoTheme, ThemeManager.CurrentTheme);
+            Assert.True(ThemeManager.IsHalloween);
+            Assert.Equal(ThemeManager.HalloweenTheme, ThemeManager.CurrentTheme);
 
-            // Verify reloaded from disk has Coco saved
+            // Verify reloaded from disk has Halloween saved
             var reloaded = storage.LoadSettings();
-            Assert.Equal(ThemeManager.CocoTheme, reloaded.Theme);
+            Assert.Equal(ThemeManager.HalloweenTheme, reloaded.Theme);
 
             // Clean up
             ThemeManager.ApplyTheme(ThemeManager.DefaultTheme);

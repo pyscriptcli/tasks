@@ -55,9 +55,9 @@
     <sys:Boolean x:Key="IsWin95">True</sys:Boolean>
     <Visibility x:Key="Win95OnlyVis">Visible</Visibility>
     <Visibility x:Key="ModernOnlyVis">Collapsed</Visibility>
-    <sys:Boolean x:Key="IsCoco">False</sys:Boolean>
-    <Visibility x:Key="CocoOnlyVis">Collapsed</Visibility>
-    <Visibility x:Key="NotCocoVis">Visible</Visibility>
+    <sys:Boolean x:Key="IsHalloween">False</sys:Boolean>
+    <Visibility x:Key="HalloweenOnlyVis">Collapsed</Visibility>
+    <Visibility x:Key="NotHalloweenVis">Visible</Visibility>
 
     <!-- Outer Window / Dialog 3D Raised Frame Style -->
     <Style x:Key="DialogOuterFrameStyle" TargetType="Border">

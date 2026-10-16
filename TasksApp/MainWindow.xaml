@@ -31,35 +31,155 @@
                              From="0.4" To="1.0" Duration="0:0:1.2" />
         </Storyboard>
 
-        <!-- Coco Characters Musical Bobbing, Guitar Rock & Glowing Marigold Storyboard -->
-        <Storyboard x:Key="CocoCharacterStoryboard" RepeatBehavior="Forever" AutoReverse="True">
-            <!-- Musical sway / strumming bounce -->
-            <DoubleAnimation Storyboard.TargetName="CocoCharTranslate"
-                             Storyboard.TargetProperty="Y"
-                             From="0" To="-6" Duration="0:0:1.3">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <!-- Gentle joyful guitar angle rock -->
-            <DoubleAnimation Storyboard.TargetName="CocoCharRotate"
-                             Storyboard.TargetProperty="Angle"
-                             From="-1.5" To="1.5" Duration="0:0:1.6">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <!-- Glowing Marigold bridge aura breathing -->
-            <DoubleAnimation Storyboard.TargetName="CocoBannerGlow"
-                             Storyboard.TargetProperty="BlurRadius"
-                             From="10" To="26" Duration="0:0:1.3" />
-            <DoubleAnimation Storyboard.TargetName="CocoBannerGlow"
-                             Storyboard.TargetProperty="Opacity"
-                             From="0.45" To="0.95" Duration="0:0:1.3" />
-            <!-- Animated Petal Sway -->
-            <DoubleAnimation Storyboard.TargetName="CocoPetalsTranslate"
+        <!-- Halloween Ambient Continuous Floating Animations -->
+        <Storyboard x:Key="HalloweenAmbientStoryboard" RepeatBehavior="Forever" AutoReverse="True">
+            <!-- Bat 1: Gliding & fluttering -->
+            <DoubleAnimation Storyboard.TargetName="Bat1Translate"
                              Storyboard.TargetProperty="X"
-                             From="-5" To="5" Duration="0:0:2.0">
+                             From="0" To="40" Duration="0:0:3.2">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Bat1Translate"
+                             Storyboard.TargetProperty="Y"
+                             From="0" To="-25" Duration="0:0:2.1">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Bat1Rotate"
+                             Storyboard.TargetProperty="Angle"
+                             From="-12" To="12" Duration="0:0:1.4">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <!-- Bat 2: Swooping flutter -->
+            <DoubleAnimation Storyboard.TargetName="Bat2Translate"
+                             Storyboard.TargetProperty="X"
+                             From="0" To="-35" Duration="0:0:2.8">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Bat2Translate"
+                             Storyboard.TargetProperty="Y"
+                             From="0" To="18" Duration="0:0:2.0">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <!-- Ghost 1: Drifting floating up and down with eerie opacity breathing -->
+            <DoubleAnimation Storyboard.TargetName="Ghost1Translate"
+                             Storyboard.TargetProperty="Y"
+                             From="0" To="-30" Duration="0:0:3.5">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Ghost1Translate"
+                             Storyboard.TargetProperty="X"
+                             From="0" To="20" Duration="0:0:4.0">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Ghost1Effect"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.4" To="0.9" Duration="0:0:2.2" />
+
+            <!-- Jack-o'-Lantern 1: Bobbing & subtle sway -->
+            <DoubleAnimation Storyboard.TargetName="Pumpkin1Translate"
+                             Storyboard.TargetProperty="Y"
+                             From="0" To="-14" Duration="0:0:2.4">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Pumpkin1Rotate"
+                             Storyboard.TargetProperty="Angle"
+                             From="-8" To="8" Duration="0:0:2.8">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Pumpkin1Glow"
+                             Storyboard.TargetProperty="BlurRadius"
+                             From="8" To="24" Duration="0:0:1.1" />
+
+            <!-- Spider 1: Dropping & climbing on web thread -->
+            <DoubleAnimation Storyboard.TargetName="Spider1Translate"
+                             Storyboard.TargetProperty="Y"
+                             From="0" To="28" Duration="0:0:2.6">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- Halloween Reminder Banner Animated Takeover Storyboard -->
+        <Storyboard x:Key="HalloweenReminderStoryboard" RepeatBehavior="Forever" AutoReverse="True">
+            <!-- Jack-o'-lantern excited spooky bouncing & scaling -->
+            <DoubleAnimation Storyboard.TargetName="RemPumpkinTranslate"
+                             Storyboard.TargetProperty="Y"
+                             From="0" To="-12" Duration="0:0:0.8">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemPumpkinScale"
+                             Storyboard.TargetProperty="ScaleX"
+                             From="1.0" To="1.14" Duration="0:0:0.8">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemPumpkinScale"
+                             Storyboard.TargetProperty="ScaleY"
+                             From="1.0" To="1.14" Duration="0:0:0.8">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <!-- Candlelight flickering fire glow -->
+            <DoubleAnimation Storyboard.TargetName="HalloweenBannerGlow"
+                             Storyboard.TargetProperty="BlurRadius"
+                             From="12" To="34" Duration="0:0:0.6" />
+            <DoubleAnimation Storyboard.TargetName="HalloweenBannerGlow"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.5" To="1.0" Duration="0:0:0.6" />
+
+            <!-- Flying Bat Swarm across the reminder -->
+            <DoubleAnimation Storyboard.TargetName="RemBatTranslate"
+                             Storyboard.TargetProperty="X"
+                             From="-15" To="25" Duration="0:0:1.1">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemBatTranslate"
+                             Storyboard.TargetProperty="Y"
+                             From="5" To="-10" Duration="0:0:0.9">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <!-- Ghost swoop -->
+            <DoubleAnimation Storyboard.TargetName="RemGhostTranslate"
+                             Storyboard.TargetProperty="X"
+                             From="20" To="-20" Duration="0:0:1.5">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemGhostRotate"
+                             Storyboard.TargetProperty="Angle"
+                             From="-10" To="10" Duration="0:0:1.3">
                 <DoubleAnimation.EasingFunction>
                     <SineEase EasingMode="EaseInOut" />
                 </DoubleAnimation.EasingFunction>
@@ -85,6 +205,83 @@
                     <RowDefinition Height="*" />    <!-- Main 2-Pane Content Area -->
                     <RowDefinition Height="Auto" /> <!-- Status Bar -->
                 </Grid.RowDefinitions>
+
+                <!-- Ambient Floating Halloween Layer (Cobwebs, Bats, Ghosts, Jack-o'-Lanterns) -->
+                <Grid x:Name="HalloweenAmbientGrid" Grid.RowSpan="4" IsHitTestVisible="False"
+                      Visibility="{DynamicResource HalloweenOnlyVis}" Panel.ZIndex="5" ClipToBounds="True">
+                    <!-- Top-Left Corner Cobweb with Dangling Spider -->
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,48,0,0">
+                        <TextBlock Text="🕸️" FontSize="44" Opacity="0.75" />
+                        <StackPanel Margin="28,24,0,0">
+                            <Line Y2="35" Stroke="#888888" StrokeThickness="1" StrokeDashArray="2,2" />
+                            <TextBlock Text="🕷️" FontSize="18" Margin="-8,0,0,0">
+                                <TextBlock.RenderTransform>
+                                    <TranslateTransform x:Name="Spider1Translate" Y="0" />
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Top-Right Corner Cobweb -->
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,48,6,0">
+                        <TextBlock Text="🕸️" FontSize="44" Opacity="0.75" />
+                    </Grid>
+
+                    <!-- Bottom-Left Corner Cobweb -->
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,24">
+                        <TextBlock Text="🕸️" FontSize="36" Opacity="0.65" />
+                    </Grid>
+
+                    <!-- Bottom-Right Corner Cobweb -->
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,4,24">
+                        <TextBlock Text="🕸️" FontSize="36" Opacity="0.65" />
+                    </Grid>
+
+                    <!-- Floating Bat 1 (Drifting & fluttering across top) -->
+                    <TextBlock Text="🦇" FontSize="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,54,0,0">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="Bat1Translate" X="0" Y="0" />
+                                <RotateTransform x:Name="Bat1Rotate" Angle="0" />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="#FF6B00" BlurRadius="8" ShadowDepth="0" Opacity="0.6" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <!-- Floating Bat 2 (Fluttering across upper right) -->
+                    <TextBlock Text="🦇" FontSize="22" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,58,160,0">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="Bat2Translate" X="0" Y="0" />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+
+                    <!-- Floating Ghost (Eerie drift along left side) -->
+                    <TextBlock Text="👻" FontSize="34" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="24,0,0,60" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform x:Name="Ghost1Translate" X="0" Y="0" />
+                        </TextBlock.RenderTransform>
+                        <TextBlock.Effect>
+                            <DropShadowEffect x:Name="Ghost1Effect" Color="#00FFFF" BlurRadius="14" ShadowDepth="0" Opacity="0.7" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <!-- Floating Jack-o'-Lantern (Bobbing & rotating near bottom right) -->
+                    <TextBlock Text="🎃" FontSize="34" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,28,52" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="Pumpkin1Translate" Y="0" />
+                                <RotateTransform x:Name="Pumpkin1Rotate" Angle="0" />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                        <TextBlock.Effect>
+                            <DropShadowEffect x:Name="Pumpkin1Glow" Color="#FF6B00" BlurRadius="14" ShadowDepth="0" Opacity="0.8" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </Grid>
 
                 <!-- 1. Custom Title Bar (UR-040, UR-041, UR-070) -->
                 <Border Grid.Row="0" Height="{DynamicResource AppTitleBarHeight}"
@@ -118,8 +315,8 @@
                                    FontSize="{DynamicResource AppTitleFontSize}"
                                    FontWeight="{DynamicResource AppTitleFontWeight}"
                                    FontFamily="{DynamicResource AppTitleFontFamily}" VerticalAlignment="Center" />
-                        <TextBlock Text=" 🎸 🏵️" FontSize="13" Foreground="#FFFDF8" VerticalAlignment="Center"
-                                   Visibility="{DynamicResource CocoOnlyVis}" Margin="4,0,0,0" ToolTip="Coco Fiesta Theme" />
+                        <TextBlock Text=" 🎃 🕸️ 🦇" FontSize="14" Foreground="#FFFDF8" VerticalAlignment="Center"
+                                   Visibility="{DynamicResource HalloweenOnlyVis}" Margin="6,0,0,0" ToolTip="Halloween Jack-o'-Lantern Theme" />
                     </StackPanel>
 
                     <!-- Draggable Caption Area (UR-041) -->
@@ -349,7 +546,7 @@
                         </Grid.RowDefinitions>
 
                         <!-- Pane Header -->
-                        <Border Grid.Row="0" Background="{DynamicResource AppPanelBackground}"
+                        <Border Grid.Row="0" Background="{DynamicResource AppCardBackground}"
                                 BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,0,0,1" Padding="14,10">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -597,7 +794,7 @@
                         </Grid.RowDefinitions>
 
                         <!-- Pane Header with SVG Document Icon and Saved Status -->
-                        <Border Grid.Row="0" Background="{DynamicResource AppPanelBackground}"
+                        <Border Grid.Row="0" Background="{DynamicResource AppCardBackground}"
                                 BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,0,0,1" Padding="14,10">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -782,68 +979,93 @@
                     VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid Margin="24">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" /> <!-- 0. Coco Character Banner -->
+                        <RowDefinition Height="Auto" /> <!-- 0. Halloween Character Banner -->
                         <RowDefinition Height="Auto" /> <!-- 1. Header with SVG Bell Alert -->
                         <RowDefinition Height="Auto" /> <!-- 2. Subhead Description -->
                         <RowDefinition Height="*" />    <!-- 3. Tasks List -->
                         <RowDefinition Height="Auto" /> <!-- 4. Footer Actions -->
                     </Grid.RowDefinitions>
 
-                    <!-- 0. Coco Animated Character Banner (Miguel, Héctor & Dante on Marigold Bridge) -->
-                    <Border Grid.Row="0" x:Name="CocoReminderBanner" CornerRadius="8" Margin="0,0,0,14" Height="140"
-                            ClipToBounds="True" BorderBrush="#FF7E00" BorderThickness="2"
-                            Visibility="{DynamicResource CocoOnlyVis}">
+                    <!-- 0. Halloween Animated Character Banner (Jack-o'-Lantern, Swarming Bats & Spooky Ghosts) -->
+                    <Border Grid.Row="0" x:Name="HalloweenReminderBanner" CornerRadius="8" Margin="0,0,0,14" Height="140"
+                            ClipToBounds="True" BorderBrush="#FF6B00" BorderThickness="2"
+                            Visibility="{DynamicResource HalloweenOnlyVis}">
                         <Border.Effect>
-                            <DropShadowEffect x:Name="CocoBannerGlow" Color="#FFB800" BlurRadius="16" ShadowDepth="0" Opacity="0.75" />
+                            <DropShadowEffect x:Name="HalloweenBannerGlow" Color="#FF6B00" BlurRadius="18" ShadowDepth="0" Opacity="0.85" />
                         </Border.Effect>
                         <Grid>
-                            <!-- The Characters: Miguel, Héctor & Dante on the Marigold Bridge -->
-                            <Image x:Name="ImgCocoCharacters" Source="/Assets/coco_banner.jpg" Stretch="UniformToFill"
-                                   RenderTransformOrigin="0.5, 0.5">
-                                <Image.RenderTransform>
-                                    <TransformGroup>
-                                        <TranslateTransform x:Name="CocoCharTranslate" Y="0" />
-                                        <RotateTransform x:Name="CocoCharRotate" Angle="0" />
-                                    </TransformGroup>
-                                </Image.RenderTransform>
-                            </Image>
-                            <!-- Festive Twilight Gradient Overlay -->
+                            <!-- Spooky Gradient Background -->
                             <Border>
                                 <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                        <GradientStop Color="#00000000" Offset="0.0" />
-                                        <GradientStop Color="#2516072C" Offset="0.5" />
-                                        <GradientStop Color="#E616072C" Offset="1.0" />
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#08020D" Offset="0.0" />
+                                        <GradientStop Color="#2A0B42" Offset="0.4" />
+                                        <GradientStop Color="#5C1A00" Offset="0.8" />
+                                        <GradientStop Color="#FF6B00" Offset="1.0" />
                                     </LinearGradientBrush>
                                 </Border.Background>
                             </Border>
-                            <!-- Floating Cempasúchil Petals & Musical Notes Overlay -->
-                            <Canvas IsHitTestVisible="False">
-                                <Canvas.RenderTransform>
-                                    <TranslateTransform x:Name="CocoPetalsTranslate" X="0" />
-                                </Canvas.RenderTransform>
-                                <TextBlock Text="♪" FontSize="18" Foreground="#FFD633" Canvas.Left="20" Canvas.Top="20" FontWeight="Bold">
+
+                            <!-- Corner Webbing -->
+                            <TextBlock Text="🕸️" FontSize="54" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-6,-8,0,0" Opacity="0.75" />
+                            <TextBlock Text="🕸️" FontSize="54" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-8,-6,0" Opacity="0.75" />
+
+                            <!-- Animated Jack-o'-Lantern and Spirits Centerpiece -->
+                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Spooky Drifting Ghost -->
+                                <TextBlock Grid.Column="0" Text="👻" FontSize="42" VerticalAlignment="Center" Margin="0,0,16,0" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <TranslateTransform x:Name="RemGhostTranslate" X="0" />
+                                            <RotateTransform x:Name="RemGhostRotate" Angle="0" />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
                                     <TextBlock.Effect>
-                                        <DropShadowEffect Color="#FF7E00" BlurRadius="6" ShadowDepth="0" />
+                                        <DropShadowEffect Color="#00E5FF" BlurRadius="14" ShadowDepth="0" Opacity="0.8" />
                                     </TextBlock.Effect>
                                 </TextBlock>
-                                <TextBlock Text="♫" FontSize="22" Foreground="#FFB800" Canvas.Right="40" Canvas.Top="15" FontWeight="Bold">
+
+                                <!-- Big Bouncing Glowing Jack-o'-Lantern -->
+                                <TextBlock Grid.Column="1" Text="🎃" FontSize="64" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <TranslateTransform x:Name="RemPumpkinTranslate" Y="0" />
+                                            <ScaleTransform x:Name="RemPumpkinScale" ScaleX="1.0" ScaleY="1.0" />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
                                     <TextBlock.Effect>
-                                        <DropShadowEffect Color="#FF7E00" BlurRadius="8" ShadowDepth="0" />
+                                        <DropShadowEffect Color="#FFA500" BlurRadius="24" ShadowDepth="0" Opacity="0.95" />
                                     </TextBlock.Effect>
                                 </TextBlock>
-                                <TextBlock Text="🏵️" FontSize="16" Canvas.Left="75" Canvas.Top="35" />
-                                <TextBlock Text="🏵️" FontSize="14" Canvas.Right="85" Canvas.Top="45" />
-                                <TextBlock Text="♪" FontSize="16" Foreground="#FFD633" Canvas.Right="140" Canvas.Top="18" FontWeight="Bold" />
-                            </Canvas>
-                            <!-- Caption Badge -->
-                            <StackPanel VerticalAlignment="Bottom" Margin="14,0,14,8" Orientation="Horizontal">
-                                <Border Background="#C01E35" CornerRadius="4" Padding="8,3" Margin="0,0,8,0">
-                                    <TextBlock Text="REMEMBER ME 🎸" FontSize="10" FontWeight="Bold" Foreground="#FFFDF8"
-                                               FontFamily="Century Gothic, Arial Rounded MT Bold, sans-serif" />
+
+                                <!-- Flying Bats Swarm -->
+                                <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="16,0,0,0">
+                                    <TextBlock Text="🦇" FontSize="30" RenderTransformOrigin="0.5,0.5">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform x:Name="RemBatTranslate" X="0" Y="0" />
+                                        </TextBlock.RenderTransform>
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect Color="#FF6B00" BlurRadius="8" ShadowDepth="0" Opacity="0.8" />
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                    <TextBlock Text="🦇" FontSize="18" Margin="14,-6,0,0" Opacity="0.85" />
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Spooky Alert Badge & Tagline -->
+                            <StackPanel VerticalAlignment="Bottom" Margin="16,0,16,8" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Border Background="#FF6B00" CornerRadius="4" Padding="8,3" Margin="0,0,8,0">
+                                    <TextBlock Text="🎃 SPOOKY REMINDER ALERT! 🎃" FontSize="10" FontWeight="Bold" Foreground="#000000"
+                                               FontFamily="Century Gothic, Impact, sans-serif" />
                                 </Border>
-                                <TextBlock Text="Miguel, Héctor &amp; Dante: Don't forget your tasks today!"
-                                           FontSize="11" FontWeight="SemiBold" Foreground="#FFD633"
+                                <TextBlock Text="Don't let your tasks haunt you! Finish them today!"
+                                           FontSize="11" FontWeight="Bold" Foreground="#FFA000"
                                            FontFamily="Segoe UI, sans-serif" VerticalAlignment="Center">
                                     <TextBlock.Effect>
                                         <DropShadowEffect Color="#000000" BlurRadius="4" ShadowDepth="1" />

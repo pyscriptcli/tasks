@@ -24,7 +24,8 @@ namespace TasksApp
         private Point _dragStartPoint;
         private TaskItem? _draggedItem;
         private Storyboard? _glowStoryboard;
-        private Storyboard? _cocoStoryboard;
+        private Storyboard? _halloweenAmbientStoryboard;
+        private Storyboard? _halloweenReminderStoryboard;
 
         public MainWindow()
         {
@@ -77,13 +78,13 @@ namespace TasksApp
         {
             if (e.PropertyName == nameof(MainViewModel.IsReminderOverlayVisible))
             {
-                if (_viewModel.IsReminderOverlayVisible && ThemeManager.IsCoco)
+                if (_viewModel.IsReminderOverlayVisible && ThemeManager.IsHalloween)
                 {
-                    _cocoStoryboard?.Begin(this, true);
+                    _halloweenReminderStoryboard?.Begin(this, true);
                 }
                 else
                 {
-                    _cocoStoryboard?.Stop(this);
+                    _halloweenReminderStoryboard?.Stop(this);
                 }
             }
         }
@@ -96,20 +97,36 @@ namespace TasksApp
                 chrome.CaptionHeight = ThemeManager.IsWin95 ? 26 : 48;
             }
 
-            if (ThemeManager.IsCoco && _viewModel?.IsReminderOverlayVisible == true)
+            if (ThemeManager.IsHalloween)
             {
-                _cocoStoryboard?.Begin(this, true);
+                _halloweenAmbientStoryboard?.Begin(this, true);
+                if (_viewModel?.IsReminderOverlayVisible == true)
+                {
+                    _halloweenReminderStoryboard?.Begin(this, true);
+                }
+                else
+                {
+                    _halloweenReminderStoryboard?.Stop(this);
+                }
             }
             else
             {
-                _cocoStoryboard?.Stop(this);
+                _halloweenAmbientStoryboard?.Stop(this);
+                _halloweenReminderStoryboard?.Stop(this);
             }
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             _glowStoryboard = TryFindResource("ReminderGlowAnimation") as Storyboard;
-            _cocoStoryboard = TryFindResource("CocoCharacterStoryboard") as Storyboard;
+            _halloweenAmbientStoryboard = TryFindResource("HalloweenAmbientStoryboard") as Storyboard;
+            _halloweenReminderStoryboard = TryFindResource("HalloweenReminderStoryboard") as Storyboard;
+
+            if (ThemeManager.IsHalloween)
+            {
+                _halloweenAmbientStoryboard?.Begin(this, true);
+            }
+
             await _viewModel.InitializeStartupAsync();
         }
 
@@ -295,9 +312,9 @@ namespace TasksApp
                 ReminderGlowBorder.Visibility = Visibility.Visible;
                 _glowStoryboard?.Begin(this, true);
 
-                if (ThemeManager.IsCoco)
+                if (ThemeManager.IsHalloween)
                 {
-                    _cocoStoryboard?.Begin(this, true);
+                    _halloweenReminderStoryboard?.Begin(this, true);
                 }
             });
         }
@@ -308,7 +325,7 @@ namespace TasksApp
             {
                 // Stop glowing animation and remove topmost forcing (UR-028)
                 _glowStoryboard?.Stop(this);
-                _cocoStoryboard?.Stop(this);
+                _halloweenReminderStoryboard?.Stop(this);
                 ReminderGlowBorder.Visibility = Visibility.Collapsed;
                 Topmost = _viewModel.AlwaysOnTop; // Reset to user's setting
             });

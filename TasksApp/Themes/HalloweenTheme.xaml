@@ -3,112 +3,114 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!-- ======================================================== -->
-    <!-- COCO / LAND OF THE DEAD & MARIGOLD BRIDGE THEME PALETTE   -->
-    <!-- Miguel, Héctor, Dante, Cempasúchil Marigolds & Violet Twilight -->
+    <!-- HALLOWEEN JACK-O'-LANTERN & COBWEB THEME PALETTE         -->
+    <!-- Jet Black, Fiery Pumpkin Orange, Cobwebs & Pure White Task Wells -->
     <!-- ======================================================== -->
 
-    <SolidColorBrush x:Key="PrimeBlue" Color="#FF7E00" />          <!-- Vibrant Marigold Orange -->
-    <SolidColorBrush x:Key="PrimeBlueDark" Color="#C01E35" />      <!-- Fiesta Crimson (Miguel's Hoodie) -->
-    <SolidColorBrush x:Key="PrimeWarmWhite" Color="#FFFDF8" />     <!-- Calavera Bone White -->
-    <SolidColorBrush x:Key="PrimeGold" Color="#FFB800" />          <!-- Golden Cempasúchil Yellow -->
-    <SolidColorBrush x:Key="PrimeYellow" Color="#FFD633" />        <!-- Radiant Petal Yellow -->
-    <SolidColorBrush x:Key="PrimeGray" Color="#FFFDF8" />          <!-- Bright Bone White Text -->
-    <SolidColorBrush x:Key="PrimeDeepInk" Color="#16072C" />       <!-- Deep Nocturnal Purple -->
-    <SolidColorBrush x:Key="PrimeBorder" Color="#FF7E00" />        <!-- Glowing Marigold Border -->
-    <SolidColorBrush x:Key="PrimeSubtleBg" Color="#240B48" />      <!-- Land of the Dead Indigo/Violet -->
+    <SolidColorBrush x:Key="PrimeBlue" Color="#FF6B00" />          <!-- Vibrant Pumpkin Orange -->
+    <SolidColorBrush x:Key="PrimeBlueDark" Color="#992600" />      <!-- Dark Roast Pumpkin -->
+    <SolidColorBrush x:Key="PrimeWarmWhite" Color="#FFFFFF" />     <!-- Solid Clean White -->
+    <SolidColorBrush x:Key="PrimeGold" Color="#FFA000" />          <!-- Candle Flame Amber -->
+    <SolidColorBrush x:Key="PrimeYellow" Color="#FFD000" />        <!-- Jack-o'-Lantern Eye Glow -->
+    <SolidColorBrush x:Key="PrimeGray" Color="#121212" />          <!-- Deep Charcoal Text -->
+    <SolidColorBrush x:Key="PrimeDeepInk" Color="#0A0410" />       <!-- Jet Black Haunted Void -->
+    <SolidColorBrush x:Key="PrimeBorder" Color="#FF6B00" />        <!-- Jack-o'-Lantern Border -->
+    <SolidColorBrush x:Key="PrimeSubtleBg" Color="#160924" />      <!-- Dark Haunted Violet Tint -->
 
     <!-- Semantic App Brushes -->
-    <SolidColorBrush x:Key="AppWindowBackground" Color="#16072C" /> <!-- Land of the Dead Night Sky -->
+    <SolidColorBrush x:Key="AppWindowBackground" Color="#0B0314" /> <!-- Jet Black Haunted Canvas -->
     
-    <!-- Title Bar: Fiesta Crimson to Radiant Marigold Bridge Gradient -->
+    <!-- Title Bar: Fiery Pumpkin Orange & Shadow Gradient -->
     <LinearGradientBrush x:Key="AppTitleBarBackground" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#C01E35" Offset="0.0" />
-        <GradientStop Color="#FF7E00" Offset="0.45" />
-        <GradientStop Color="#FFB800" Offset="0.85" />
-        <GradientStop Color="#FFD633" Offset="1.0" />
+        <GradientStop Color="#000000" Offset="0.0" />
+        <GradientStop Color="#B33600" Offset="0.3" />
+        <GradientStop Color="#FF6B00" Offset="0.7" />
+        <GradientStop Color="#FFA000" Offset="1.0" />
     </LinearGradientBrush>
 
-    <SolidColorBrush x:Key="AppTitleBarForeground" Color="#FFFDF8" />
-    <SolidColorBrush x:Key="AppTitleBarBorder" Color="#FF7E00" />
-    <SolidColorBrush x:Key="AppPanelBackground" Color="#1E0C3A" />
-    <SolidColorBrush x:Key="AppPanelBorder" Color="#FF7E00" />
-    <SolidColorBrush x:Key="AppCardBackground" Color="#250F47" />
-    <SolidColorBrush x:Key="AppCardBorder" Color="#FF7E00" />
-    <SolidColorBrush x:Key="AppSurfaceBackground" Color="#331661" />
-    <SolidColorBrush x:Key="AppTextForeground" Color="#FFFDF8" />
-    <SolidColorBrush x:Key="AppMutedForeground" Color="#FFC27A" />   <!-- Soft Marigold Peach Text -->
-    <SolidColorBrush x:Key="AppPrimaryColor" Color="#FF7E00" />     <!-- Marigold Orange -->
-    <SolidColorBrush x:Key="AppAccentColor" Color="#FFB800" />      <!-- Golden Marigold -->
-    <SolidColorBrush x:Key="AppAccentForeground" Color="#16072C" /> <!-- Dark Contrast for Gold -->
-    <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#FFB800" />
-    <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#FF7E00" />
+    <SolidColorBrush x:Key="AppTitleBarForeground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AppTitleBarBorder" Color="#FF6B00" />
+    <SolidColorBrush x:Key="AppPanelBackground" Color="#140821" />
+    <SolidColorBrush x:Key="AppPanelBorder" Color="#FF6B00" />
+    
+    <!-- Task Cards & Daily Notes Wells: Solid Pure White (#FFFFFF) as specifically requested -->
+    <SolidColorBrush x:Key="AppCardBackground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AppCardBorder" Color="#FF6B00" />
+    <SolidColorBrush x:Key="AppSurfaceBackground" Color="#F4F4F6" />
+    <SolidColorBrush x:Key="AppTextForeground" Color="#121212" />     <!-- Dark high-contrast text on white cards -->
+    <SolidColorBrush x:Key="AppMutedForeground" Color="#555555" />    <!-- Muted text on white cards -->
+    <SolidColorBrush x:Key="AppPrimaryColor" Color="#FF6B00" />      <!-- Pumpkin Orange -->
+    <SolidColorBrush x:Key="AppAccentColor" Color="#FFA000" />       <!-- Candlelight Amber -->
+    <SolidColorBrush x:Key="AppAccentForeground" Color="#000000" />
+    <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#FFA000" />
+    <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#FF6B00" />
 
     <!-- Dimensions & Metrics -->
-    <sys:Double x:Key="AppTitleBarHeight">46</sys:Double>
-    <sys:Double x:Key="AppCaptionHeight">46</sys:Double>
+    <sys:Double x:Key="AppTitleBarHeight">48</sys:Double>
+    <sys:Double x:Key="AppCaptionHeight">48</sys:Double>
     <sys:Double x:Key="AppTitleFontSize">18</sys:Double>
     <FontWeight x:Key="AppTitleFontWeight">Bold</FontWeight>
     <FontStyle x:Key="AppDisplayFontStyle">Normal</FontStyle>
     <Thickness x:Key="AppWindowFrameThickness">2</Thickness>
     <Thickness x:Key="AppPanelBorderThickness">1.5</Thickness>
 
-    <!-- Typography: Playful, Musical & Festive -->
-    <FontFamily x:Key="AppBaseFontFamily">Segoe UI, Montserrat, Arial Rounded MT Bold, sans-serif</FontFamily>
-    <FontFamily x:Key="AppDisplayFontFamily">Century Gothic, Arial Rounded MT Bold, Trebuchet MS, sans-serif</FontFamily>
-    <FontFamily x:Key="AppTitleFontFamily">Century Gothic, Arial Rounded MT Bold, Trebuchet MS, sans-serif</FontFamily>
-    <FontFamily x:Key="AppMetricFontFamily">Impact, Arial Rounded MT Bold, sans-serif</FontFamily>
+    <!-- Typography -->
+    <FontFamily x:Key="AppBaseFontFamily">Segoe UI, Montserrat, Arial, sans-serif</FontFamily>
+    <FontFamily x:Key="AppDisplayFontFamily">Century Gothic, Franklin Gothic Heavy, Impact, Arial Black, sans-serif</FontFamily>
+    <FontFamily x:Key="AppTitleFontFamily">Century Gothic, Franklin Gothic Heavy, Impact, Arial Black, sans-serif</FontFamily>
+    <FontFamily x:Key="AppMetricFontFamily">Impact, Franklin Gothic Heavy, Arial Black, sans-serif</FontFamily>
 
     <!-- Indicators -->
     <sys:Boolean x:Key="IsWin95">False</sys:Boolean>
     <Visibility x:Key="Win95OnlyVis">Collapsed</Visibility>
     <Visibility x:Key="ModernOnlyVis">Visible</Visibility>
-    <sys:Boolean x:Key="IsCoco">True</sys:Boolean>
-    <Visibility x:Key="CocoOnlyVis">Visible</Visibility>
-    <Visibility x:Key="NotCocoVis">Collapsed</Visibility>
+    <sys:Boolean x:Key="IsHalloween">True</sys:Boolean>
+    <Visibility x:Key="HalloweenOnlyVis">Visible</Visibility>
+    <Visibility x:Key="NotHalloweenVis">Collapsed</Visibility>
 
-    <!-- Outer Window / Dialog Frame Style: Twilight Purple with Marigold Glow -->
+    <!-- Outer Window / Dialog Frame Style: Jet Black with Fiery Pumpkin Glow -->
     <Style x:Key="DialogOuterFrameStyle" TargetType="Border">
-        <Setter Property="Background" Value="#16072C" />
-        <Setter Property="BorderBrush" Value="#FF7E00" />
+        <Setter Property="Background" Value="#0B0314" />
+        <Setter Property="BorderBrush" Value="#FF6B00" />
         <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="CornerRadius" Value="8" />
         <Setter Property="Effect">
             <Setter.Value>
-                <DropShadowEffect Color="#FFB800" Direction="0" ShadowDepth="0" BlurRadius="12" Opacity="0.5" />
+                <DropShadowEffect Color="#FF6B00" Direction="0" ShadowDepth="0" BlurRadius="14" Opacity="0.55" />
             </Setter.Value>
         </Setter>
     </Style>
 
-    <!-- GroupBox / Card Style: Mystical Violet Card with Warm Gold Accent Border -->
+    <!-- GroupBox Style: Pure White Well with Pumpkin Border for Notes & Sections -->
     <Style x:Key="AppGroupBoxStyle" TargetType="Border">
-        <Setter Property="Background" Value="#250F47" />
-        <Setter Property="BorderBrush" Value="#FF7E00" />
+        <Setter Property="Background" Value="#FFFFFF" />
+        <Setter Property="BorderBrush" Value="#FF6B00" />
         <Setter Property="BorderThickness" Value="1.5" />
         <Setter Property="CornerRadius" Value="8" />
         <Setter Property="Padding" Value="16" />
         <Setter Property="Margin" Value="0,0,0,16" />
         <Setter Property="Effect">
             <Setter.Value>
-                <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="3" BlurRadius="6" Opacity="0.4" />
+                <DropShadowEffect Color="#FF6B00" Direction="270" ShadowDepth="2" BlurRadius="6" Opacity="0.25" />
             </Setter.Value>
         </Setter>
     </Style>
 
-    <!-- Sunken Container Style -->
+    <!-- Sunken Container Style: Solid White Well -->
     <Style x:Key="AppSunkenBorderStyle" TargetType="Border">
-        <Setter Property="Background" Value="#1A0A33" />
-        <Setter Property="BorderBrush" Value="#FF7E00" />
+        <Setter Property="Background" Value="#FFFFFF" />
+        <Setter Property="BorderBrush" Value="#FF6B00" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="CornerRadius" Value="4" />
     </Style>
 
     <!-- Title Bar Buttons -->
     <Style x:Key="TitleBarButtonStyle" TargetType="Button">
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="#FFFDF8" />
+        <Setter Property="Foreground" Value="#FFFFFF" />
         <Setter Property="Width" Value="42" />
-        <Setter Property="Height" Value="46" />
+        <Setter Property="Height" Value="48" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
@@ -122,7 +124,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#30FFFFFF" />
+                <Setter Property="Background" Value="#40FF6B00" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -130,31 +132,30 @@
     <Style x:Key="TitleBarCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#C01E35" />
+                <Setter Property="Background" Value="#D62828" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <!-- Title Bar Top Action Button (Bell & Settings) -->
     <Style x:Key="TitleBarActionButtonStyle" TargetType="Button" BasedOn="{StaticResource TitleBarButtonStyle}">
-        <Setter Property="Width" Value="34" />
-        <Setter Property="Height" Value="34" />
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
         <Setter Property="Margin" Value="0,0,4,0" />
     </Style>
 
-    <!-- Primary Action Button: Glowing Marigold Gradient with Bone White Text -->
+    <!-- Primary Action Button: Glowing Pumpkin Orange Button with Black / Crisp White Text -->
     <Style x:Key="PrimaryActionBtn" TargetType="Button">
         <Setter Property="Background">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#E63946" Offset="0.0" />
-                    <GradientStop Color="#FF7E00" Offset="0.6" />
-                    <GradientStop Color="#FFA500" Offset="1.0" />
+                    <GradientStop Color="#FF6B00" Offset="0.0" />
+                    <GradientStop Color="#FFA000" Offset="1.0" />
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
-        <Setter Property="Foreground" Value="#FFFDF8" />
-        <Setter Property="FontFamily" Value="Century Gothic, Arial Rounded MT Bold, Segoe UI, sans-serif" />
+        <Setter Property="Foreground" Value="#000000" />
+        <Setter Property="FontFamily" Value="Century Gothic, Segoe UI, sans-serif" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="16,8" />
@@ -163,26 +164,26 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="BtnFace" Background="{TemplateBinding Background}"
-                            CornerRadius="6" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="Face" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
                         <Border.Effect>
-                            <DropShadowEffect Color="#FF7E00" Direction="270" ShadowDepth="2" BlurRadius="6" Opacity="0.5" />
+                            <DropShadowEffect Color="#FF6B00" Direction="0" ShadowDepth="0" BlurRadius="8" Opacity="0.5" />
                         </Border.Effect>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BtnFace" Property="Background">
+                            <Setter TargetName="Face" Property="Background">
                                 <Setter.Value>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#FF7E00" Offset="0.0" />
-                                        <GradientStop Color="#FFB800" Offset="1.0" />
+                                        <GradientStop Color="#FFA000" Offset="0.0" />
+                                        <GradientStop Color="#FFD000" Offset="1.0" />
                                     </LinearGradientBrush>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="BtnFace" Property="Background" Value="#C01E35" />
+                            <Setter TargetName="Face" Property="Background" Value="#B33600" />
+                            <Setter Property="Foreground" Value="#FFFFFF" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -190,13 +191,13 @@
         </Setter>
     </Style>
 
-    <!-- Secondary Action Button: Twilight Violet with Marigold Border -->
+    <!-- Secondary Action Button: Jet Black with Pumpkin Orange Border & White Text -->
     <Style x:Key="SecondaryActionBtn" TargetType="Button">
-        <Setter Property="Background" Value="#250F47" />
-        <Setter Property="Foreground" Value="#FFFDF8" />
-        <Setter Property="BorderBrush" Value="#FF7E00" />
+        <Setter Property="Background" Value="#140821" />
+        <Setter Property="Foreground" Value="#FF6B00" />
+        <Setter Property="BorderBrush" Value="#FF6B00" />
         <Setter Property="BorderThickness" Value="1.5" />
-        <Setter Property="FontFamily" Value="Century Gothic, Arial Rounded MT Bold, Segoe UI, sans-serif" />
+        <Setter Property="FontFamily" Value="Century Gothic, Segoe UI, sans-serif" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="Padding" Value="12,6" />
@@ -204,7 +205,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="BtnFace" Background="{TemplateBinding Background}"
+                    <Border x:Name="Face" Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="6" Padding="{TemplateBinding Padding}">
@@ -212,12 +213,12 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BtnFace" Property="Background" Value="#FF7E00" />
-                            <Setter Property="Foreground" Value="#16072C" />
+                            <Setter TargetName="Face" Property="Background" Value="#FF6B00" />
+                            <Setter Property="Foreground" Value="#000000" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="BtnFace" Property="Background" Value="#C01E35" />
-                            <Setter Property="Foreground" Value="#FFFDF8" />
+                            <Setter TargetName="Face" Property="Background" Value="#B33600" />
+                            <Setter Property="Foreground" Value="#FFFFFF" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -231,45 +232,18 @@
         <Setter Property="Padding" Value="10,4" />
     </Style>
 
-    <!-- Gold Action Button: Golden Cempasúchil with Deep Midnight Text -->
-    <Style x:Key="GoldActionBtn" TargetType="Button">
-        <Setter Property="Background" Value="#FFB800" />
-        <Setter Property="Foreground" Value="#16072C" />
-        <Setter Property="FontFamily" Value="Century Gothic, Arial Rounded MT Bold, Segoe UI, sans-serif" />
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Padding" Value="16,8" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Face" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                        <Border.Effect>
-                            <DropShadowEffect Color="#FFB800" Direction="0" ShadowDepth="0" BlurRadius="8" Opacity="0.5" />
-                        </Border.Effect>
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Face" Property="Background" Value="#FFD633" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Face" Property="Background" Value="#FF7E00" />
-                            <Setter Property="Foreground" Value="#FFFDF8" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+    <!-- Gold Action Button: Candle Flame Amber -->
+    <Style x:Key="GoldActionBtn" TargetType="Button" BasedOn="{StaticResource PrimaryActionBtn}">
+        <Setter Property="Background" Value="#FFA000" />
+        <Setter Property="Foreground" Value="#000000" />
     </Style>
 
-    <!-- Standard TextBox Style: Deep Twilight Well with Marigold Outline -->
+    <!-- TextBox Style: Clean Solid White with Pumpkin Border -->
     <Style x:Key="AppTextBoxStyle" TargetType="TextBox">
-        <Setter Property="Background" Value="#1A0A33" />
-        <Setter Property="Foreground" Value="#FFFDF8" />
-        <Setter Property="CaretBrush" Value="#FFB800" />
-        <Setter Property="BorderBrush" Value="#FF7E00" />
+        <Setter Property="Background" Value="#FFFFFF" />
+        <Setter Property="Foreground" Value="#121212" />
+        <Setter Property="CaretBrush" Value="#FF6B00" />
+        <Setter Property="BorderBrush" Value="#FF6B00" />
         <Setter Property="BorderThickness" Value="1.5" />
         <Setter Property="FontFamily" Value="Segoe UI, Montserrat, sans-serif" />
         <Setter Property="FontSize" Value="12" />
@@ -281,15 +255,15 @@
                     <Border x:Name="Bd" Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="6">
+                            CornerRadius="5">
                         <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="#FFD633" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="#FFA000" />
                             <Setter TargetName="Bd" Property="Effect">
                                 <Setter.Value>
-                                    <DropShadowEffect Color="#FFB800" Direction="0" ShadowDepth="0" BlurRadius="6" Opacity="0.6" />
+                                    <DropShadowEffect Color="#FF6B00" Direction="0" ShadowDepth="0" BlurRadius="6" Opacity="0.5" />
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
@@ -299,19 +273,19 @@
         </Setter>
     </Style>
 
-    <!-- CheckBox: Marigold Flower Border & Amber Check -->
+    <!-- CheckBox: Pumpkin Orange Border with Amber Check -->
     <Style TargetType="CheckBox">
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Foreground" Value="#FFFDF8" />
+        <Setter Property="Foreground" Value="#121212" />
         <Setter Property="FontFamily" Value="Segoe UI, Montserrat, sans-serif" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border x:Name="Box" Width="16" Height="16" BorderBrush="#FF7E00" BorderThickness="1.5" Background="#1A0A33" CornerRadius="4">
+                        <Border x:Name="Box" Width="16" Height="16" BorderBrush="#FF6B00" BorderThickness="1.5" Background="#FFFFFF" CornerRadius="4">
                             <Path x:Name="CheckMark" Data="M 3,7 L 6,11 L 13,3"
-                                  Stroke="#FFB800" StrokeThickness="2.2"
+                                  Stroke="#FF6B00" StrokeThickness="2.4"
                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                   Visibility="Collapsed" Margin="0,1,0,0" />
                         </Border>
@@ -320,10 +294,9 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="Box" Property="Background" Value="#351269" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Box" Property="BorderBrush" Value="#FFD633" />
+                            <Setter TargetName="Box" Property="BorderBrush" Value="#FFA000" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -331,10 +304,10 @@
         </Setter>
     </Style>
 
-    <!-- RadioButton: Marigold Ring & Golden Core -->
+    <!-- RadioButton: Pumpkin Ring & Glowing Core -->
     <Style TargetType="RadioButton">
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Foreground" Value="#FFFDF8" />
+        <Setter Property="Foreground" Value="#121212" />
         <Setter Property="FontFamily" Value="Segoe UI, Montserrat, sans-serif" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Template">
@@ -342,8 +315,8 @@
                 <ControlTemplate TargetType="RadioButton">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Grid Width="16" Height="16" VerticalAlignment="Center">
-                            <Ellipse x:Name="Ring" Stroke="#FF7E00" StrokeThickness="1.5" Fill="#1A0A33" />
-                            <Ellipse x:Name="Dot" Width="7" Height="7" Fill="#FFB800" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse x:Name="Ring" Stroke="#FF6B00" StrokeThickness="1.5" Fill="#FFFFFF" />
+                            <Ellipse x:Name="Dot" Width="7" Height="7" Fill="#FF6B00" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                         <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" />
                     </StackPanel>
@@ -352,7 +325,7 @@
                             <Setter TargetName="Dot" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Ring" Property="Stroke" Value="#FFD633" />
+                            <Setter TargetName="Ring" Property="Stroke" Value="#FFA000" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
