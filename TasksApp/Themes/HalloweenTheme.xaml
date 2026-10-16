@@ -71,6 +71,9 @@
     <sys:Boolean x:Key="IsHalloween">True</sys:Boolean>
     <Visibility x:Key="HalloweenOnlyVis">Visible</Visibility>
     <Visibility x:Key="NotHalloweenVis">Collapsed</Visibility>
+    <sys:Boolean x:Key="IsChristmas">False</sys:Boolean>
+    <Visibility x:Key="ChristmasOnlyVis">Collapsed</Visibility>
+    <Visibility x:Key="NotChristmasVis">Visible</Visibility>
 
     <!-- Outer Window / Dialog Frame Style: Storybook Haunted Silhouette with Fiery Pumpkin Amber Glow -->
     <Style x:Key="DialogOuterFrameStyle" TargetType="Border">

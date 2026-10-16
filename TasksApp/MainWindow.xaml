@@ -262,6 +262,191 @@
                 <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
+
+        <!-- ======================================================== -->
+        <!-- CHRISTMAS AMBIENT CONTINUOUS STORYBOARD                  -->
+        <!-- Living Olaf Pet Companion Antics, Snowfall, Fairy Lights -->
+        <!-- ======================================================== -->
+        <Storyboard x:Key="ChristmasAmbientStoryboard" RepeatBehavior="Forever">
+            <!-- 1. Olaf The Snowman Companion Pet Loop in Daily Notes -->
+            <!-- Olaf Left Arm Wave -->
+            <DoubleAnimation Storyboard.TargetName="OlafArmLeftRotate" Storyboard.TargetProperty="Angle"
+                             From="-15" To="45" Duration="0:0:1.3" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Olaf Right Arm Wave -->
+            <DoubleAnimation Storyboard.TargetName="OlafArmRightRotate" Storyboard.TargetProperty="Angle"
+                             From="15" To="-30" Duration="0:0:1.7" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Olaf Head Tilt & Bob -->
+            <DoubleAnimation Storyboard.TargetName="OlafHeadRotate" Storyboard.TargetProperty="Angle"
+                             From="-6" To="8" Duration="0:0:2.4" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="OlafHeadTranslate" Storyboard.TargetProperty="Y"
+                             From="0" To="-6" Duration="0:0:1.8" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Olaf Carrot Nose Sneeze & Snap Back -->
+            <DoubleAnimation Storyboard.TargetName="OlafCarrotTranslate" Storyboard.TargetProperty="X"
+                             From="0" To="18" Duration="0:0:3.4" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><BounceEase Bounces="1" Bounciness="2" EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="OlafCarrotTranslate" Storyboard.TargetProperty="Y"
+                             From="0" To="-4" Duration="0:0:3.4" AutoReverse="True" RepeatBehavior="Forever" />
+            <!-- Olaf Jolly Belly Wobble (Squash & Stretch) -->
+            <DoubleAnimation Storyboard.TargetName="OlafBellyScaleX" Storyboard.TargetProperty="ScaleX"
+                             From="1.0" To="1.14" Duration="0:0:1.1" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="OlafBellyScaleY" Storyboard.TargetProperty="ScaleY"
+                             From="1.0" To="0.88" Duration="0:0:1.1" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Head Mini Snowball Balance Wobble -->
+            <DoubleAnimation Storyboard.TargetName="OlafSnowballTranslate" Storyboard.TargetProperty="X"
+                             From="-6" To="6" Duration="0:0:1.6" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="OlafSnowballRotate" Storyboard.TargetProperty="Angle"
+                             From="-18" To="18" Duration="0:0:1.6" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <!-- 2. Falling Snowflakes in Today's Tasks (Left Pane) -->
+            <DoubleAnimation Storyboard.TargetName="Snowflake1TranslateY" Storyboard.TargetProperty="Y"
+                             From="-25" To="420" Duration="0:0:5.2" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="Snowflake1TranslateX" Storyboard.TargetProperty="X"
+                             From="-16" To="16" Duration="0:0:1.9" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Snowflake1Rotate" Storyboard.TargetProperty="Angle"
+                             From="0" To="360" Duration="0:0:4.0" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Storyboard.TargetName="Snowflake2TranslateY" Storyboard.TargetProperty="Y"
+                             From="-25" To="420" Duration="0:0:6.8" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="Snowflake2TranslateX" Storyboard.TargetProperty="X"
+                             From="14" To="-14" Duration="0:0:2.3" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Snowflake2Rotate" Storyboard.TargetProperty="Angle"
+                             From="360" To="0" Duration="0:0:5.5" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Storyboard.TargetName="Snowflake3TranslateY" Storyboard.TargetProperty="Y"
+                             From="-25" To="420" Duration="0:0:4.7" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="Snowflake3TranslateX" Storyboard.TargetProperty="X"
+                             From="-20" To="20" Duration="0:0:1.7" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <DoubleAnimation Storyboard.TargetName="Snowflake4TranslateY" Storyboard.TargetProperty="Y"
+                             From="-25" To="420" Duration="0:0:6.1" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="Snowflake4TranslateX" Storyboard.TargetProperty="X"
+                             From="18" To="-18" Duration="0:0:2.1" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <!-- 3. Falling Snowflakes in Daily Notes (Right Pane) -->
+            <DoubleAnimation Storyboard.TargetName="SnowflakeNotes1TranslateY" Storyboard.TargetProperty="Y"
+                             From="-25" To="420" Duration="0:0:5.4" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="SnowflakeNotes1TranslateX" Storyboard.TargetProperty="X"
+                             From="-14" To="14" Duration="0:0:2.0" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="SnowflakeNotes1Rotate" Storyboard.TargetProperty="Angle"
+                             From="0" To="360" Duration="0:0:4.5" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Storyboard.TargetName="SnowflakeNotes2TranslateY" Storyboard.TargetProperty="Y"
+                             From="-25" To="420" Duration="0:0:6.6" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="SnowflakeNotes2TranslateX" Storyboard.TargetProperty="X"
+                             From="16" To="-16" Duration="0:0:2.4" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="SnowflakeNotes2Rotate" Storyboard.TargetProperty="Angle"
+                             From="360" To="0" Duration="0:0:5.2" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Storyboard.TargetName="SnowflakeNotes3TranslateY" Storyboard.TargetProperty="Y"
+                             From="-25" To="420" Duration="0:0:4.5" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="SnowflakeNotes3TranslateX" Storyboard.TargetProperty="X"
+                             From="-12" To="12" Duration="0:0:1.8" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <!-- 4. Twinkling Hearth Fairy Lights & Stockings Swing -->
+            <DoubleAnimation Storyboard.TargetName="LightGlow1" Storyboard.TargetProperty="Opacity"
+                             From="0.3" To="1.0" Duration="0:0:0.9" AutoReverse="True" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="LightGlow2" Storyboard.TargetProperty="Opacity"
+                             From="0.35" To="1.0" Duration="0:0:1.2" AutoReverse="True" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="LightGlow3" Storyboard.TargetProperty="Opacity"
+                             From="0.25" To="1.0" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever" />
+            <DoubleAnimation Storyboard.TargetName="HangingStocking1Rotate" Storyboard.TargetProperty="Angle"
+                             From="-10" To="10" Duration="0:0:2.3" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="HangingStocking2Rotate" Storyboard.TargetProperty="Angle"
+                             From="10" To="-10" Duration="0:0:2.6" AutoReverse="True" RepeatBehavior="Forever">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- ======================================================== -->
+        <!-- CHRISTMAS REMINDER SPECTACLE STORYBOARD                  -->
+        <!-- Santa's Sleigh, Flying Reindeer, Ringing Jingle Bells    -->
+        <!-- ======================================================== -->
+        <Storyboard x:Key="ChristmasReminderStoryboard" RepeatBehavior="Forever" AutoReverse="True">
+            <!-- Flying Reindeer Swoop -->
+            <DoubleAnimation Storyboard.TargetName="RemReindeerTranslate" Storyboard.TargetProperty="X"
+                             From="-120" To="120" Duration="0:0:1.6">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemReindeerRotate" Storyboard.TargetProperty="Angle"
+                             From="-6" To="10" Duration="0:0:1.6">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Santa Sleigh Rocking Motion -->
+            <DoubleAnimation Storyboard.TargetName="RemSleighRock" Storyboard.TargetProperty="Angle"
+                             From="-4" To="4" Duration="0:0:1.2">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Ringing Jingle Bells Dynamic Swing -->
+            <DoubleAnimation Storyboard.TargetName="RemBell1Rotate" Storyboard.TargetProperty="Angle"
+                             From="-30" To="30" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemBell2Rotate" Storyboard.TargetProperty="Angle"
+                             From="30" To="-30" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Glowing North Star Radiance -->
+            <DoubleAnimation Storyboard.TargetName="RemStarGlow" Storyboard.TargetProperty="BlurRadius"
+                             From="16" To="52" Duration="0:0:0.8" />
+            <DoubleAnimation Storyboard.TargetName="RemStarGlow" Storyboard.TargetProperty="Opacity"
+                             From="0.7" To="1.0" Duration="0:0:0.8" />
+            <!-- Santa, Rudolph & Olaf Bounce in Banner -->
+            <DoubleAnimation Storyboard.TargetName="RemRudolphBounce" Storyboard.TargetProperty="Y"
+                             From="0" To="-12" Duration="0:0:0.75">
+                <DoubleAnimation.EasingFunction><BounceEase Bounces="1" Bounciness="2" EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemSantaBounce" Storyboard.TargetProperty="Y"
+                             From="0" To="-14" Duration="0:0:0.7">
+                <DoubleAnimation.EasingFunction><BounceEase Bounces="1" Bounciness="2" EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemOlafBannerBounce" Storyboard.TargetProperty="Y"
+                             From="0" To="-16" Duration="0:0:0.65">
+                <DoubleAnimation.EasingFunction><BounceEase Bounces="1" Bounciness="2" EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Gift Sack Squash & Stretch Pulse -->
+            <DoubleAnimation Storyboard.TargetName="RemGiftScale" Storyboard.TargetProperty="ScaleY"
+                             From="1.0" To="1.16" Duration="0:0:0.6">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Christmas Banner Glow -->
+            <DoubleAnimation Storyboard.TargetName="ChristmasBannerGlow" Storyboard.TargetProperty="BlurRadius"
+                             From="14" To="38" Duration="0:0:0.7" />
+            <DoubleAnimation Storyboard.TargetName="ChristmasBannerGlow" Storyboard.TargetProperty="Opacity"
+                             From="0.65" To="1.0" Duration="0:0:0.7" />
+        </Storyboard>
     </Window.Resources>
 
     <Grid>
@@ -519,6 +704,119 @@
                     </Grid>
                 </Grid>
 
+                <!-- ======================================================== -->
+                <!-- CHRISTMAS AMBIENT LAYER (Santa's Cozy Hearth & Workshop)  -->
+                <!-- Evergreen Garland, Twinkling Fairy Lights, Stockings     -->
+                <!-- ======================================================== -->
+                <Grid x:Name="ChristmasAmbientGrid" Grid.RowSpan="4" IsHitTestVisible="False"
+                      Visibility="{DynamicResource ChristmasOnlyVis}" Panel.ZIndex="0" ClipToBounds="True">
+
+                    <!-- Top Evergreen Pine Garland Eave Silhouette -->
+                    <Path HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="16" Stretch="Fill"
+                          Data="M 0,0 L 1060,0 L 1060,5 C 1020,14 980,6 940,12 C 900,16 860,6 820,13 C 780,16 740,7 700,14 C 660,17 620,6 580,13 C 540,17 500,7 460,13 C 420,17 380,6 340,14 C 300,17 260,7 220,13 C 180,17 140,6 100,13 C 60,17 20,6 0,12 Z">
+                        <Path.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#0D3B12" Offset="0.0" />
+                                <GradientStop Color="#1B5E20" Offset="0.6" />
+                                <GradientStop Color="#2E7D32" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Path.Fill>
+                    </Path>
+
+                    <!-- Top Fairy Lights String Along Garland -->
+                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="28">
+                        <!-- Light 1 (Gold) -->
+                        <Ellipse Canvas.Left="80" Canvas.Top="6" Width="6" Height="9" Fill="#FFD700">
+                            <Ellipse.Effect>
+                                <DropShadowEffect x:Name="LightGlow1" Color="#FFD700" BlurRadius="12" ShadowDepth="0" Opacity="0.85" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <!-- Light 2 (Santa Red) -->
+                        <Ellipse Canvas.Left="190" Canvas.Top="7" Width="6" Height="9" Fill="#FF1744">
+                            <Ellipse.Effect>
+                                <DropShadowEffect x:Name="LightGlow2" Color="#FF1744" BlurRadius="12" ShadowDepth="0" Opacity="0.85" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <!-- Light 3 (Emerald Green) -->
+                        <Ellipse Canvas.Left="310" Canvas.Top="5" Width="6" Height="9" Fill="#00E676">
+                            <Ellipse.Effect>
+                                <DropShadowEffect x:Name="LightGlow3" Color="#00E676" BlurRadius="12" ShadowDepth="0" Opacity="0.85" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <!-- Light 4 (Gold) -->
+                        <Ellipse Canvas.Left="430" Canvas.Top="7" Width="6" Height="9" Fill="#FFD700">
+                            <Ellipse.Effect>
+                                <DropShadowEffect Color="#FFD700" BlurRadius="12" ShadowDepth="0" Opacity="0.8" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <!-- Light 5 (Red) -->
+                        <Ellipse Canvas.Left="560" Canvas.Top="6" Width="6" Height="9" Fill="#FF1744">
+                            <Ellipse.Effect>
+                                <DropShadowEffect Color="#FF1744" BlurRadius="12" ShadowDepth="0" Opacity="0.8" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <!-- Light 6 (Emerald) -->
+                        <Ellipse Canvas.Left="690" Canvas.Top="7" Width="6" Height="9" Fill="#00E676">
+                            <Ellipse.Effect>
+                                <DropShadowEffect Color="#00E676" BlurRadius="12" ShadowDepth="0" Opacity="0.8" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <!-- Light 7 (Gold) -->
+                        <Ellipse Canvas.Left="820" Canvas.Top="5" Width="6" Height="9" Fill="#FFD700">
+                            <Ellipse.Effect>
+                                <DropShadowEffect Color="#FFD700" BlurRadius="12" ShadowDepth="0" Opacity="0.8" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <!-- Light 8 (Red) -->
+                        <Ellipse Canvas.Left="950" Canvas.Top="7" Width="6" Height="9" Fill="#FF1744">
+                            <Ellipse.Effect>
+                                <DropShadowEffect Color="#FF1744" BlurRadius="12" ShadowDepth="0" Opacity="0.8" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+                    </Canvas>
+
+                    <!-- Top-Left Hanging Christmas Stocking -->
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Height="50" Margin="18,12,0,0" RenderTransformOrigin="0.5,0.1">
+                        <Grid.RenderTransform>
+                            <RotateTransform x:Name="HangingStocking1Rotate" Angle="0" />
+                        </Grid.RenderTransform>
+                        <!-- Stocking Red Body -->
+                        <Path Data="M 12,12 L 12,30 C 12,38 8,42 16,46 C 24,50 32,46 30,38 C 28,32 24,32 24,28 L 24,12 Z"
+                              Fill="#D32F2F" Stroke="#B71C1C" StrokeThickness="1" />
+                        <!-- White Fur Cuff -->
+                        <Border Width="20" Height="8" Background="#FFFDF8" CornerRadius="4" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="8,8,0,0">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#FFFFFF" BlurRadius="4" ShadowDepth="0" Opacity="0.6" />
+                            </Border.Effect>
+                        </Border>
+                        <!-- Holly Berry Accent -->
+                        <StackPanel Orientation="Horizontal" Margin="14,14,0,0">
+                            <Ellipse Width="3" Height="3" Fill="#FF1744" />
+                            <Ellipse Width="3" Height="3" Fill="#FF1744" Margin="-1,2,0,0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Top-Right Hanging Christmas Stocking with Candy Cane -->
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="36" Height="50" Margin="0,12,120,0" RenderTransformOrigin="0.5,0.1">
+                        <Grid.RenderTransform>
+                            <RotateTransform x:Name="HangingStocking2Rotate" Angle="0" />
+                        </Grid.RenderTransform>
+                        <!-- Candy Cane poking out -->
+                        <Path Data="M 20,4 C 20,-4 30,-4 30,4 L 30,16" Stroke="#FF1744" StrokeThickness="3" Fill="Transparent" StrokeDashArray="2,1.5" />
+                        <!-- Stocking Evergreen Body -->
+                        <Path Data="M 12,12 L 12,30 C 12,38 8,42 16,46 C 24,50 32,46 30,38 C 28,32 24,32 24,12 Z"
+                              Fill="#1B5E20" Stroke="#0D3B12" StrokeThickness="1" />
+                        <!-- White Fur Cuff -->
+                        <Border Width="20" Height="8" Background="#FFFDF8" CornerRadius="4" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="8,8,0,0">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#FFFFFF" BlurRadius="4" ShadowDepth="0" Opacity="0.6" />
+                            </Border.Effect>
+                        </Border>
+                        <!-- Gold Star Accent -->
+                        <TextBlock Text="⭐" FontSize="8" Margin="14,14,0,0" />
+                    </Grid>
+                </Grid>
+
                 <!-- 1. Custom Title Bar (UR-040, UR-041, UR-070) -->
                 <Border Grid.Row="0" Height="{DynamicResource AppTitleBarHeight}"
                         Background="{DynamicResource AppTitleBarBackground}"
@@ -553,6 +851,8 @@
                                    FontFamily="{DynamicResource AppTitleFontFamily}" VerticalAlignment="Center" />
                         <TextBlock Text=" 🎃 🕸️ 🦇" FontSize="14" Foreground="#FFFDF8" VerticalAlignment="Center"
                                    Visibility="{DynamicResource HalloweenOnlyVis}" Margin="6,0,0,0" ToolTip="Halloween Jack-o'-Lantern Theme" />
+                        <TextBlock Text=" 🎄 ❄️ ⛄ 🎅" FontSize="14" Foreground="#FFFDF8" VerticalAlignment="Center"
+                                   Visibility="{DynamicResource ChristmasOnlyVis}" Margin="6,0,0,0" ToolTip="Christmas (Santa's Workshop) Theme" />
                     </StackPanel>
 
                     <!-- Draggable Caption Area (UR-041) -->
@@ -1023,6 +1323,51 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+
+                        <!-- Christmas Falling Snowflakes Layer over Today's Tasks (Hit-test disabled so tasks interact normally) -->
+                        <Canvas Grid.Row="1" IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}" ClipToBounds="True">
+                            <!-- Snowflake 1 -->
+                            <TextBlock Text="❄" FontSize="16" Foreground="#90CAF9" Opacity="0.55" Canvas.Left="50" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform x:Name="Snowflake1TranslateX" X="0" />
+                                        <TranslateTransform x:Name="Snowflake1TranslateY" Y="-20" />
+                                        <RotateTransform x:Name="Snowflake1Rotate" Angle="0" />
+                                    </TransformGroup>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+
+                            <!-- Snowflake 2 -->
+                            <TextBlock Text="❅" FontSize="20" Foreground="#E0F7FA" Opacity="0.6" Canvas.Left="160" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform x:Name="Snowflake2TranslateX" X="0" />
+                                        <TranslateTransform x:Name="Snowflake2TranslateY" Y="-20" />
+                                        <RotateTransform x:Name="Snowflake2Rotate" Angle="0" />
+                                    </TransformGroup>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+
+                            <!-- Snowflake 3 -->
+                            <TextBlock Text="❄" FontSize="14" Foreground="#BBDEFB" Opacity="0.5" Canvas.Left="270" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform x:Name="Snowflake3TranslateX" X="0" />
+                                        <TranslateTransform x:Name="Snowflake3TranslateY" Y="-20" />
+                                    </TransformGroup>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+
+                            <!-- Snowflake 4 -->
+                            <TextBlock Text="✻" FontSize="18" Foreground="#E1F5FE" Opacity="0.65" Canvas.Left="380" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform x:Name="Snowflake4TranslateX" X="0" />
+                                        <TranslateTransform x:Name="Snowflake4TranslateY" Y="-20" />
+                                    </TransformGroup>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </Canvas>
                     </Grid>
                 </Border>
 
@@ -1087,6 +1432,162 @@
                                  FontFamily="{DynamicResource AppBaseFontFamily}"
                                  Background="{DynamicResource AppCardBackground}" BorderThickness="0"
                                  VerticalScrollBarVisibility="Auto" />
+
+                        <!-- Christmas Falling Snowflakes Layer over Daily Notes (Hit-test disabled so typing works normally) -->
+                        <Canvas Grid.Row="1" IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}" ClipToBounds="True">
+                            <!-- Snowflake Notes 1 -->
+                            <TextBlock Text="❄" FontSize="18" Foreground="#90CAF9" Opacity="0.5" Canvas.Left="30" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform x:Name="SnowflakeNotes1TranslateX" X="0" />
+                                        <TranslateTransform x:Name="SnowflakeNotes1TranslateY" Y="-20" />
+                                        <RotateTransform x:Name="SnowflakeNotes1Rotate" Angle="0" />
+                                    </TransformGroup>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+
+                            <!-- Snowflake Notes 2 -->
+                            <TextBlock Text="❅" FontSize="22" Foreground="#E0F7FA" Opacity="0.55" Canvas.Left="140" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform x:Name="SnowflakeNotes2TranslateX" X="0" />
+                                        <TranslateTransform x:Name="SnowflakeNotes2TranslateY" Y="-20" />
+                                        <RotateTransform x:Name="SnowflakeNotes2Rotate" Angle="0" />
+                                    </TransformGroup>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+
+                            <!-- Snowflake Notes 3 -->
+                            <TextBlock Text="✻" FontSize="15" Foreground="#BBDEFB" Opacity="0.45" Canvas.Left="210" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform x:Name="SnowflakeNotes3TranslateX" X="0" />
+                                        <TranslateTransform x:Name="SnowflakeNotes3TranslateY" Y="-20" />
+                                    </TransformGroup>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </Canvas>
+
+                        <!-- Animated Vector Olaf the Snowman Companion Pet in Daily Notes (UR-Christmas, Hit-test disabled so typing is unaffected) -->
+                        <Grid Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,16,12"
+                              Width="120" Height="150" IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}">
+
+                            <!-- Soft Snow Drift Base Olaf Perches Upon -->
+                            <Path Data="M 10,140 Q 60,126 110,140 L 110,150 L 10,150 Z" Fill="#E3F2FD" Opacity="0.8" />
+
+                            <!-- Olaf Snowman Structure -->
+                            <!-- Lower Body / Belly Sphere with Squash & Stretch Wobble -->
+                            <Grid Width="58" Height="50" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,88,0,0" RenderTransformOrigin="0.5,1.0">
+                                <Grid.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform x:Name="OlafBellyScaleX" ScaleX="1.0" />
+                                        <ScaleTransform x:Name="OlafBellyScaleY" ScaleY="1.0" />
+                                    </TransformGroup>
+                                </Grid.RenderTransform>
+                                <!-- Belly Snowball -->
+                                <Ellipse Width="58" Height="48" Fill="#FFFFFF" Stroke="#CFD8DC" StrokeThickness="1.5" />
+                                <!-- Soft 3D Snow Shading -->
+                                <Ellipse Width="52" Height="42" Fill="#F0F8FF" Opacity="0.6" Margin="0,4,0,0" />
+                                <!-- 2 Coal Pebble Buttons on Belly -->
+                                <Ellipse Width="7" Height="7" Fill="#263238" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" />
+                                <Ellipse Width="7.5" Height="7.5" Fill="#212121" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,26,0,0" />
+                            </Grid>
+
+                            <!-- Round Snowy Feet -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,2">
+                                <Ellipse Width="16" Height="12" Fill="#FFFFFF" Stroke="#CFD8DC" StrokeThickness="1.2" Margin="0,0,6,0" />
+                                <Ellipse Width="16" Height="12" Fill="#FFFFFF" Stroke="#CFD8DC" StrokeThickness="1.2" />
+                            </StackPanel>
+
+                            <!-- Upper Chest Sphere -->
+                            <Grid Width="42" Height="36" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,62,0,0">
+                                <Ellipse Width="42" Height="36" Fill="#FFFFFF" Stroke="#CFD8DC" StrokeThickness="1.5" />
+                                <!-- 1 Coal Pebble Button on Chest -->
+                                <Ellipse Width="6" Height="6" Fill="#263238" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+
+                            <!-- Left Twig Stick Arm with Waving Animation -->
+                            <Grid Width="42" Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6,62,0,0" RenderTransformOrigin="0.9,0.5">
+                                <Grid.RenderTransform>
+                                    <RotateTransform x:Name="OlafArmLeftRotate" Angle="0" />
+                                </Grid.RenderTransform>
+                                <!-- Articulated Brown Twig with 3 Fingers -->
+                                <Path Data="M 38,18 L 14,14 L 2,8 M 14,14 L 4,16 M 14,14 L 6,24"
+                                      Stroke="#5D4037" StrokeThickness="2.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                            </Grid>
+
+                            <!-- Right Twig Stick Arm with Waving Animation -->
+                            <Grid Width="42" Height="38" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,62,6,0" RenderTransformOrigin="0.1,0.5">
+                                <Grid.RenderTransform>
+                                    <RotateTransform x:Name="OlafArmRightRotate" Angle="0" />
+                                </Grid.RenderTransform>
+                                <!-- Articulated Brown Twig with 3 Fingers -->
+                                <Path Data="M 4,18 L 28,14 L 40,8 M 28,14 L 38,16 M 28,14 L 36,24"
+                                      Stroke="#5D4037" StrokeThickness="2.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                            </Grid>
+
+                            <!-- Olaf Head Container with Head Tilt, Carrot Sneeze, and Snowball Balance -->
+                            <Grid Width="48" Height="60" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" RenderTransformOrigin="0.5,0.9">
+                                <Grid.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform x:Name="OlafHeadTranslate" Y="0" />
+                                        <RotateTransform x:Name="OlafHeadRotate" Angle="0" />
+                                    </TransformGroup>
+                                </Grid.RenderTransform>
+
+                                <!-- Mini Snowball Balanced Atop Head (Balancing Wobble) -->
+                                <Grid Width="14" Height="14" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-6,0,0" RenderTransformOrigin="0.5,1.0">
+                                    <Grid.RenderTransform>
+                                        <TransformGroup>
+                                            <TranslateTransform x:Name="OlafSnowballTranslate" X="0" />
+                                            <RotateTransform x:Name="OlafSnowballRotate" Angle="0" />
+                                        </TransformGroup>
+                                    </Grid.RenderTransform>
+                                    <Ellipse Width="14" Height="14" Fill="#FFFFFF" Stroke="#90CAF9" StrokeThickness="1" />
+                                    <TextBlock Text="✨" FontSize="7" Margin="2,1,0,0" />
+                                </Grid>
+
+                                <!-- 3 Stick Twig Hair Tufts Sprouting From Head -->
+                                <Path Data="M 24,10 L 24,2 M 24,10 L 20,4 M 24,10 L 28,3"
+                                      Stroke="#5D4037" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+
+                                <!-- Olaf Sculpted Head Oval -->
+                                <Path Data="M 24,8 C 12,8 8,20 10,34 C 12,46 16,54 24,54 C 32,54 36,46 38,34 C 40,20 36,8 24,8 Z"
+                                      Fill="#FFFFFF" Stroke="#CFD8DC" StrokeThickness="1.5" />
+
+                                <!-- Expressive Eyebrows -->
+                                <Path Data="M 15,18 Q 18,15 21,17" Stroke="#5D4037" StrokeThickness="1.8" StrokeStartLineCap="Round" />
+                                <Path Data="M 27,17 Q 30,15 33,18" Stroke="#5D4037" StrokeThickness="1.8" StrokeStartLineCap="Round" />
+
+                                <!-- Big Shiny Eyes -->
+                                <Ellipse Width="5" Height="6.5" Fill="#212121" Margin="16,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <Ellipse Width="2" Height="2" Fill="#FFFFFF" Margin="17,21,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <Ellipse Width="5" Height="6.5" Fill="#212121" Margin="0,20,16,0" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                                <Ellipse Width="2" Height="2" Fill="#FFFFFF" Margin="0,21,17,0" HorizontalAlignment="Right" VerticalAlignment="Top" />
+
+                                <!-- Wide Happy Open Buck-Tooth Smile -->
+                                <Path Data="M 14,35 Q 24,50 34,35 Z" Fill="#212121" />
+                                <!-- Big Single White Buck Tooth -->
+                                <Rectangle Width="6" Height="6" Fill="#FFFFFF" RadiusX="1" RadiusY="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,35,0,0" />
+
+                                <!-- Carrot Nose with Sneeze Pop & Snap Back Transform -->
+                                <Grid Width="22" Height="10" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="12,26,0,0" RenderTransformOrigin="0.1,0.5">
+                                    <Grid.RenderTransform>
+                                        <TranslateTransform x:Name="OlafCarrotTranslate" X="0" Y="0" />
+                                    </Grid.RenderTransform>
+                                    <!-- Orange Carrot Cone with Rib Ridges -->
+                                    <Polygon Points="0,2 20,5 0,8" Fill="#FF6D00" Stroke="#E65100" StrokeThickness="0.8" />
+                                    <Line X1="6" Y1="3" X2="6" Y2="7" Stroke="#BF360C" StrokeThickness="0.6" />
+                                    <Line X1="12" Y1="4" X2="12" Y2="6" Stroke="#BF360C" StrokeThickness="0.6" />
+                                </Grid>
+                            </Grid>
+
+                            <!-- Festive Subtle "Olaf ⛄" Badge -->
+                            <Border HorizontalAlignment="Right" VerticalAlignment="Top" Background="#1B5E20" BorderBrush="#FFD700"
+                                    BorderThickness="1" CornerRadius="4" Padding="4,1" Margin="0,0,2,0">
+                                <TextBlock Text="Olaf ⛄" FontSize="9" FontWeight="Bold" Foreground="#FFFDF8" />
+                            </Border>
+                        </Grid>
                     </Grid>
                 </Border>
             </Grid>
@@ -1440,6 +1941,65 @@
                     </Grid>
                 </Grid>
 
+                <!-- 1b. Full-Screen Christmas Winter Wonderland Atmosphere (Visible only in Christmas Theme) -->
+                <Grid Visibility="{DynamicResource ChristmasOnlyVis}" IsHitTestVisible="False">
+                    <!-- Radiant Glowing North Star -->
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-150,0,0">
+                        <TextBlock Text="⭐" FontSize="70" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock.Effect>
+                                <DropShadowEffect x:Name="RemStarGlow" Color="#FFD700" BlurRadius="30" ShadowDepth="0" Opacity="0.9" />
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+
+                    <!-- Flying Reindeer Flight Swoop across sky -->
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-220,0,0" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="RemReindeerTranslate" X="0" />
+                                <RotateTransform x:Name="RemReindeerRotate" Angle="0" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <!-- Reindeer Rudolph & Team with glowing nose -->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Grid Margin="0,0,12,0">
+                                <TextBlock Text="🦌" FontSize="46" />
+                                <Ellipse Width="6" Height="6" Fill="#FF1744" Margin="28,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect Color="#FF1744" BlurRadius="10" ShadowDepth="0" Opacity="1.0" />
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                            </Grid>
+                            <TextBlock Text="🦌" FontSize="42" Margin="0,4,12,0" />
+                            <TextBlock Text="🛷" FontSize="48" Margin="0,2,0,0" />
+                            <TextBlock Text="🎅" FontSize="36" Margin="-20,-8,0,0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Ringing Corner Jingle Bells -->
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-70,-60,0,0" Width="80" Height="80" RenderTransformOrigin="0.5,0.1">
+                        <Grid.RenderTransform>
+                            <RotateTransform x:Name="RemBell1Rotate" Angle="0" />
+                        </Grid.RenderTransform>
+                        <TextBlock Text="🔔" FontSize="52" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock.Effect>
+                                <DropShadowEffect Color="#FFD700" BlurRadius="16" ShadowDepth="0" Opacity="0.85" />
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-60,-70,0" Width="80" Height="80" RenderTransformOrigin="0.5,0.1">
+                        <Grid.RenderTransform>
+                            <RotateTransform x:Name="RemBell2Rotate" Angle="0" />
+                        </Grid.RenderTransform>
+                        <TextBlock Text="🔔" FontSize="52" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock.Effect>
+                                <DropShadowEffect Color="#FFD700" BlurRadius="16" ShadowDepth="0" Opacity="0.85" />
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+
                 <!-- 2. Sculpted Mascot Jack-o'-Lantern Body, Stem, Glowing Eyes & Grin -->
                 <Grid Visibility="{DynamicResource HalloweenOnlyVis}" IsHitTestVisible="False" Margin="-55,-65,-55,-55" RenderTransformOrigin="0.5,0.5">
                     <Grid.RenderTransform>
@@ -1577,6 +2137,48 @@
                     </Path>
                 </Grid>
 
+                <!-- 2b. Sculpted Mascot Santa Sleigh & Evergreen Pine Frame (Visible only in Christmas Theme) -->
+                <Grid Visibility="{DynamicResource ChristmasOnlyVis}" IsHitTestVisible="False" Margin="-55,-65,-55,-55" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform x:Name="RemSleighRock" Angle="0" />
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+
+                    <!-- Outer Sleigh & Hearth Crimson/Evergreen Glow Silhouette -->
+                    <Border CornerRadius="28" BorderBrush="#FFD700" BorderThickness="4" Background="#0A1428" Opacity="0.95">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#FFD700" BlurRadius="45" ShadowDepth="0" Opacity="0.85" />
+                        </Border.Effect>
+                    </Border>
+
+                    <!-- Top Evergreen Pine Garland with Red Bow & Golden Bells -->
+                    <Grid VerticalAlignment="Top" Height="70" Margin="10,-24,10,0">
+                        <!-- Garland Curve -->
+                        <Path Data="M 10,40 Q 380,10 760,40" Stroke="#1B5E20" StrokeThickness="16" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                        <Path Data="M 10,40 Q 380,10 760,40" Stroke="#2E7D32" StrokeThickness="8" StrokeDashArray="2,2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                        <!-- Big Velvet Red Ribbon Bow at Center -->
+                        <TextBlock Text="🎀" FontSize="44" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-4,0,0">
+                            <TextBlock.Effect>
+                                <DropShadowEffect Color="#D32F2F" BlurRadius="12" ShadowDepth="0" Opacity="0.8" />
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+
+                    <!-- Bottom Golden Sleigh Runners -->
+                    <Grid VerticalAlignment="Bottom" Height="50" Margin="20,0,20,-20">
+                        <!-- Golden Curved Runners -->
+                        <Path Data="M 20,20 Q 80,45 200,45 L 600,45 Q 720,45 760,15"
+                              Stroke="#FFD700" StrokeThickness="5" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                            <Path.Effect>
+                                <DropShadowEffect Color="#FFD700" BlurRadius="14" ShadowDepth="0" Opacity="0.9" />
+                            </Path.Effect>
+                        </Path>
+                        <!-- Fluffy Snow Bank settled on runners -->
+                        <Path Data="M 60,35 Q 200,20 400,32 Q 600,18 720,35 L 720,46 L 60,46 Z" Fill="#E0F7FA" Opacity="0.75" />
+                    </Grid>
+                </Grid>
+
                 <!-- Inner Dialog Frame Container -->
                 <Border Style="{DynamicResource DialogOuterFrameStyle}" Width="660" MaxHeight="620">
                 <Grid Margin="24">
@@ -1668,6 +2270,97 @@
                                 </Border>
                                 <TextBlock Text="Don't let your tasks haunt you! Finish them today!"
                                            FontSize="11" FontWeight="Bold" Foreground="#FFA000"
+                                           FontFamily="Segoe UI, sans-serif" VerticalAlignment="Center">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#000000" BlurRadius="4" ShadowDepth="1" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 0b. Christmas Animated Character Banner (Santa, Flying Rudolph, Olaf & Ringing Bells) -->
+                    <Border Grid.Row="0" x:Name="ChristmasReminderBanner" CornerRadius="8" Margin="0,0,0,14" Height="140"
+                            ClipToBounds="True" BorderBrush="#FFD700" BorderThickness="2"
+                            Visibility="{DynamicResource ChristmasOnlyVis}">
+                        <Border.Effect>
+                            <DropShadowEffect x:Name="ChristmasBannerGlow" Color="#FFD700" BlurRadius="18" ShadowDepth="0" Opacity="0.85" />
+                        </Border.Effect>
+                        <Grid>
+                            <!-- Festive Winter Hearth Gradient Background -->
+                            <Border>
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#08101E" Offset="0.0" />
+                                        <GradientStop Color="#1B5E20" Offset="0.4" />
+                                        <GradientStop Color="#7F0000" Offset="0.8" />
+                                        <GradientStop Color="#D32F2F" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                            </Border>
+
+                            <!-- Decorative Snow Dusting -->
+                            <TextBlock Text="❄️" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,10,0,0" Opacity="0.6" />
+                            <TextBlock Text="❄️" FontSize="26" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,14,0" Opacity="0.6" />
+
+                            <!-- Animated Center Characters (Bouncing Santa, Olaf, Rudolph, Gift Sack) -->
+                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Bouncing Rudolph -->
+                                <TextBlock Grid.Column="0" Text="🦌" FontSize="44" VerticalAlignment="Center" Margin="0,0,16,0" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform x:Name="RemRudolphBounce" Y="0" />
+                                    </TextBlock.RenderTransform>
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#FF1744" BlurRadius="12" ShadowDepth="0" Opacity="0.8" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+
+                                <!-- Bouncing Santa Claus -->
+                                <TextBlock Grid.Column="1" Text="🎅" FontSize="62" VerticalAlignment="Center" Margin="0,0,12,0" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform x:Name="RemSantaBounce" Y="0" />
+                                    </TextBlock.RenderTransform>
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#FFD700" BlurRadius="16" ShadowDepth="0" Opacity="0.85" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+
+                                <!-- Cheering Olaf -->
+                                <TextBlock Grid.Column="2" Text="⛄" FontSize="56" VerticalAlignment="Center" Margin="0,0,14,0" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform x:Name="RemOlafBannerBounce" Y="0" />
+                                    </TextBlock.RenderTransform>
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#80D8FF" BlurRadius="14" ShadowDepth="0" Opacity="0.8" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+
+                                <!-- Pulsing Wrapped Gift Sack -->
+                                <TextBlock Grid.Column="3" Text="🎁" FontSize="44" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <ScaleTransform x:Name="RemGiftScale" ScaleY="1.0" />
+                                    </TextBlock.RenderTransform>
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#FFD700" BlurRadius="12" ShadowDepth="0" Opacity="0.8" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                            </Grid>
+
+                            <!-- Festive Subhead Badge -->
+                            <StackPanel VerticalAlignment="Bottom" Margin="16,0,16,8" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Border Background="#D32F2F" CornerRadius="4" Padding="8,3" Margin="0,0,8,0">
+                                    <TextBlock Text="🎅 HO HO HO! SANTA'S WORKSHOP REMINDER! 🎁" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF"
+                                               FontFamily="Century Gothic, Impact, sans-serif" />
+                                </Border>
+                                <TextBlock Text="Complete your tasks before Santa slides down the chimney!"
+                                           FontSize="11" FontWeight="Bold" Foreground="#FFE082"
                                            FontFamily="Segoe UI, sans-serif" VerticalAlignment="Center">
                                     <TextBlock.Effect>
                                         <DropShadowEffect Color="#000000" BlurRadius="4" ShadowDepth="1" />

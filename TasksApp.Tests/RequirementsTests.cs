@@ -594,5 +594,22 @@ namespace TasksApp.Tests
             Assert.Equal("Ancient Task", loaded[0].Title);
             Assert.False(loaded[0].IsCompleted);
         }
+
+        [Fact]
+        public void ThemeManager_ChristmasTheme_AppliesCorrectIndicatorsAndPersists()
+        {
+            var settings = new AppSettings { Theme = ThemeManager.ChristmasTheme };
+            Assert.Equal("Christmas", settings.Theme);
+
+            ThemeManager.ApplyTheme(ThemeManager.ChristmasTheme);
+            Assert.Equal(ThemeManager.ChristmasTheme, ThemeManager.CurrentTheme);
+            Assert.True(ThemeManager.IsChristmas);
+            Assert.False(ThemeManager.IsHalloween);
+            Assert.False(ThemeManager.IsWin95);
+
+            // Revert back to Default
+            ThemeManager.ApplyTheme(ThemeManager.DefaultTheme);
+            Assert.False(ThemeManager.IsChristmas);
+        }
     }
 }

@@ -68,6 +68,10 @@ namespace TasksApp.Views
             {
                 RbThemeHalloween.IsChecked = true;
             }
+            else if (string.Equals(UpdatedSettings.Theme, ThemeManager.ChristmasTheme, StringComparison.OrdinalIgnoreCase))
+            {
+                RbThemeChristmas.IsChecked = true;
+            }
             else
             {
                 RbThemeDefault.IsChecked = true;
@@ -226,7 +230,9 @@ namespace TasksApp.Views
                     ? ThemeManager.RetroTheme 
                     : (RbThemeTerminal.IsChecked == true 
                         ? ThemeManager.TerminalTheme 
-                        : (RbThemeHalloween.IsChecked == true ? ThemeManager.HalloweenTheme : ThemeManager.DefaultTheme)));
+                        : (RbThemeHalloween.IsChecked == true 
+                            ? ThemeManager.HalloweenTheme 
+                            : (RbThemeChristmas.IsChecked == true ? ThemeManager.ChristmasTheme : ThemeManager.DefaultTheme))));
             ThemeManager.ApplyTheme(selected);
         }
 

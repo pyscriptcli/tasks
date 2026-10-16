@@ -11,6 +11,7 @@ namespace TasksApp.Services
         public const string RetroTheme = "Retro";
         public const string TerminalTheme = "Terminal";
         public const string HalloweenTheme = "Halloween";
+        public const string ChristmasTheme = "Christmas";
 
         public static string CurrentTheme { get; private set; } = DefaultTheme;
 
@@ -18,11 +19,12 @@ namespace TasksApp.Services
         public static bool IsRetro => string.Equals(CurrentTheme, RetroTheme, StringComparison.OrdinalIgnoreCase);
         public static bool IsTerminal => string.Equals(CurrentTheme, TerminalTheme, StringComparison.OrdinalIgnoreCase);
         public static bool IsHalloween => string.Equals(CurrentTheme, HalloweenTheme, StringComparison.OrdinalIgnoreCase);
+        public static bool IsChristmas => string.Equals(CurrentTheme, ChristmasTheme, StringComparison.OrdinalIgnoreCase);
 
         public static event Action<string>? ThemeChanged;
 
         /// <summary>
-        /// Applies the requested theme ("Default", "Win95", "Retro", "Terminal", or "Halloween") to the entire application.
+        /// Applies the requested theme ("Default", "Win95", "Retro", "Terminal", "Halloween", or "Christmas") to the entire application.
         /// </summary>
         public static void ApplyTheme(string? themeName)
         {
@@ -43,6 +45,10 @@ namespace TasksApp.Services
             {
                 targetTheme = HalloweenTheme;
             }
+            else if (string.Equals(themeName, ChristmasTheme, StringComparison.OrdinalIgnoreCase))
+            {
+                targetTheme = ChristmasTheme;
+            }
             else
             {
                 targetTheme = DefaultTheme;
@@ -58,6 +64,7 @@ namespace TasksApp.Services
                     RetroTheme => "/Themes/RetroTheme.xaml",
                     TerminalTheme => "/Themes/TerminalTheme.xaml",
                     HalloweenTheme => "/Themes/HalloweenTheme.xaml",
+                    ChristmasTheme => "/Themes/ChristmasTheme.xaml",
                     _ => "/Themes/DefaultTheme.xaml"
                 };
 
@@ -77,7 +84,8 @@ namespace TasksApp.Services
                             d.Source.OriginalString.Contains("Win95Theme.xaml") ||
                             d.Source.OriginalString.Contains("RetroTheme.xaml") ||
                             d.Source.OriginalString.Contains("TerminalTheme.xaml") ||
-                            d.Source.OriginalString.Contains("HalloweenTheme.xaml")))
+                            d.Source.OriginalString.Contains("HalloweenTheme.xaml") ||
+                            d.Source.OriginalString.Contains("ChristmasTheme.xaml")))
                         .ToList();
 
                     foreach (var oldDict in existingThemeDicts)

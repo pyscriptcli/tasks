@@ -86,11 +86,12 @@
                         <StackPanel>
                             <TextBlock Text="APPEARANCE &amp; THEME" FontSize="11" FontWeight="Bold"
                                        Foreground="{DynamicResource AppPrimaryColor}" Margin="0,0,0,4" />
-                            <TextBlock Text="Choose between PRIME Sovereign, authentic Windows 95, 70s Retro Vintage, CRT Phosphor Terminal, and Halloween Jack-o'-Lantern."
+                            <TextBlock Text="Choose between PRIME Sovereign, authentic Windows 95, 70s Retro Vintage, CRT Phosphor Terminal, Halloween Jack-o'-Lantern, and Christmas Santa's Workshop."
                                        FontSize="11" Foreground="{DynamicResource AppTextForeground}" Margin="0,0,0,12" />
 
                             <Grid Margin="0,0,0,4">
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
@@ -160,7 +161,7 @@
 
                                 <!-- Halloween Jack-o'-Lantern Card -->
                                 <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#FF6B00" BorderThickness="2"
-                                        Background="#0B0314" CornerRadius="8" Padding="10" Margin="0,4,0,0">
+                                        Background="#0B0314" CornerRadius="8" Padding="10" Margin="0,4,0,4">
                                     <Border.Effect>
                                         <DropShadowEffect Color="#FF6B00" Direction="0" ShadowDepth="0" BlurRadius="10" Opacity="0.65" />
                                     </Border.Effect>
@@ -181,6 +182,34 @@
                                             </StackPanel>
                                             <Border Grid.Column="1" Background="#140821" BorderBrush="#FF6B00" BorderThickness="1.5" CornerRadius="6" Padding="8,4" Margin="10,0,0,0" VerticalAlignment="Center">
                                                 <TextBlock Text="🎃 SPOOKY" FontSize="11" FontWeight="Bold" Foreground="#FFD000" />
+                                            </Border>
+                                        </Grid>
+                                    </RadioButton>
+                                </Border>
+
+                                <!-- Christmas (Santa's Workshop & Cozy Hearth) Card -->
+                                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="#D32F2F" BorderThickness="2"
+                                        Background="#080F1E" CornerRadius="8" Padding="10" Margin="0,4,0,0">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#FFD700" Direction="0" ShadowDepth="0" BlurRadius="10" Opacity="0.65" />
+                                    </Border.Effect>
+                                    <RadioButton x:Name="RbThemeChristmas" GroupName="AppThemeGroup" Cursor="Hand" Checked="OnThemeRadioChecked">
+                                        <Grid Margin="6,0,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Christmas (Santa's Workshop &amp; Cozy Hearth)" FontSize="12" FontWeight="Bold" Foreground="#FFD700"
+                                                               FontFamily="Century Gothic, Segoe UI, sans-serif" />
+                                                    <TextBlock Text=" 🎄 ❄️ ⛄ 🎅" FontSize="12" />
+                                                </StackPanel>
+                                                <TextBlock Text="Festive crimson &amp; evergreen pine canvas with falling snowflakes, animated Olaf pet in Daily Notes, and Santa's magical sleigh."
+                                                           FontSize="11" Foreground="#FFE082" TextWrapping="Wrap" Margin="0,3,0,0" />
+                                            </StackPanel>
+                                            <Border Grid.Column="1" Background="#1B5E20" BorderBrush="#FFD700" BorderThickness="1.5" CornerRadius="6" Padding="8,4" Margin="10,0,0,0" VerticalAlignment="Center">
+                                                <TextBlock Text="❄️ FESTIVE" FontSize="11" FontWeight="Bold" Foreground="#FFFDF8" />
                                             </Border>
                                         </Grid>
                                     </RadioButton>

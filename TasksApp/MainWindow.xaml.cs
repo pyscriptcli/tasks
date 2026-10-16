@@ -26,6 +26,8 @@ namespace TasksApp
         private Storyboard? _glowStoryboard;
         private Storyboard? _halloweenAmbientStoryboard;
         private Storyboard? _halloweenReminderStoryboard;
+        private Storyboard? _christmasAmbientStoryboard;
+        private Storyboard? _christmasReminderStoryboard;
 
         public MainWindow()
         {
@@ -79,13 +81,15 @@ namespace TasksApp
         {
             if (e.PropertyName == nameof(MainViewModel.IsReminderOverlayVisible))
             {
-                if (_viewModel.IsReminderOverlayVisible && ThemeManager.IsHalloween)
+                if (_viewModel.IsReminderOverlayVisible)
                 {
-                    _halloweenReminderStoryboard?.Begin(this, true);
+                    if (ThemeManager.IsHalloween) _halloweenReminderStoryboard?.Begin(this, true);
+                    if (ThemeManager.IsChristmas) _christmasReminderStoryboard?.Begin(this, true);
                 }
                 else
                 {
                     _halloweenReminderStoryboard?.Stop(this);
+                    _christmasReminderStoryboard?.Stop(this);
                 }
             }
         }
@@ -130,6 +134,24 @@ namespace TasksApp
                 _halloweenAmbientStoryboard?.Stop(this);
                 _halloweenReminderStoryboard?.Stop(this);
             }
+
+            if (ThemeManager.IsChristmas)
+            {
+                _christmasAmbientStoryboard?.Begin(this, true);
+                if (_viewModel?.IsReminderOverlayVisible == true)
+                {
+                    _christmasReminderStoryboard?.Begin(this, true);
+                }
+                else
+                {
+                    _christmasReminderStoryboard?.Stop(this);
+                }
+            }
+            else
+            {
+                _christmasAmbientStoryboard?.Stop(this);
+                _christmasReminderStoryboard?.Stop(this);
+            }
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -137,10 +159,16 @@ namespace TasksApp
             _glowStoryboard = TryFindResource("ReminderGlowAnimation") as Storyboard;
             _halloweenAmbientStoryboard = TryFindResource("HalloweenAmbientStoryboard") as Storyboard;
             _halloweenReminderStoryboard = TryFindResource("HalloweenReminderStoryboard") as Storyboard;
+            _christmasAmbientStoryboard = TryFindResource("ChristmasAmbientStoryboard") as Storyboard;
+            _christmasReminderStoryboard = TryFindResource("ChristmasReminderStoryboard") as Storyboard;
 
             if (ThemeManager.IsHalloween)
             {
                 _halloweenAmbientStoryboard?.Begin(this, true);
+            }
+            else if (ThemeManager.IsChristmas)
+            {
+                _christmasAmbientStoryboard?.Begin(this, true);
             }
 
             await _viewModel.InitializeStartupAsync();
@@ -332,6 +360,10 @@ namespace TasksApp
                 {
                     _halloweenReminderStoryboard?.Begin(this, true);
                 }
+                else if (ThemeManager.IsChristmas)
+                {
+                    _christmasReminderStoryboard?.Begin(this, true);
+                }
             });
         }
 
@@ -342,6 +374,7 @@ namespace TasksApp
                 // Stop glowing animation and remove topmost forcing (UR-028)
                 _glowStoryboard?.Stop(this);
                 _halloweenReminderStoryboard?.Stop(this);
+                _christmasReminderStoryboard?.Stop(this);
                 ReminderGlowBorder.Visibility = Visibility.Collapsed;
                 Topmost = _viewModel.AlwaysOnTop; // Reset to user's setting
             });

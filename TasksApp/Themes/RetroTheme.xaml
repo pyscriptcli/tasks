@@ -63,6 +63,9 @@
     <sys:Boolean x:Key="IsHalloween">False</sys:Boolean>
     <Visibility x:Key="HalloweenOnlyVis">Collapsed</Visibility>
     <Visibility x:Key="NotHalloweenVis">Visible</Visibility>
+    <sys:Boolean x:Key="IsChristmas">False</sys:Boolean>
+    <Visibility x:Key="ChristmasOnlyVis">Collapsed</Visibility>
+    <Visibility x:Key="NotChristmasVis">Visible</Visibility>
 
     <!-- Outer Window / Dialog Frame Style: Bold Vintage Chocolate Border with Warm 3D Offset Shadow -->
     <Style x:Key="DialogOuterFrameStyle" TargetType="Border">
