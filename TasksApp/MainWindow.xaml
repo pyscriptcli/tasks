@@ -1341,7 +1341,7 @@
                         </ListBox>
 
                         <!-- Christmas Falling Snowflakes Layer over Today's Tasks (Hit-test disabled so tasks interact normally) -->
-                        <Canvas Grid.Row="1" IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}" ClipToBounds="True">
+                        <Canvas x:Name="TasksSnowCanvas" Grid.Row="1" IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}" ClipToBounds="True">
                             <!-- Snowflake 1 -->
                             <TextBlock Text="❄" FontSize="16" Foreground="#90CAF9" Opacity="0.55" Canvas.Left="50" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
                                 <TextBlock.RenderTransform>
@@ -1450,7 +1450,7 @@
                                  VerticalScrollBarVisibility="Auto" />
 
                         <!-- Christmas Falling Snowflakes Layer over Daily Notes (Hit-test disabled so typing works normally) -->
-                        <Canvas Grid.Row="1" IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}" ClipToBounds="True">
+                        <Canvas x:Name="NotesSnowCanvas" Grid.Row="1" IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}" ClipToBounds="True">
                             <!-- Snowflake Notes 1 -->
                             <TextBlock Text="❄" FontSize="18" Foreground="#90CAF9" Opacity="0.5" Canvas.Left="30" Canvas.Top="0" RenderTransformOrigin="0.5,0.5">
                                 <TextBlock.RenderTransform>
@@ -1484,12 +1484,16 @@
                             </TextBlock>
                         </Canvas>
 
-                        <!-- Animated Vector Olaf the Snowman Companion Pet in Daily Notes (UR-Christmas, Hit-test disabled so typing is unaffected) -->
-                        <Grid Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,16,12"
-                              Width="120" Height="150" IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}">
-
-                            <!-- Soft Snow Drift Base Olaf Perches Upon -->
-                            <Path Data="M 10,140 Q 60,126 110,140 L 110,150 L 10,150 Z" Fill="#E3F2FD" Opacity="0.8" />
+                        <!-- Animated Vector Olaf the Snowman Companion Pet (UR-Christmas, Hit-test disabled so typing is unaffected) -->
+                        <Grid x:Name="OlafPet" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                              Width="120" Height="150" IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}"
+                              RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform x:Name="OlafFacingScale" ScaleX="1.0" ScaleY="1.0" />
+                                    <TranslateTransform x:Name="OlafPetTranslate" X="0" Y="0" />
+                                </TransformGroup>
+                            </Grid.RenderTransform>
 
                             <!-- Olaf Snowman Structure -->
                             <!-- Lower Body / Belly Sphere with Squash & Stretch Wobble -->
@@ -1509,10 +1513,14 @@
                                 <Ellipse Width="7.5" Height="7.5" Fill="#212121" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,26,0,0" />
                             </Grid>
 
-                            <!-- Round Snowy Feet -->
+                            <!-- Round Snowy Feet (swap during the running cycle) -->
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,2">
-                                <Ellipse Width="16" Height="12" Fill="#FFFFFF" Stroke="#CFD8DC" StrokeThickness="1.2" Margin="0,0,6,0" />
-                                <Ellipse Width="16" Height="12" Fill="#FFFFFF" Stroke="#CFD8DC" StrokeThickness="1.2" />
+                                <Ellipse Width="16" Height="12" Fill="#FFFFFF" Stroke="#90A4AE" StrokeThickness="1.2" Margin="0,0,6,0">
+                                    <Ellipse.RenderTransform><TranslateTransform x:Name="OlafFootLeft" /></Ellipse.RenderTransform>
+                                </Ellipse>
+                                <Ellipse Width="16" Height="12" Fill="#FFFFFF" Stroke="#90A4AE" StrokeThickness="1.2">
+                                    <Ellipse.RenderTransform><TranslateTransform x:Name="OlafFootRight" /></Ellipse.RenderTransform>
+                                </Ellipse>
                             </StackPanel>
 
                             <!-- Upper Chest Sphere -->
@@ -1606,6 +1614,10 @@
                         </Grid>
                     </Grid>
                 </Border>
+
+                <!-- Olaf runs across both panes on this stage (hit-test off so tasks and notes stay usable) -->
+                <Canvas x:Name="OlafStage" Grid.Column="0" Grid.ColumnSpan="3" IsHitTestVisible="False" ClipToBounds="True"
+                        Visibility="{DynamicResource ChristmasOnlyVis}" Panel.ZIndex="5" />
             </Grid>
 
             <!-- 4. Status Bar -->
@@ -1733,6 +1745,9 @@
         <!-- REMINDER OVERLAY DIALOG (UR-020, UR-021, UR-022, UR-024) -->
         <!-- ======================================================== -->
         <Border Background="#9C04010C" Visibility="{Binding IsReminderOverlayVisible, Converter={StaticResource BoolToVis}}" Panel.ZIndex="200">
+            <Grid>
+            <!-- Full-screen Christmas sky: slow snow and Santa's sleigh team (populated in code) -->
+            <Canvas x:Name="ChristmasReminderSky" IsHitTestVisible="False" ClipToBounds="True" Visibility="{DynamicResource ChristmasOnlyVis}" />
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
 
                 <!-- 1. Full-Screen Halloween Atmosphere & Moon (Visible only in Halloween Theme) -->
@@ -1969,7 +1984,7 @@
                     </Grid>
 
                     <!-- Flying Reindeer Flight Swoop across sky -->
-                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-220,0,0" RenderTransformOrigin="0.5,0.5">
+                    <Grid Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-220,0,0" RenderTransformOrigin="0.5,0.5">
                         <Grid.RenderTransform>
                             <TransformGroup>
                                 <TranslateTransform x:Name="RemReindeerTranslate" X="0" />
@@ -2153,50 +2168,64 @@
                     </Path>
                 </Grid>
 
-                <!-- 2b. Sculpted Mascot Santa Sleigh & Evergreen Pine Frame (Visible only in Christmas Theme) -->
-                <Grid Visibility="{DynamicResource ChristmasOnlyVis}" IsHitTestVisible="False" Margin="-55,-65,-55,-55" RenderTransformOrigin="0.5,0.5">
+                <!-- 2b. Christmas Gift Box the reminder card bursts out of (Visible only in Christmas Theme) -->
+                <Grid x:Name="GiftBox" Visibility="{DynamicResource ChristmasOnlyVis}" IsHitTestVisible="False" Margin="-40,-30,-40,-40" RenderTransformOrigin="0.5,1.0">
                     <Grid.RenderTransform>
                         <TransformGroup>
+                            <ScaleTransform x:Name="GiftBoxSquash" ScaleX="1" ScaleY="1" />
                             <RotateTransform x:Name="RemSleighRock" Angle="0" />
+                            <TranslateTransform x:Name="GiftBoxDrop" Y="0" />
                         </TransformGroup>
                     </Grid.RenderTransform>
 
-                    <!-- Outer Sleigh & Hearth Crimson/Evergreen Glow Silhouette -->
-                    <Border CornerRadius="28" BorderBrush="#FFD700" BorderThickness="4" Background="#0A1428" Opacity="0.95">
+                    <!-- Box body -->
+                    <Border CornerRadius="10" BorderBrush="#FFD700" BorderThickness="4" Background="#B71C1C">
                         <Border.Effect>
-                            <DropShadowEffect Color="#FFD700" BlurRadius="45" ShadowDepth="0" Opacity="0.85" />
+                            <DropShadowEffect Color="#000000" BlurRadius="30" ShadowDepth="6" Opacity="0.55" />
                         </Border.Effect>
                     </Border>
+                    <!-- Ribbon cross -->
+                    <Rectangle Width="44" Fill="#FFD700" HorizontalAlignment="Center" Margin="0,4" />
+                    <Rectangle Height="44" Fill="#FFD700" VerticalAlignment="Center" Margin="4,0" />
+                    <Rectangle Width="10" Fill="#E6B800" HorizontalAlignment="Center" Margin="0,4" />
+                    <Rectangle Height="10" Fill="#E6B800" VerticalAlignment="Center" Margin="4,0" />
+                    <!-- Polka dots -->
+                    <Canvas IsHitTestVisible="False">
+                        <Ellipse Canvas.Left="30" Canvas.Top="60" Width="14" Height="14" Fill="#FFFFFF" Opacity="0.9" />
+                        <Ellipse Canvas.Left="90" Canvas.Top="180" Width="10" Height="10" Fill="#FFFFFF" Opacity="0.9" />
+                        <Ellipse Canvas.Left="40" Canvas.Top="320" Width="12" Height="12" Fill="#FFFFFF" Opacity="0.9" />
+                        <Ellipse Canvas.Left="70" Canvas.Top="470" Width="14" Height="14" Fill="#FFFFFF" Opacity="0.9" />
+                        <Ellipse Canvas.Left="660" Canvas.Top="90" Width="12" Height="12" Fill="#FFFFFF" Opacity="0.9" />
+                        <Ellipse Canvas.Left="700" Canvas.Top="250" Width="14" Height="14" Fill="#FFFFFF" Opacity="0.9" />
+                        <Ellipse Canvas.Left="670" Canvas.Top="420" Width="10" Height="10" Fill="#FFFFFF" Opacity="0.9" />
+                    </Canvas>
 
-                    <!-- Top Evergreen Pine Garland with Red Bow & Golden Bells -->
-                    <Grid VerticalAlignment="Top" Height="70" Margin="10,-24,10,0">
-                        <!-- Garland Curve -->
-                        <Path Data="M 10,40 Q 380,10 760,40" Stroke="#1B5E20" StrokeThickness="16" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
-                        <Path Data="M 10,40 Q 380,10 760,40" Stroke="#2E7D32" StrokeThickness="8" StrokeDashArray="2,2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
-                        <!-- Big Velvet Red Ribbon Bow at Center -->
-                        <TextBlock Text="🎀" FontSize="44" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-4,0,0">
-                            <TextBlock.Effect>
-                                <DropShadowEffect Color="#D32F2F" BlurRadius="12" ShadowDepth="0" Opacity="0.8" />
-                            </TextBlock.Effect>
-                        </TextBlock>
-                    </Grid>
-
-                    <!-- Bottom Golden Sleigh Runners -->
-                    <Grid VerticalAlignment="Bottom" Height="50" Margin="20,0,20,-20">
-                        <!-- Golden Curved Runners -->
-                        <Path Data="M 20,20 Q 80,45 200,45 L 600,45 Q 720,45 760,15"
-                              Stroke="#FFD700" StrokeThickness="5" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
-                            <Path.Effect>
-                                <DropShadowEffect Color="#FFD700" BlurRadius="14" ShadowDepth="0" Opacity="0.9" />
-                            </Path.Effect>
-                        </Path>
-                        <!-- Fluffy Snow Bank settled on runners -->
-                        <Path Data="M 60,35 Q 200,20 400,32 Q 600,18 720,35 L 720,46 L 60,46 Z" Fill="#E0F7FA" Opacity="0.75" />
+                    <!-- Lid with bow (pops off when the reminder opens) -->
+                    <Grid x:Name="GiftLid" VerticalAlignment="Top" Height="64" Margin="-14,-40,-14,0" RenderTransformOrigin="0.5,1.0">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform x:Name="GiftLidRotate" Angle="0" />
+                                <TranslateTransform x:Name="GiftLidLift" X="0" Y="0" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Border VerticalAlignment="Bottom" Height="40" CornerRadius="8" Background="#C62828" BorderBrush="#FFD700" BorderThickness="4" />
+                        <Rectangle VerticalAlignment="Bottom" Height="40" Width="44" Fill="#FFD700" />
+                        <!-- Bow -->
+                        <Canvas Width="120" Height="40" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-14,0,0">
+                            <Path Data="M 60,30 C 30,0 0,8 8,26 C 14,40 44,36 60,30 Z" Fill="#FFD700" Stroke="#B8860B" StrokeThickness="2" />
+                            <Path Data="M 60,30 C 90,0 120,8 112,26 C 106,40 76,36 60,30 Z" Fill="#FFD700" Stroke="#B8860B" StrokeThickness="2" />
+                            <Path Data="M 54,32 L 40,58 L 50,54 L 54,62 L 60,34 Z" Fill="#E6B800" />
+                            <Path Data="M 66,32 L 80,58 L 70,54 L 66,62 L 60,34 Z" Fill="#E6B800" />
+                            <Ellipse Canvas.Left="50" Canvas.Top="20" Width="20" Height="20" Fill="#FFC400" Stroke="#B8860B" StrokeThickness="2" />
+                        </Canvas>
                     </Grid>
                 </Grid>
 
                 <!-- Inner Dialog Frame Container -->
-                <Border Style="{DynamicResource DialogOuterFrameStyle}" Width="660" MaxHeight="620">
+                <Border x:Name="ReminderCard" Style="{DynamicResource DialogOuterFrameStyle}" Width="660" MaxHeight="620" RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform>
+                        <ScaleTransform x:Name="ReminderCardScale" ScaleX="1" ScaleY="1" />
+                    </Border.RenderTransform>
                 <Grid Margin="24">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" /> <!-- 0. Halloween Character Banner -->
@@ -2296,7 +2325,7 @@
                     </Border>
 
                     <!-- 0b. Christmas Animated Character Banner (Santa, Flying Rudolph, Olaf & Ringing Bells) -->
-                    <Border Grid.Row="0" x:Name="ChristmasReminderBanner" CornerRadius="8" Margin="0,0,0,14" Height="140"
+                    <Border Grid.Row="0" x:Name="ChristmasReminderBanner" CornerRadius="8" Margin="0,0,0,14" Height="160"
                             ClipToBounds="True" BorderBrush="#FFD700" BorderThickness="2"
                             Visibility="{DynamicResource ChristmasOnlyVis}">
                         <Border.Effect>
@@ -2361,13 +2390,13 @@
                             </Grid>
 
                             <!-- Festive Subhead Badge -->
-                            <StackPanel VerticalAlignment="Bottom" Margin="16,0,16,8" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Border Background="#D32F2F" CornerRadius="4" Padding="8,3" Margin="0,0,8,0">
+                            <StackPanel VerticalAlignment="Bottom" Margin="16,0,16,8" Orientation="Vertical" HorizontalAlignment="Center">
+                                <Border Background="#D32F2F" BorderBrush="#FFD700" BorderThickness="1" CornerRadius="4" Padding="8,3" Margin="0,0,0,3" HorizontalAlignment="Center">
                                     <TextBlock Text="🎅 HO HO HO! SANTA'S WORKSHOP REMINDER! 🎁" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF"
                                                FontFamily="Century Gothic, Impact, sans-serif" />
                                 </Border>
-                                <TextBlock Text="Complete your tasks before Santa slides down the chimney!"
-                                           FontSize="11" FontWeight="Bold" Foreground="#FFE082"
+                                <TextBlock Text="Complete your tasks before Santa slides down the chimney!" TextAlignment="Center"
+                                           FontSize="11" FontWeight="Bold" Foreground="#FFFFFF"
                                            FontFamily="Segoe UI, sans-serif" VerticalAlignment="Center">
                                     <TextBlock.Effect>
                                         <DropShadowEffect Color="#000000" BlurRadius="4" ShadowDepth="1" />
@@ -2395,13 +2424,13 @@
                                     <TextBlock Text="TASK REMINDER" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource AppAccentColor}"
                                                FontFamily="{DynamicResource AppBaseFontFamily}" />
                                 </StackPanel>
-                                <TextBlock Text="Today's Tasks Summary" FontSize="24" FontWeight="Normal"
-                                           FontFamily="{DynamicResource AppDisplayFontFamily}" Foreground="{DynamicResource AppPrimaryColor}" />
+                                <TextBlock Text="Today's Tasks Summary" FontSize="24" FontWeight="SemiBold"
+                                           FontFamily="{DynamicResource AppDisplayFontFamily}" Foreground="{DynamicResource AppDialogTitleForeground}" />
                             </StackPanel>
-                            <Border Grid.Column="1" Background="{DynamicResource AppPrimaryColor}" Padding="14,6" VerticalAlignment="Center">
+                            <Border Grid.Column="1" Background="{DynamicResource AppPrimaryColor}" BorderBrush="{DynamicResource AppAccentColor}" BorderThickness="1" Padding="14,6" VerticalAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding ReminderPendingCount}" FontSize="16"
-                                               FontFamily="{DynamicResource AppMetricFontFamily}" Foreground="{DynamicResource AppAccentForeground}" Margin="0,0,4,0" />
+                                               FontFamily="{DynamicResource AppMetricFontFamily}" Foreground="{DynamicResource AppTitleBarForeground}" Margin="0,0,4,0" />
                                     <TextBlock Text="PENDING" FontSize="11" FontWeight="SemiBold"
                                                FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppTitleBarForeground}" VerticalAlignment="Center" />
                                 </StackPanel>
@@ -2411,7 +2440,7 @@
 
                     <!-- 2. Subhead Description -->
                     <TextBlock Grid.Row="2" Text="Here is the current status of all tasks scheduled for today:"
-                               FontSize="13" Foreground="{DynamicResource AppTextForeground}" FontFamily="{DynamicResource AppBaseFontFamily}" Margin="0,0,0,12" />
+                               FontSize="13" Foreground="{DynamicResource AppDialogTextForeground}" FontFamily="{DynamicResource AppBaseFontFamily}" Margin="0,0,0,12" />
 
                     <!-- 3. Tasks List for Reminder (UR-021) -->
                     <Border Grid.Row="3" Background="{DynamicResource AppCardBackground}" BorderBrush="{DynamicResource AppCardBorder}" BorderThickness="1" MaxHeight="240" Margin="0,0,0,18">
@@ -2527,11 +2556,11 @@
                             <Viewbox Width="12" Height="12" Margin="0,0,6,0">
                                 <Canvas Width="24" Height="24">
                                     <Path Data="M 12,2 C 6.5,2 2,6.5 2,12 C 2,17.5 6.5,22 12,22 C 17.5,22 22,17.5 22,12 C 22,6.5 17.5,2 12,2 Z M 12.5,7 L 11,7 L 11,13 L 16,16 L 16.8,14.8 L 12.5,12.2 Z"
-                                          Fill="{DynamicResource AppMutedForeground}" />
+                                          Fill="{DynamicResource AppDialogMutedForeground}" />
                                 </Canvas>
                             </Viewbox>
                             <TextBlock Text="SNOOZE: " FontSize="11" FontWeight="SemiBold"
-                                       FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppMutedForeground}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                                       FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppDialogMutedForeground}" VerticalAlignment="Center" Margin="0,0,6,0" />
                             <Button Content="10M" Style="{DynamicResource SecondaryActionBtn}" Margin="0,0,4,0" Padding="8,4"
                                     Command="{Binding SnoozeReminderCommand}" CommandParameter="10" />
                             <Button Content="30M" Style="{DynamicResource SecondaryActionBtn}" Margin="0,0,4,0" Padding="8,4"
@@ -2546,6 +2575,7 @@
                     </Grid>
                 </Grid>
             </Border>
+            </Grid>
             </Grid>
         </Border>
     </Grid>

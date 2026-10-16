@@ -3,7 +3,10 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
+using System.Windows.Shapes;
 using TasksApp.Helpers;
 using TasksApp.Models;
 using TasksApp.Services;
@@ -28,6 +31,10 @@ namespace TasksApp
         private Storyboard? _halloweenReminderStoryboard;
         private Storyboard? _christmasAmbientStoryboard;
         private Storyboard? _christmasReminderStoryboard;
+        private readonly System.Windows.Threading.DispatcherTimer _olafRunTimer = new System.Windows.Threading.DispatcherTimer();
+        private readonly Random _rng = new Random();
+        private bool _olafMovedToStage = false;
+        private bool _isOlafRunning = false;
 
         public MainWindow()
         {
@@ -84,12 +91,17 @@ namespace TasksApp
                 if (_viewModel.IsReminderOverlayVisible)
                 {
                     if (ThemeManager.IsHalloween) _halloweenReminderStoryboard?.Begin(this, true);
-                    if (ThemeManager.IsChristmas) _christmasReminderStoryboard?.Begin(this, true);
+                    if (ThemeManager.IsChristmas)
+                    {
+                        _christmasReminderStoryboard?.Begin(this, true);
+                        StartChristmasReminderAnimations();
+                    }
                 }
                 else
                 {
                     _halloweenReminderStoryboard?.Stop(this);
                     _christmasReminderStoryboard?.Stop(this);
+                    StopChristmasReminderAnimations();
                 }
             }
         }
@@ -138,19 +150,29 @@ namespace TasksApp
             if (ThemeManager.IsChristmas)
             {
                 _christmasAmbientStoryboard?.Begin(this, true);
+                StartOlafRunning();
+                SetupSlowSnow(TasksSnowCanvas, 14, 11.0, 18.0);
+                SetupSlowSnow(NotesSnowCanvas, 12, 10.0, 17.0);
+
                 if (_viewModel?.IsReminderOverlayVisible == true)
                 {
                     _christmasReminderStoryboard?.Begin(this, true);
+                    StartChristmasReminderAnimations();
                 }
                 else
                 {
                     _christmasReminderStoryboard?.Stop(this);
+                    StopChristmasReminderAnimations();
                 }
             }
             else
             {
                 _christmasAmbientStoryboard?.Stop(this);
                 _christmasReminderStoryboard?.Stop(this);
+                StopOlafRunning();
+                StopChristmasReminderAnimations();
+                TasksSnowCanvas.Children.Clear();
+                NotesSnowCanvas.Children.Clear();
             }
         }
 
@@ -162,6 +184,8 @@ namespace TasksApp
             _christmasAmbientStoryboard = TryFindResource("ChristmasAmbientStoryboard") as Storyboard;
             _christmasReminderStoryboard = TryFindResource("ChristmasReminderStoryboard") as Storyboard;
 
+            InitializeChristmasFeatures();
+
             if (ThemeManager.IsHalloween)
             {
                 _halloweenAmbientStoryboard?.Begin(this, true);
@@ -169,6 +193,9 @@ namespace TasksApp
             else if (ThemeManager.IsChristmas)
             {
                 _christmasAmbientStoryboard?.Begin(this, true);
+                StartOlafRunning();
+                SetupSlowSnow(TasksSnowCanvas, 14, 11.0, 18.0);
+                SetupSlowSnow(NotesSnowCanvas, 12, 10.0, 17.0);
             }
 
             await _viewModel.InitializeStartupAsync();
@@ -363,6 +390,7 @@ namespace TasksApp
                 else if (ThemeManager.IsChristmas)
                 {
                     _christmasReminderStoryboard?.Begin(this, true);
+                    StartChristmasReminderAnimations();
                 }
             });
         }
@@ -375,6 +403,7 @@ namespace TasksApp
                 _glowStoryboard?.Stop(this);
                 _halloweenReminderStoryboard?.Stop(this);
                 _christmasReminderStoryboard?.Stop(this);
+                StopChristmasReminderAnimations();
                 ReminderGlowBorder.Visibility = Visibility.Collapsed;
                 Topmost = _viewModel.AlwaysOnTop; // Reset to user's setting
             });
@@ -493,5 +522,505 @@ namespace TasksApp
             }
             return null;
         }
+
+        #region Christmas & Olaf Companion Pet System
+
+        private void InitializeChristmasFeatures()
+        {
+            _olafRunTimer.Interval = TimeSpan.FromSeconds(3.5);
+            _olafRunTimer.Tick += (s, e) => PerformOlafRunStep();
+        }
+
+        private void SetupSlowSnow(Canvas canvas, int count, double minDuration, double maxDuration)
+        {
+            if (canvas == null) return;
+            canvas.Children.Clear();
+
+            string[] snowChars = { "❄", "❅", "✻", "•", "❄", "❅" };
+            string[] snowColors = { "#FFFFFF", "#E0F7FA", "#B3E5FC", "#E1F5FE", "#80D8FF", "#FFF8E1" };
+
+            double canvasW = canvas.ActualWidth > 50 ? canvas.ActualWidth : 420;
+            double canvasH = canvas.ActualHeight > 50 ? canvas.ActualHeight : 600;
+
+            for (int i = 0; i < count; i++)
+            {
+                var tb = new TextBlock
+                {
+                    Text = snowChars[_rng.Next(snowChars.Length)],
+                    FontSize = _rng.Next(12, 22),
+                    Foreground = (Brush)new BrushConverter().ConvertFromString(snowColors[_rng.Next(snowColors.Length)])!,
+                    Opacity = 0.35 + (_rng.NextDouble() * 0.5),
+                    IsHitTestVisible = false
+                };
+
+                double startX = _rng.NextDouble() * Math.Max(20, canvasW - 24);
+                double startY = _rng.NextDouble() * canvasH;
+
+                Canvas.SetLeft(tb, startX);
+                Canvas.SetTop(tb, startY);
+
+                double duration = minDuration + (_rng.NextDouble() * (maxDuration - minDuration));
+
+                var fallAnim = new DoubleAnimation
+                {
+                    From = -25,
+                    To = canvasH + 25,
+                    Duration = TimeSpan.FromSeconds(duration),
+                    RepeatBehavior = RepeatBehavior.Forever,
+                    BeginTime = -TimeSpan.FromSeconds(_rng.NextDouble() * duration)
+                };
+
+                var swayGroup = new TransformGroup();
+                var swayTranslate = new TranslateTransform();
+                var swayRotate = new RotateTransform();
+                swayGroup.Children.Add(swayTranslate);
+                swayGroup.Children.Add(swayRotate);
+
+                tb.RenderTransformOrigin = new Point(0.5, 0.5);
+                tb.RenderTransform = swayGroup;
+
+                var swayX = new DoubleAnimation(-6 - _rng.Next(0, 8), 6 + _rng.Next(0, 8), TimeSpan.FromSeconds(2.5 + (_rng.NextDouble() * 2.5)))
+                {
+                    AutoReverse = true,
+                    RepeatBehavior = RepeatBehavior.Forever,
+                    BeginTime = -TimeSpan.FromSeconds(_rng.NextDouble() * 3.0)
+                };
+                swayTranslate.BeginAnimation(TranslateTransform.XProperty, swayX);
+
+                var rotateAnim = new DoubleAnimation(0, _rng.Next(0, 2) == 0 ? 360 : -360, TimeSpan.FromSeconds(duration * 0.8))
+                {
+                    RepeatBehavior = RepeatBehavior.Forever
+                };
+                swayRotate.BeginAnimation(RotateTransform.AngleProperty, rotateAnim);
+
+                canvas.Children.Add(tb);
+                tb.BeginAnimation(Canvas.TopProperty, fallAnim);
+            }
+        }
+
+        private void SetupSantaFlight(Canvas canvas)
+        {
+            if (canvas == null) return;
+
+            // Container for Santa's Sleigh Team
+            var flightGrid = new Grid
+            {
+                Width = 340,
+                Height = 70,
+                IsHitTestVisible = false,
+                RenderTransformOrigin = new Point(0.5, 0.5)
+            };
+
+            var flightViewbox = new Viewbox { Stretch = Stretch.Uniform };
+            var sceneCanvas = new Canvas { Width = 340, Height = 70 };
+
+            // 1. Reins Connecting Rudolph and Reindeer to Sleigh
+            var reinsPath = new Path
+            {
+                Data = Geometry.Parse("M 30,36 C 80,48 140,48 200,34 M 140,36 C 180,44 210,40 220,34"),
+                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD700")),
+                StrokeThickness = 1.2
+            };
+            sceneCanvas.Children.Add(reinsPath);
+
+            // 2. Lead Reindeer (Rudolph with glowing red nose)
+            var rudolph = new Canvas { Width = 55, Height = 55 };
+            Canvas.SetLeft(rudolph, 10);
+            Canvas.SetTop(rudolph, 8);
+            // Antlers
+            var rudolphAntlers = new Path
+            {
+                Data = Geometry.Parse("M 38,16 L 36,4 L 32,2 M 36,8 L 42,4 M 40,16 L 44,6 L 48,4"),
+                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8D6E63")),
+                StrokeThickness = 1.8,
+                StrokeStartLineCap = PenLineCap.Round,
+                StrokeEndLineCap = PenLineCap.Round
+            };
+            rudolph.Children.Add(rudolphAntlers);
+            // Body & Head
+            var rudolphBody = new Path
+            {
+                Data = Geometry.Parse("M 10,34 C 14,24 28,24 34,28 C 38,20 44,18 48,22 C 50,26 44,32 38,34 C 36,44 26,46 14,46 Z"),
+                Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6D4C41"))
+            };
+            rudolph.Children.Add(rudolphBody);
+            // Running Legs
+            var rudolphLegs = new Path
+            {
+                Data = Geometry.Parse("M 14,46 L 6,56 M 18,46 L 14,56 M 32,44 L 40,54 M 36,44 L 46,52"),
+                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5D4037")),
+                StrokeThickness = 2.0,
+                StrokeStartLineCap = PenLineCap.Round
+            };
+            rudolph.Children.Add(rudolphLegs);
+            // Rudolph Glowing Red Nose
+            var rudolphNose = new Ellipse
+            {
+                Width = 6.5,
+                Height = 6.5,
+                Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF1744")),
+                Effect = new DropShadowEffect
+                {
+                    Color = (Color)ColorConverter.ConvertFromString("#FF1744"),
+                    BlurRadius = 10,
+                    ShadowDepth = 0,
+                    Opacity = 1.0
+                }
+            };
+            Canvas.SetLeft(rudolphNose, 47);
+            Canvas.SetTop(rudolphNose, 22);
+            rudolph.Children.Add(rudolphNose);
+            sceneCanvas.Children.Add(rudolph);
+
+            // 3. Second Reindeer
+            var reindeer2 = new Canvas { Width = 55, Height = 55 };
+            Canvas.SetLeft(reindeer2, 85);
+            Canvas.SetTop(reindeer2, 10);
+            var r2Antlers = new Path
+            {
+                Data = Geometry.Parse("M 38,16 L 36,4 L 32,2 M 36,8 L 42,4 M 40,16 L 44,6 L 48,4"),
+                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8D6E63")),
+                StrokeThickness = 1.8,
+                StrokeStartLineCap = PenLineCap.Round,
+                StrokeEndLineCap = PenLineCap.Round
+            };
+            reindeer2.Children.Add(r2Antlers);
+            var r2Body = new Path
+            {
+                Data = Geometry.Parse("M 10,34 C 14,24 28,24 34,28 C 38,20 44,18 48,22 C 50,26 44,32 38,34 C 36,44 26,46 14,46 Z"),
+                Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#795548"))
+            };
+            reindeer2.Children.Add(r2Body);
+            var r2Legs = new Path
+            {
+                Data = Geometry.Parse("M 14,46 L 8,56 M 18,46 L 12,54 M 32,44 L 38,54 M 36,44 L 44,52"),
+                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5D4037")),
+                StrokeThickness = 2.0,
+                StrokeStartLineCap = PenLineCap.Round
+            };
+            reindeer2.Children.Add(r2Legs);
+            sceneCanvas.Children.Add(reindeer2);
+
+            // 4. Santa's Sleigh & Jolly Santa
+            var sleighGroup = new Canvas { Width = 110, Height = 65 };
+            Canvas.SetLeft(sleighGroup, 185);
+            Canvas.SetTop(sleighGroup, 5);
+
+            // Golden Runners / Skis
+            var sleighRunners = new Path
+            {
+                Data = Geometry.Parse("M 10,58 L 90,58 C 102,58 106,48 98,44 M 24,58 L 30,48 M 76,58 L 72,48"),
+                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD700")),
+                StrokeThickness = 2.4,
+                StrokeStartLineCap = PenLineCap.Round
+            };
+            sleighGroup.Children.Add(sleighRunners);
+
+            // Toy Sack in the back
+            var toySack = new Path
+            {
+                Data = Geometry.Parse("M 18,48 C 12,30 20,18 34,18 C 44,18 48,28 46,48 Z"),
+                Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2E7D32")),
+                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD700")),
+                StrokeThickness = 1.0
+            };
+            sleighGroup.Children.Add(toySack);
+
+            // Sleigh Body (Crimson Red with gold edge)
+            var sleighBody = new Path
+            {
+                Data = Geometry.Parse("M 20,48 C 30,50 78,50 86,46 C 96,44 94,32 82,32 C 60,32 50,40 38,36 C 26,32 20,40 20,48 Z"),
+                Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C62828")),
+                Stroke = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD700")),
+                StrokeThickness = 1.5
+            };
+            sleighGroup.Children.Add(sleighBody);
+
+            // Santa Claus
+            // White fluffy beard
+            var santaBeard = new Path
+            {
+                Data = Geometry.Parse("M 58,26 C 54,34 66,42 70,34 C 74,34 76,26 70,24 Z"),
+                Fill = Brushes.White
+            };
+            sleighGroup.Children.Add(santaBeard);
+            // Face
+            var santaFace = new Ellipse { Width = 10, Height = 10, Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFCCBC")) };
+            Canvas.SetLeft(santaFace, 60);
+            Canvas.SetTop(santaFace, 18);
+            sleighGroup.Children.Add(santaFace);
+            // Red Hat with white pom-pom
+            var santaHat = new Path
+            {
+                Data = Geometry.Parse("M 58,19 C 62,10 72,12 70,19 Z"),
+                Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D32F2F"))
+            };
+            sleighGroup.Children.Add(santaHat);
+            var hatPom = new Ellipse { Width = 5, Height = 5, Fill = Brushes.White };
+            Canvas.SetLeft(hatPom, 56);
+            Canvas.SetTop(hatPom, 18);
+            sleighGroup.Children.Add(hatPom);
+
+            sceneCanvas.Children.Add(sleighGroup);
+
+            // 5. Golden Stardust Sparkles trailing behind the sleigh
+            var sparkles = new TextBlock
+            {
+                Text = "✨  ⭐  ✨",
+                FontSize = 13,
+                Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD700")),
+                Opacity = 0.85
+            };
+            Canvas.SetLeft(sparkles, 290);
+            Canvas.SetTop(sparkles, 26);
+            sceneCanvas.Children.Add(sparkles);
+
+            flightViewbox.Child = sceneCanvas;
+            flightGrid.Children.Add(flightViewbox);
+
+            canvas.Children.Add(flightGrid);
+
+            // Horizontal flight across the sky
+            double skyWidth = canvas.ActualWidth > 200 ? canvas.ActualWidth : (ActualWidth > 200 ? ActualWidth : 1060);
+            Canvas.SetTop(flightGrid, 55);
+
+            var flyX = new DoubleAnimation(-360, skyWidth + 360, TimeSpan.FromSeconds(14.0))
+            {
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+            flightGrid.BeginAnimation(Canvas.LeftProperty, flyX);
+
+            // Gentle wave / bobbing flight motion
+            var flyY = new DoubleAnimation(40, 85, TimeSpan.FromSeconds(2.8))
+            {
+                AutoReverse = true,
+                RepeatBehavior = RepeatBehavior.Forever,
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
+            };
+            flightGrid.BeginAnimation(Canvas.TopProperty, flyY);
+        }
+
+        private void StartChristmasReminderAnimations()
+        {
+            if (!ThemeManager.IsChristmas) return;
+
+            // 1. Gift Box Pop Opening Animation
+            if (GiftLidLift != null)
+            {
+                var liftAnim = new DoubleAnimation(0, -90, TimeSpan.FromSeconds(0.65))
+                {
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                };
+                GiftLidLift.BeginAnimation(TranslateTransform.YProperty, liftAnim);
+            }
+
+            if (GiftLidRotate != null)
+            {
+                var rotateAnim = new DoubleAnimation(0, -14, TimeSpan.FromSeconds(0.65))
+                {
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                };
+                GiftLidRotate.BeginAnimation(RotateTransform.AngleProperty, rotateAnim);
+            }
+
+            if (ReminderCardScale != null)
+            {
+                var scaleXAnim = new DoubleAnimation(0.88, 1.0, TimeSpan.FromSeconds(0.6))
+                {
+                    EasingFunction = new BackEase { EasingMode = EasingMode.EaseOut, Amplitude = 0.3 }
+                };
+                var scaleYAnim = new DoubleAnimation(0.88, 1.0, TimeSpan.FromSeconds(0.6))
+                {
+                    EasingFunction = new BackEase { EasingMode = EasingMode.EaseOut, Amplitude = 0.3 }
+                };
+                ReminderCardScale.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnim);
+                ReminderCardScale.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnim);
+            }
+
+            // 2. Full-Screen Slow Snow in Sky Overlay
+            SetupSlowSnow(ChristmasReminderSky, 30, 9.0, 18.0);
+
+            // 3. Santa Sleigh & Reindeer Flight
+            SetupSantaFlight(ChristmasReminderSky);
+        }
+
+        private void StopChristmasReminderAnimations()
+        {
+            if (GiftLidLift != null)
+            {
+                GiftLidLift.BeginAnimation(TranslateTransform.YProperty, null);
+                GiftLidLift.Y = 0;
+            }
+            if (GiftLidRotate != null)
+            {
+                GiftLidRotate.BeginAnimation(RotateTransform.AngleProperty, null);
+                GiftLidRotate.Angle = 0;
+            }
+            if (ReminderCardScale != null)
+            {
+                ReminderCardScale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+                ReminderCardScale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+                ReminderCardScale.ScaleX = 1.0;
+                ReminderCardScale.ScaleY = 1.0;
+            }
+
+            ChristmasReminderSky?.Children.Clear();
+        }
+
+        private void StartOlafRunning()
+        {
+            if (!ThemeManager.IsChristmas || OlafPet == null || OlafStage == null) return;
+
+            if (!_olafMovedToStage)
+            {
+                if (OlafPet.Parent is Panel p)
+                {
+                    p.Children.Remove(OlafPet);
+                }
+                OlafStage.Children.Add(OlafPet);
+                Canvas.SetLeft(OlafPet, 180);
+                Canvas.SetTop(OlafPet, 140);
+                _olafMovedToStage = true;
+            }
+
+            OlafPet.Visibility = Visibility.Visible;
+            _isOlafRunning = true;
+            _olafRunTimer.Start();
+            PerformOlafRunStep();
+        }
+
+        private void StopOlafRunning()
+        {
+            _isOlafRunning = false;
+            _olafRunTimer.Stop();
+
+            if (_olafMovedToStage && OlafPet != null)
+            {
+                OlafPet.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void PerformOlafRunStep()
+        {
+            if (!_isOlafRunning || !ThemeManager.IsChristmas || OlafPet == null || OlafStage == null) return;
+
+            double stageW = OlafStage.ActualWidth > 200 ? OlafStage.ActualWidth : (ActualWidth > 200 ? ActualWidth - 50 : 900);
+            double stageH = OlafStage.ActualHeight > 200 ? OlafStage.ActualHeight : (ActualHeight > 200 ? ActualHeight - 120 : 450);
+
+            double minX = 20;
+            double maxX = Math.Max(minX + 50, stageW - 140);
+            double minY = 20;
+            double maxY = Math.Max(minY + 50, stageH - 170);
+
+            double targetX = _rng.Next((int)minX, (int)maxX);
+            double targetY = _rng.Next((int)minY, (int)maxY);
+
+            double curX = Canvas.GetLeft(OlafPet);
+            if (double.IsNaN(curX)) curX = 100;
+            double curY = Canvas.GetTop(OlafPet);
+            if (double.IsNaN(curY)) curY = 100;
+
+            // Turn Olaf to face the running direction
+            if (OlafFacingScale != null)
+            {
+                OlafFacingScale.ScaleX = (targetX >= curX) ? 1.0 : -1.0;
+            }
+
+            double dist = Math.Sqrt(Math.Pow(targetX - curX, 2) + Math.Pow(targetY - curY, 2));
+            double durationSec = Math.Clamp(dist / 160.0, 1.6, 3.6);
+
+            var moveX = new DoubleAnimation(curX, targetX, TimeSpan.FromSeconds(durationSec))
+            {
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+            var moveY = new DoubleAnimation(curY, targetY, TimeSpan.FromSeconds(durationSec))
+            {
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            moveX.Completed += (s, e) => PlayOlafIdleAction();
+
+            OlafPet.BeginAnimation(Canvas.LeftProperty, moveX);
+            OlafPet.BeginAnimation(Canvas.TopProperty, moveY);
+
+            // Bouncing wobble while running
+            if (OlafPetTranslate != null)
+            {
+                var bounceAnim = new DoubleAnimation(0, -9, TimeSpan.FromSeconds(0.2))
+                {
+                    AutoReverse = true,
+                    RepeatBehavior = new RepeatBehavior(Math.Max(2, (int)(durationSec / 0.4)))
+                };
+                OlafPetTranslate.BeginAnimation(TranslateTransform.YProperty, bounceAnim);
+            }
+
+            // Schedule next run
+            _olafRunTimer.Interval = TimeSpan.FromSeconds(durationSec + _rng.Next(1, 4));
+        }
+
+        private void PlayOlafIdleAction()
+        {
+            if (!_isOlafRunning || !ThemeManager.IsChristmas) return;
+
+            int action = _rng.Next(0, 3);
+            switch (action)
+            {
+                case 0:
+                    // Wave stick arms
+                    if (OlafArmRightRotate != null)
+                    {
+                        var waveAnim = new DoubleAnimation(0, 36, TimeSpan.FromSeconds(0.25))
+                        {
+                            AutoReverse = true,
+                            RepeatBehavior = new RepeatBehavior(3)
+                        };
+                        OlafArmRightRotate.BeginAnimation(RotateTransform.AngleProperty, waveAnim);
+                    }
+                    break;
+
+                case 1:
+                    // Belly wobble / squash & stretch
+                    if (OlafBellyScaleX != null && OlafBellyScaleY != null)
+                    {
+                        var wobbleX = new DoubleAnimation(1.0, 1.15, TimeSpan.FromSeconds(0.3))
+                        {
+                            AutoReverse = true,
+                            RepeatBehavior = new RepeatBehavior(2)
+                        };
+                        var wobbleY = new DoubleAnimation(1.0, 0.88, TimeSpan.FromSeconds(0.3))
+                        {
+                            AutoReverse = true,
+                            RepeatBehavior = new RepeatBehavior(2)
+                        };
+                        OlafBellyScaleX.BeginAnimation(ScaleTransform.ScaleXProperty, wobbleX);
+                        OlafBellyScaleY.BeginAnimation(ScaleTransform.ScaleYProperty, wobbleY);
+                    }
+                    break;
+
+                case 2:
+                    // Head tilt and snowball balance wobble
+                    if (OlafHeadRotate != null)
+                    {
+                        var tiltAnim = new DoubleAnimation(0, _rng.Next(0, 2) == 0 ? 16 : -16, TimeSpan.FromSeconds(0.35))
+                        {
+                            AutoReverse = true,
+                            RepeatBehavior = new RepeatBehavior(2)
+                        };
+                        OlafHeadRotate.BeginAnimation(RotateTransform.AngleProperty, tiltAnim);
+                    }
+                    if (OlafSnowballTranslate != null)
+                    {
+                        var ballAnim = new DoubleAnimation(0, 5, TimeSpan.FromSeconds(0.3))
+                        {
+                            AutoReverse = true,
+                            RepeatBehavior = new RepeatBehavior(2)
+                        };
+                        OlafSnowballTranslate.BeginAnimation(TranslateTransform.XProperty, ballAnim);
+                    }
+                    break;
+            }
+        }
+
+        #endregion
     }
 }

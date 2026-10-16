@@ -43,6 +43,11 @@
     <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#FFD700" />
     <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#D32F2F" />
 
+    <!-- High-Contrast Dialog & Reminder Text Brushes (Readable against dark Santa crimson) -->
+    <SolidColorBrush x:Key="AppDialogTitleForeground" Color="#FFD700" />  <!-- Jingle Bell Gold on #7A0C0C (~8.9:1) -->
+    <SolidColorBrush x:Key="AppDialogTextForeground" Color="#FFFFFF" />   <!-- Pure White on #7A0C0C (~11.0:1) -->
+    <SolidColorBrush x:Key="AppDialogMutedForeground" Color="#FFE9B0" />  <!-- Soft Warm Cream on #7A0C0C (~9.2:1) -->
+
     <!-- Distinct Layout Box Brushes (Different Colors for Different Layout Boxes) -->
     <SolidColorBrush x:Key="AppTasksHeaderBackground" Color="#FFF8F8" /> <!-- Solid Soft Crimson Hearth Tint -->
     <SolidColorBrush x:Key="AppNotesHeaderBackground" Color="#F2F9F4" /> <!-- Solid Soft Pine Mist Tint -->

@@ -38,6 +38,9 @@
     <SolidColorBrush x:Key="AppAccentForeground" Color="#FFF7EB" />
     <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#E58A38" />
     <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#3D2314" />
+    <SolidColorBrush x:Key="AppDialogTitleForeground" Color="#DE5D35" />
+    <SolidColorBrush x:Key="AppDialogTextForeground" Color="#3D2314" />
+    <SolidColorBrush x:Key="AppDialogMutedForeground" Color="#84563C" />
     <SolidColorBrush x:Key="AppToolbarForeground" Color="#3D2314" />
     <SolidColorBrush x:Key="AppToolbarMutedForeground" Color="#84563C" />
 
