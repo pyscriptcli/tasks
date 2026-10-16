@@ -12,7 +12,7 @@ namespace TasksApp.Services
 {
     public class UpdateService
     {
-        public const string CurrentVersion = "1.0.3";
+        public const string CurrentVersion = "2";
         public const string GitHubRepo = "pyscriptcli/tasks";
         private const string LatestReleaseApiUrl = $"https://api.github.com/repos/{GitHubRepo}/releases/latest";
 
@@ -102,7 +102,8 @@ namespace TasksApp.Services
                 }
                 else
                 {
-                    result.StatusMessage = $"You are using the latest version (v{CurrentVersion}).";
+                    string displayCurrent = CurrentVersion.TrimStart('v', 'V');
+                    result.StatusMessage = $"You are using the latest version (v{displayCurrent}).";
                 }
 
                 return result;
@@ -203,20 +204,54 @@ namespace TasksApp.Services
         }
 
         /// <summary>
-        /// Compares two version strings (e.g., "v1.1.0" > "1.0.0").
+        /// Parses a version string into a Version object, supporting simple major-only strings (e.g. "v2", "3")
+        /// as well as standard semver numbers (e.g. "1.0.3", "2.0.0").
+        /// </summary>
+        public static bool TryParseVersion(string versionStr, out Version parsed)
+        {
+            parsed = new Version(0, 0);
+            if (string.IsNullOrWhiteSpace(versionStr)) return false;
+
+            string clean = versionStr.TrimStart('v', 'V').Trim();
+            if (int.TryParse(clean, out int majorOnly))
+            {
+                parsed = new Version(majorOnly, 0);
+                return true;
+            }
+
+            if (Version.TryParse(clean, out var standardVer))
+            {
+                parsed = standardVer;
+                return true;
+            }
+
+            // Fallback: handle "v2.1-beta" or similar
+            var parts = clean.Split(new[] { '.', '-', '+' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 0 && int.TryParse(parts[0], out int major))
+            {
+                int minor = parts.Length > 1 && int.TryParse(parts[1], out int m) ? m : 0;
+                int build = parts.Length > 2 && int.TryParse(parts[2], out int b) ? b : 0;
+                parsed = new Version(major, minor, build);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Compares two version strings (e.g., "v3" > "v2", "v2" > "1.0.3").
         /// </summary>
         public static bool IsVersionNewer(string remoteTag, string currentVer)
         {
             if (string.IsNullOrWhiteSpace(remoteTag)) return false;
 
-            string cleanRemote = remoteTag.TrimStart('v', 'V').Trim();
-            string cleanCurrent = currentVer.TrimStart('v', 'V').Trim();
-
-            if (Version.TryParse(cleanRemote, out var vRemote) && Version.TryParse(cleanCurrent, out var vCurrent))
+            if (TryParseVersion(remoteTag, out var vRemote) && TryParseVersion(currentVer, out var vCurrent))
             {
                 return vRemote > vCurrent;
             }
 
+            string cleanRemote = remoteTag.TrimStart('v', 'V').Trim();
+            string cleanCurrent = currentVer.TrimStart('v', 'V').Trim();
             return string.Compare(cleanRemote, cleanCurrent, StringComparison.OrdinalIgnoreCase) > 0;
         }
     }

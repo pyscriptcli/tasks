@@ -29,7 +29,7 @@ namespace TasksApp.Views
             OriginalStoragePath = currentSettings.DataDirectory;
             OriginalTheme = currentSettings.Theme ?? ThemeManager.DefaultTheme;
 
-            TxtCurrentVersion.Text = $"v{UpdateService.CurrentVersion}";
+            TxtCurrentVersion.Text = $"v{UpdateService.CurrentVersion.TrimStart('v', 'V')}";
 
             // Clone settings
             UpdatedSettings = new AppSettings

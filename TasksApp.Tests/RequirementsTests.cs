@@ -341,6 +341,15 @@ namespace TasksApp.Tests
             Assert.False(UpdateService.IsVersionNewer("v1.0.0", "1.0.0"));
             Assert.False(UpdateService.IsVersionNewer("v0.9.9", "1.0.0"));
             Assert.False(UpdateService.IsVersionNewer("", "1.0.0"));
+
+            // Sequential integer versions (v2, v3, v4, and so on)
+            Assert.True(UpdateService.IsVersionNewer("v2", "1.0.3"));
+            Assert.True(UpdateService.IsVersionNewer("v3", "v2"));
+            Assert.True(UpdateService.IsVersionNewer("v4", "v3"));
+            Assert.True(UpdateService.IsVersionNewer("4", "3"));
+            Assert.True(UpdateService.IsVersionNewer("v10", "v9"));
+            Assert.False(UpdateService.IsVersionNewer("v2", "v2"));
+            Assert.False(UpdateService.IsVersionNewer("v2", "v3"));
         }
 
         [Fact]
