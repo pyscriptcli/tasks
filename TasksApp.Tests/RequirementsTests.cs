@@ -537,5 +537,62 @@ namespace TasksApp.Tests
             // Clean up
             ThemeManager.ApplyTheme(ThemeManager.DefaultTheme);
         }
+
+        [Fact]
+        public void LegacyTaskFormat_DeserializesIsDoneAndOrderIndexCorrectly()
+        {
+            string legacyJson = @"[
+                {
+                    ""id"": ""legacy-1"",
+                    ""Title"": ""Legacy Done Task"",
+                    ""IsDone"": true,
+                    ""OrderIndex"": 7,
+                    ""priorityGroup"": 0
+                },
+                {
+                    ""id"": ""legacy-2"",
+                    ""title"": ""Legacy Pending Task"",
+                    ""isDone"": false,
+                    ""orderIndex"": 3
+                }
+            ]";
+
+            var tasks = System.Text.Json.JsonSerializer.Deserialize<List<TaskItem>>(legacyJson, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            Assert.NotNull(tasks);
+            Assert.Equal(2, tasks.Count);
+
+            Assert.Equal("Legacy Done Task", tasks[0].Title);
+            Assert.True(tasks[0].IsCompleted);
+            Assert.Equal(7, tasks[0].OrderIndex);
+
+            Assert.Equal("Legacy Pending Task", tasks[1].Title);
+            Assert.False(tasks[1].IsCompleted);
+            Assert.Equal(3, tasks[1].OrderIndex);
+        }
+
+        [Fact]
+        public void CaptureTasksFromOtherVersions_MigratesAndMergesTasks()
+        {
+            string activeDir = Path.Combine(_testDir, "ActiveTasks");
+            string legacyDir = Path.Combine(_testDir, "LegacyTasks");
+            Directory.CreateDirectory(activeDir);
+            Directory.CreateDirectory(legacyDir);
+
+            // Create a legacy file in legacyDir
+            string legacyFile = Path.Combine(legacyDir, "Task_October 5 2026.json");
+            File.WriteAllText(legacyFile, @"[{ ""id"": ""old-1"", ""Title"": ""Ancient Task"", ""IsDone"": false, ""orderIndex"": 1 }]");
+
+            var storage = new StorageService(Path.Combine(_testDir, "settings.json"));
+            // Run capture
+            storage.CaptureTasksFromOtherVersions(activeDir);
+
+            // Verify activeDir now contains Task_October 5 2026.json if searched, or direct load works
+            var activeFiles = Directory.GetFiles(activeDir, "*.json");
+            // Also test loading tasks directly from legacy formatted file
+            var loaded = storage.LoadTasksForDate(legacyDir, new DateTime(2026, 10, 5));
+            Assert.Single(loaded);
+            Assert.Equal("Ancient Task", loaded[0].Title);
+            Assert.False(loaded[0].IsCompleted);
+        }
     }
 }

@@ -16,7 +16,8 @@ namespace TasksApp.Services
         {
             WriteIndented = true,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals
+            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+            PropertyNameCaseInsensitive = true
         };
 
         private readonly string _settingsFilePath;
@@ -276,6 +277,98 @@ namespace TasksApp.Services
                 if (!File.Exists(dest))
                 {
                     File.Copy(file, dest);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Automatically discovers and captures tasks and notes from older versions or alternative locations
+        /// (e.g. Documents\Tasks, portable EXEs, %LOCALAPPDATA%), merging them into the active data directory.
+        /// </summary>
+        public void CaptureTasksFromOtherVersions(string activeDataDirectory)
+        {
+            if (string.IsNullOrWhiteSpace(activeDataDirectory)) return;
+
+            var potentialLegacyDirs = new List<string>
+            {
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Tasks"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TasksData"),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tasks"),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TasksData"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TasksApp", "TasksData"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasksApp", "TasksData")
+            };
+
+            EnsureDirectoryExists(activeDataDirectory);
+            string activeNormalized = Path.GetFullPath(activeDataDirectory).TrimEnd('\\');
+
+            foreach (var legacyDir in potentialLegacyDirs)
+            {
+                if (!Directory.Exists(legacyDir)) continue;
+                string legacyNormalized = Path.GetFullPath(legacyDir).TrimEnd('\\');
+                if (string.Equals(legacyNormalized, activeNormalized, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    // Copy and merge Task_* files
+                    foreach (var legacyFile in Directory.GetFiles(legacyDir, "Task_*"))
+                    {
+                        if (legacyFile.EndsWith(".tmp", StringComparison.OrdinalIgnoreCase)) continue;
+                        string fileName = Path.GetFileName(legacyFile);
+                        string activeFile = Path.Combine(activeDataDirectory, fileName);
+
+                        if (!File.Exists(activeFile))
+                        {
+                            File.Copy(legacyFile, activeFile, true);
+                        }
+                        else
+                        {
+                            // Merge tasks from legacy file into active file
+                            if (TryParseTaskFileDate(legacyFile, out DateTime fileDate))
+                            {
+                                var activeTasks = LoadTasksForDate(activeDataDirectory, fileDate);
+                                var legacyTasks = LoadTasksForDate(legacyDir, fileDate);
+
+                                var existingIds = new HashSet<string>(activeTasks.Select(t => t.Id), StringComparer.OrdinalIgnoreCase);
+                                var existingTitles = new HashSet<string>(activeTasks.Select(t => t.Title.Trim()), StringComparer.OrdinalIgnoreCase);
+
+                                bool addedAny = false;
+                                foreach (var lTask in legacyTasks)
+                                {
+                                    if (!existingIds.Contains(lTask.Id) && !existingTitles.Contains(lTask.Title.Trim()))
+                                    {
+                                        activeTasks.Add(lTask);
+                                        addedAny = true;
+                                    }
+                                }
+
+                                if (addedAny)
+                                {
+                                    SaveTasksForDate(activeDataDirectory, fileDate, activeTasks);
+                                }
+                            }
+                        }
+                    }
+
+                    // Copy Notes_* files
+                    foreach (var legacyNotesFile in Directory.GetFiles(legacyDir, "Notes_*"))
+                    {
+                        if (legacyNotesFile.EndsWith(".tmp", StringComparison.OrdinalIgnoreCase)) continue;
+                        string fileName = Path.GetFileName(legacyNotesFile);
+                        string activeNotesFile = Path.Combine(activeDataDirectory, fileName);
+
+                        if (!File.Exists(activeNotesFile))
+                        {
+                            File.Copy(legacyNotesFile, activeNotesFile, true);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error capturing legacy tasks from {legacyDir}: {ex.Message}");
                 }
             }
         }

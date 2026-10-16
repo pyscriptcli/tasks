@@ -95,6 +95,59 @@ namespace TasksApp.Models
             }
         }
 
+        // Backward compatibility fallbacks for capturing tasks from other/older versions
+        [JsonPropertyName("isDone")]
+        public bool? IsDoneLegacy
+        {
+            get => null;
+            set
+            {
+                if (value.HasValue && !_isCompleted)
+                {
+                    IsCompleted = value.Value;
+                }
+            }
+        }
+
+        [JsonPropertyName("orderIndex")]
+        public int? OrderIndexLegacy
+        {
+            get => null;
+            set
+            {
+                if (value.HasValue && _orderIndex == 0)
+                {
+                    OrderIndex = value.Value;
+                }
+            }
+        }
+
+        [JsonPropertyName("priorityGroup")]
+        public System.Text.Json.JsonElement? PriorityGroupLegacy
+        {
+            get => null;
+            set
+            {
+                if (!value.HasValue) return;
+                var el = value.Value;
+                if (el.ValueKind == System.Text.Json.JsonValueKind.String)
+                {
+                    string str = el.GetString() ?? "";
+                    if (str.Contains("HIGH", StringComparison.OrdinalIgnoreCase))
+                    {
+                        IsHighPriority = true;
+                    }
+                }
+                else if (el.ValueKind == System.Text.Json.JsonValueKind.Number)
+                {
+                    if (el.TryGetInt32(out int val) && val == 1)
+                    {
+                        IsHighPriority = true;
+                    }
+                }
+            }
+        }
+
         [JsonIgnore]
         public bool IsCarriedOver => !string.IsNullOrEmpty(_carriedOverFrom);
 

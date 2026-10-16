@@ -45,6 +45,10 @@
     <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#FFA000" />
     <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#FF6B00" />
 
+    <!-- Toolbar / Chrome Foreground: Pure Crisp Warm White and Candle Amber for maximum contrast against dark canvas -->
+    <SolidColorBrush x:Key="AppToolbarForeground" Color="#FFFDF8" />
+    <SolidColorBrush x:Key="AppToolbarMutedForeground" Color="#FFA000" />
+
     <!-- Dimensions & Metrics -->
     <sys:Double x:Key="AppTitleBarHeight">48</sys:Double>
     <sys:Double x:Key="AppCaptionHeight">48</sys:Double>

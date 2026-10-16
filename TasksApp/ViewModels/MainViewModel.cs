@@ -308,6 +308,7 @@ namespace TasksApp.ViewModels
 
             LoadingStatusText = "Loading tasks and daily notes...";
             LoadingProgress = 75;
+            _storageService.CaptureTasksFromOtherVersions(_settings.DataDirectory);
             _storageService.CarryOverPendingTasks(_settings.DataDirectory, DateTime.Today);
             LoadDayData();
             await Task.Delay(20);

@@ -35,6 +35,8 @@
     <SolidColorBrush x:Key="AppAccentForeground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#000080" />
     <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#808080" />
+    <SolidColorBrush x:Key="AppToolbarForeground" Color="#000000" />
+    <SolidColorBrush x:Key="AppToolbarMutedForeground" Color="#404040" />
 
     <!-- Dimensions & Metrics -->
     <sys:Double x:Key="AppTitleBarHeight">26</sys:Double>

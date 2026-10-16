@@ -12,7 +12,7 @@ namespace TasksApp.Services
 {
     public class UpdateService
     {
-        public const string CurrentVersion = "2";
+        public const string CurrentVersion = "3";
         public const string GitHubRepo = "pyscriptcli/tasks";
         private const string LatestReleaseApiUrl = $"https://api.github.com/repos/{GitHubRepo}/releases/latest";
 
@@ -189,9 +189,9 @@ namespace TasksApp.Services
 
             // Silent Windows PowerShell script:
             // 1. Waits for current process PID to exit cleanly (up to 15 seconds)
-            // 2. Overwrites current executable with new version
+            // 2. Safely retries overwriting current executable with new version (handles Windows file unlocking)
             // 3. Starts the new executable
-            string script = $"-NoProfile -WindowStyle Hidden -Command \"try {{ Wait-Process -Id {pid} -Timeout 15 -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 400; Move-Item -LiteralPath '{escapedNew}' -Destination '{escapedCurrent}' -Force; Start-Process -FilePath '{escapedCurrent}' }} catch {{ }}\"";
+            string script = $"-NoProfile -WindowStyle Hidden -Command \"try {{ Wait-Process -Id {pid} -Timeout 15 -ErrorAction SilentlyContinue; for ($i=0; $i -lt 30; $i++) {{ try {{ Move-Item -LiteralPath '{escapedNew}' -Destination '{escapedCurrent}' -Force -ErrorAction Stop; break; }} catch {{ Start-Sleep -Milliseconds 400; }} }}; Start-Process -FilePath '{escapedCurrent}'; }} catch {{ }}\"";
 
             var startInfo = new ProcessStartInfo("powershell.exe", script)
             {

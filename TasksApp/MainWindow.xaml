@@ -184,6 +184,26 @@
                     <SineEase EasingMode="EaseInOut" />
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
+
+            <!-- Jack-o'-Lantern Carved Eyes & Mouth Candle Flame Flicker -->
+            <DoubleAnimation Storyboard.TargetName="JackLeftEyeGlow"
+                             Storyboard.TargetProperty="BlurRadius"
+                             From="12" To="28" Duration="0:0:0.7" />
+            <DoubleAnimation Storyboard.TargetName="JackLeftEyeGlow"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.65" To="1.0" Duration="0:0:0.7" />
+            <DoubleAnimation Storyboard.TargetName="JackRightEyeGlow"
+                             Storyboard.TargetProperty="BlurRadius"
+                             From="12" To="28" Duration="0:0:0.55" />
+            <DoubleAnimation Storyboard.TargetName="JackRightEyeGlow"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.65" To="1.0" Duration="0:0:0.55" />
+            <DoubleAnimation Storyboard.TargetName="JackMouthGlow"
+                             Storyboard.TargetProperty="BlurRadius"
+                             From="14" To="36" Duration="0:0:0.8" />
+            <DoubleAnimation Storyboard.TargetName="JackMouthGlow"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.7" To="1.0" Duration="0:0:0.8" />
         </Storyboard>
     </Window.Resources>
 
@@ -208,13 +228,13 @@
 
                 <!-- Ambient Floating Halloween Layer (Cobwebs, Bats, Ghosts, Jack-o'-Lanterns) -->
                 <Grid x:Name="HalloweenAmbientGrid" Grid.RowSpan="4" IsHitTestVisible="False"
-                      Visibility="{DynamicResource HalloweenOnlyVis}" Panel.ZIndex="5" ClipToBounds="True">
-                    <!-- Top-Left Corner Cobweb with Dangling Spider -->
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,48,0,0">
-                        <TextBlock Text="🕸️" FontSize="44" Opacity="0.75" />
-                        <StackPanel Margin="28,24,0,0">
-                            <Line Y2="35" Stroke="#888888" StrokeThickness="1" StrokeDashArray="2,2" />
-                            <TextBlock Text="🕷️" FontSize="18" Margin="-8,0,0,0">
+                      Visibility="{DynamicResource HalloweenOnlyVis}" Panel.ZIndex="0" ClipToBounds="True">
+                    <!-- Top-Left Corner Cobweb with Dangling Spider (Strictly inside titlebar corner) -->
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,2,0,0">
+                        <TextBlock Text="🕸️" FontSize="36" Opacity="0.7" />
+                        <StackPanel Margin="22,14,0,0">
+                            <Line Y2="14" Stroke="#888888" StrokeThickness="1" StrokeDashArray="2,2" />
+                            <TextBlock Text="🕷️" FontSize="13" Margin="-5,0,0,0">
                                 <TextBlock.RenderTransform>
                                     <TranslateTransform x:Name="Spider1Translate" Y="0" />
                                 </TextBlock.RenderTransform>
@@ -222,23 +242,23 @@
                         </StackPanel>
                     </Grid>
 
-                    <!-- Top-Right Corner Cobweb -->
-                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,48,6,0">
-                        <TextBlock Text="🕸️" FontSize="44" Opacity="0.75" />
+                    <!-- Top-Right Corner Cobweb (In titlebar before buttons) -->
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,145,0">
+                        <TextBlock Text="🕸️" FontSize="34" Opacity="0.65" />
                     </Grid>
 
                     <!-- Bottom-Left Corner Cobweb -->
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,24">
-                        <TextBlock Text="🕸️" FontSize="36" Opacity="0.65" />
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="2,0,0,2">
+                        <TextBlock Text="🕸️" FontSize="32" Opacity="0.55" />
                     </Grid>
 
                     <!-- Bottom-Right Corner Cobweb -->
-                    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,4,24">
-                        <TextBlock Text="🕸️" FontSize="36" Opacity="0.65" />
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+                        <TextBlock Text="🕸️" FontSize="32" Opacity="0.55" />
                     </Grid>
 
-                    <!-- Floating Bat 1 (Drifting & fluttering across top) -->
-                    <TextBlock Text="🦇" FontSize="28" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,54,0,0">
+                    <!-- Floating Bat 1 (Drifting gently in empty titlebar space) -->
+                    <TextBlock Text="🦇" FontSize="22" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="210,12,0,0">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <TranslateTransform x:Name="Bat1Translate" X="0" Y="0" />
@@ -246,12 +266,12 @@
                             </TransformGroup>
                         </TextBlock.RenderTransform>
                         <TextBlock.Effect>
-                            <DropShadowEffect Color="#FF6B00" BlurRadius="8" ShadowDepth="0" Opacity="0.6" />
+                            <DropShadowEffect Color="#FF6B00" BlurRadius="6" ShadowDepth="0" Opacity="0.5" />
                         </TextBlock.Effect>
                     </TextBlock>
 
-                    <!-- Floating Bat 2 (Fluttering across upper right) -->
-                    <TextBlock Text="🦇" FontSize="22" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,58,160,0">
+                    <!-- Floating Bat 2 (Fluttering across upper right titlebar space) -->
+                    <TextBlock Text="🦇" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,12,230,0">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <TranslateTransform x:Name="Bat2Translate" X="0" Y="0" />
@@ -259,18 +279,18 @@
                         </TextBlock.RenderTransform>
                     </TextBlock>
 
-                    <!-- Floating Ghost (Eerie drift along left side) -->
-                    <TextBlock Text="👻" FontSize="34" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="24,0,0,60" RenderTransformOrigin="0.5,0.5">
+                    <!-- Floating Ghost (Subtle eerie drift in far left outer margin) -->
+                    <TextBlock Text="👻" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="6,0,0,32" RenderTransformOrigin="0.5,0.5">
                         <TextBlock.RenderTransform>
                             <TranslateTransform x:Name="Ghost1Translate" X="0" Y="0" />
                         </TextBlock.RenderTransform>
                         <TextBlock.Effect>
-                            <DropShadowEffect x:Name="Ghost1Effect" Color="#00FFFF" BlurRadius="14" ShadowDepth="0" Opacity="0.7" />
+                            <DropShadowEffect x:Name="Ghost1Effect" Color="#00FFFF" BlurRadius="12" ShadowDepth="0" Opacity="0.6" />
                         </TextBlock.Effect>
                     </TextBlock>
 
-                    <!-- Floating Jack-o'-Lantern (Bobbing & rotating near bottom right) -->
-                    <TextBlock Text="🎃" FontSize="34" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,28,52" RenderTransformOrigin="0.5,0.5">
+                    <!-- Floating Jack-o'-Lantern (Bobbing near far right outer margin) -->
+                    <TextBlock Text="🎃" FontSize="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,30" RenderTransformOrigin="0.5,0.5">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <TranslateTransform x:Name="Pumpkin1Translate" Y="0" />
@@ -278,7 +298,7 @@
                             </TransformGroup>
                         </TextBlock.RenderTransform>
                         <TextBlock.Effect>
-                            <DropShadowEffect x:Name="Pumpkin1Glow" Color="#FF6B00" BlurRadius="14" ShadowDepth="0" Opacity="0.8" />
+                            <DropShadowEffect x:Name="Pumpkin1Glow" Color="#FF6B00" BlurRadius="12" ShadowDepth="0" Opacity="0.75" />
                         </TextBlock.Effect>
                     </TextBlock>
                 </Grid>
@@ -439,7 +459,7 @@
                                 ToolTip="Previous Day" Margin="0,0,6,0" Padding="8,6">
                             <Viewbox Width="10" Height="12">
                                 <Canvas Width="24" Height="24">
-                                    <Path Data="M 16,4 L 8,12 L 16,20" Stroke="{DynamicResource AppTextForeground}" StrokeThickness="3"
+                                    <Path Data="M 16,4 L 8,12 L 16,20" Stroke="{DynamicResource AppToolbarForeground}" StrokeThickness="3"
                                           StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
                                 </Canvas>
                             </Viewbox>
@@ -450,7 +470,7 @@
                                 ToolTip="Next Day" Margin="0,0,8,0" Padding="8,6">
                             <Viewbox Width="10" Height="12">
                                 <Canvas Width="24" Height="24">
-                                    <Path Data="M 8,4 L 16,12 L 8,20" Stroke="{DynamicResource AppTextForeground}" StrokeThickness="3"
+                                    <Path Data="M 8,4 L 16,12 L 8,20" Stroke="{DynamicResource AppToolbarForeground}" StrokeThickness="3"
                                           StrokeStartLineCap="Square" StrokeEndLineCap="Square" />
                                 </Canvas>
                             </Viewbox>
@@ -460,20 +480,25 @@
                         <Button Style="{DynamicResource SecondaryActionBtn}" Command="{Binding JumpToTodayCommand}"
                                 Margin="0,0,14,0" Padding="12,6">
                             <TextBlock Text="TODAY" FontSize="11" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AppToolbarForeground}"
                                        FontFamily="{DynamicResource AppBaseFontFamily}" />
                         </Button>
 
                         <!-- Active Date Title -->
-                        <TextBlock Text="{Binding DisplayDateString}" FontSize="21" FontWeight="Normal" FontStyle="{DynamicResource AppDisplayFontStyle}"
+                        <TextBlock Text="{Binding DisplayDateString}" FontSize="21" FontWeight="SemiBold" FontStyle="{DynamicResource AppDisplayFontStyle}"
                                    FontFamily="{DynamicResource AppDisplayFontFamily}"
-                                   Foreground="{DynamicResource AppTextForeground}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                   Foreground="{DynamicResource AppToolbarForeground}" VerticalAlignment="Center" Margin="0,0,10,0">
+                            <TextBlock.Effect>
+                                <DropShadowEffect Color="#000000" BlurRadius="6" ShadowDepth="1" Opacity="0.5" />
+                            </TextBlock.Effect>
+                        </TextBlock>
 
                         <!-- Date Picker Helper (UR-008: pick any day) -->
                         <DatePicker SelectedDate="{Binding CurrentDate, Mode=TwoWay}"
                                     VerticalAlignment="Center" Height="32" Width="130" Margin="4,0,0,0"
                                     FontFamily="{DynamicResource AppBaseFontFamily}" FontSize="11"
                                     BorderThickness="1" BorderBrush="{DynamicResource AppPanelBorder}"
-                                    Background="{DynamicResource AppSurfaceBackground}"
+                                    Background="{DynamicResource AppCardBackground}" Foreground="{DynamicResource AppTextForeground}"
                                     Cursor="Hand" ToolTip="Select any date from calendar (UR-008)" />
                     </StackPanel>
 
@@ -974,9 +999,120 @@
         <!-- ======================================================== -->
         <!-- REMINDER OVERLAY DIALOG (UR-020, UR-021, UR-022, UR-024) -->
         <!-- ======================================================== -->
-        <Border Background="#70000000" Visibility="{Binding IsReminderOverlayVisible, Converter={StaticResource BoolToVis}}" Panel.ZIndex="200">
-            <Border Style="{DynamicResource DialogOuterFrameStyle}" Width="660" MaxHeight="620"
-                    VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border Background="#8A000000" Visibility="{Binding IsReminderOverlayVisible, Converter={StaticResource BoolToVis}}" Panel.ZIndex="200">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <!-- Sculpted Jack-o'-Lantern Silhouette, Stem, Eyes & Mouth (Visible only in Halloween Theme) -->
+                <Grid Visibility="{DynamicResource HalloweenOnlyVis}" IsHitTestVisible="False" Margin="-55,-65,-55,-55">
+                    <!-- Giant Pumpkin Outer Silhouette Body -->
+                    <Path Data="M 140,80 C 40,110 0,220 0,380 C 0,550 50,680 180,720 C 270,750 490,750 580,720 C 710,680 760,550 760,380 C 760,220 720,110 620,80 C 560,55 490,65 380,70 C 270,65 200,55 140,80 Z"
+                          Stretch="Fill">
+                        <Path.Fill>
+                            <RadialGradientBrush Center="0.5,0.45" GradientOrigin="0.5,0.45" RadiusX="0.65" RadiusY="0.6">
+                                <GradientStop Color="#FF7A00" Offset="0.0" />
+                                <GradientStop Color="#E65100" Offset="0.65" />
+                                <GradientStop Color="#BF360C" Offset="0.9" />
+                                <GradientStop Color="#2B0A00" Offset="1.0" />
+                            </RadialGradientBrush>
+                        </Path.Fill>
+                        <Path.Effect>
+                            <DropShadowEffect Color="#FF6B00" BlurRadius="50" ShadowDepth="0" Opacity="0.85" />
+                        </Path.Effect>
+                    </Path>
+
+                    <!-- Pumpkin Vertical Rib Ridges for 3D depth -->
+                    <Path Data="M 380,60 C 350,220 350,560 380,730" Stroke="#8C2500" StrokeThickness="3.5" Opacity="0.5" Stretch="Fill" Margin="10,0,10,0" />
+                    <Path Data="M 230,70 C 170,230 170,550 240,715" Stroke="#8C2500" StrokeThickness="4" Opacity="0.45" Stretch="Fill" Margin="10,0,10,0" />
+                    <Path Data="M 530,70 C 590,230 590,550 520,715" Stroke="#8C2500" StrokeThickness="4" Opacity="0.45" Stretch="Fill" Margin="10,0,10,0" />
+
+                    <!-- Top Green Carved Stem & Twisting Tendril Vine -->
+                    <Canvas Height="90" Width="140" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-32,0,0">
+                        <!-- Tendril Vine -->
+                        <Path Data="M 75,45 C 95,20 120,35 110,60 C 100,80 125,85 135,70" Stroke="#43A047" StrokeThickness="3.5" Fill="Transparent" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                        <!-- Carved Pumpkin Stem -->
+                        <Path Data="M 50,85 C 45,55 35,28 60,10 C 72,2 84,10 78,30 C 72,50 78,70 88,85 Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#2E7D32" Offset="0.0" />
+                                    <GradientStop Color="#1B5E20" Offset="0.7" />
+                                    <GradientStop Color="#3E2723" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                            <Path.Effect>
+                                <DropShadowEffect Color="#000000" BlurRadius="6" ShadowDepth="2" Opacity="0.6" />
+                            </Path.Effect>
+                        </Path>
+                        <!-- Leaf -->
+                        <Path Data="M 46,65 C 25,50 15,65 30,80 C 40,88 48,78 46,65 Z" Fill="#4CAF50" />
+                    </Canvas>
+
+                    <!-- Top Carved Glowing Menacing Triangular Eyes -->
+                    <Grid VerticalAlignment="Top" Margin="70,18,70,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left Carved Eye -->
+                        <Polygon Grid.Column="0" Points="0,32 46,4 40,38" Margin="25,0,0,0">
+                            <Polygon.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#FFFF66" Offset="0.0" />
+                                    <GradientStop Color="#FF9100" Offset="0.6" />
+                                    <GradientStop Color="#FF3D00" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Polygon.Fill>
+                            <Polygon.Effect>
+                                <DropShadowEffect x:Name="JackLeftEyeGlow" Color="#FFA500" BlurRadius="18" ShadowDepth="0" Opacity="0.9" />
+                            </Polygon.Effect>
+                        </Polygon>
+
+                        <!-- Carved Nose (Center) -->
+                        <Polygon Grid.Column="1" HorizontalAlignment="Center" Points="0,26 15,0 30,26" Margin="0,10,0,0">
+                            <Polygon.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#FFFF66" Offset="0.0" />
+                                    <GradientStop Color="#FF6D00" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Polygon.Fill>
+                            <Polygon.Effect>
+                                <DropShadowEffect Color="#FFA500" BlurRadius="14" ShadowDepth="0" Opacity="0.85" />
+                            </Polygon.Effect>
+                        </Polygon>
+
+                        <!-- Right Carved Eye -->
+                        <Polygon Grid.Column="2" Points="46,32 0,4 6,38" Margin="0,0,25,0">
+                            <Polygon.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#FFFF66" Offset="0.0" />
+                                    <GradientStop Color="#FF9100" Offset="0.6" />
+                                    <GradientStop Color="#FF3D00" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Polygon.Fill>
+                            <Polygon.Effect>
+                                <DropShadowEffect x:Name="JackRightEyeGlow" Color="#FFA500" BlurRadius="18" ShadowDepth="0" Opacity="0.9" />
+                            </Polygon.Effect>
+                        </Polygon>
+                    </Grid>
+
+                    <!-- Bottom Carved Jagged Smiling Mouth -->
+                    <Path VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10"
+                          Data="M 0,16 Q 60,32 120,38 Q 180,42 240,38 Q 300,32 360,16 L 340,30 L 315,20 L 290,36 L 260,22 L 225,38 L 195,22 L 165,38 L 135,22 L 105,36 L 80,20 L 55,30 Z">
+                        <Path.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#FFFF66" Offset="0.0" />
+                                <GradientStop Color="#FF9900" Offset="0.5" />
+                                <GradientStop Color="#FF3300" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Path.Fill>
+                        <Path.Effect>
+                            <DropShadowEffect x:Name="JackMouthGlow" Color="#FFA500" BlurRadius="22" ShadowDepth="0" Opacity="0.95" />
+                        </Path.Effect>
+                    </Path>
+                </Grid>
+
+                <!-- Inner Dialog Frame Container -->
+                <Border Style="{DynamicResource DialogOuterFrameStyle}" Width="660" MaxHeight="620">
                 <Grid Margin="24">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" /> <!-- 0. Halloween Character Banner -->
@@ -1244,6 +1380,7 @@
                     </Grid>
                 </Grid>
             </Border>
+            </Grid>
         </Border>
     </Grid>
 </Window>
