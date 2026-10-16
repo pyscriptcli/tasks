@@ -288,11 +288,13 @@ namespace TasksApp.Tests
             Assert.Single(todayTasks);
             Assert.Equal("Unfinished Client Review", todayTasks[0].Title);
 
-            // Verify yesterday only keeps the completed task
+            // Verify yesterday preserves both the completed task and carried forward task (historical record is never lost)
             var remainingYesterdayTasks = storage.LoadTasksForDate(_testDir, yesterday);
-            Assert.Single(remainingYesterdayTasks);
-            Assert.Equal("Finished Morning Standup", remainingYesterdayTasks[0].Title);
-            Assert.True(remainingYesterdayTasks[0].IsCompleted);
+            Assert.Equal(2, remainingYesterdayTasks.Count);
+            Assert.Contains(remainingYesterdayTasks, t => t.Title == "Finished Morning Standup" && t.IsCompleted);
+            var carriedForwardTask = remainingYesterdayTasks.First(t => t.Title == "Unfinished Client Review");
+            Assert.True(carriedForwardTask.IsCarriedForward);
+            Assert.Equal(today.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture), carriedForwardTask.CarriedForwardTo);
         }
 
         [Fact]
@@ -610,6 +612,129 @@ namespace TasksApp.Tests
             // Revert back to Default
             ThemeManager.ApplyTheme(ThemeManager.DefaultTheme);
             Assert.False(ThemeManager.IsChristmas);
+        }
+
+        [Fact]
+        public void LegacyTextTaskParsing_ParsesTxtFormatCorrectly()
+        {
+            string txtPath = Path.Combine(_testDir, "Task_October 7 2026.txt");
+            string sample = @"[ ] Title: Task test 1
+    Priority: normal
+    ID: 1
+    Notes: none
+---
+[x] Title: Done Task from v1
+    Priority: high
+    ID: 2
+    Notes: Specific details here
+---";
+            File.WriteAllText(txtPath, sample);
+
+            var tasks = StorageService.ParseTextTaskFile(txtPath);
+            Assert.Equal(2, tasks.Count);
+
+            Assert.Equal("Task test 1", tasks[0].Title);
+            Assert.False(tasks[0].IsCompleted);
+            Assert.False(tasks[0].IsHighPriority);
+            Assert.Equal("legacy-txt-1", tasks[0].Id);
+            Assert.Equal(string.Empty, tasks[0].Details);
+
+            Assert.Equal("Done Task from v1", tasks[1].Title);
+            Assert.True(tasks[1].IsCompleted);
+            Assert.True(tasks[1].IsHighPriority);
+            Assert.Equal("legacy-txt-2", tasks[1].Id);
+            Assert.Equal("Specific details here", tasks[1].Details);
+        }
+
+        [Fact]
+        public void PastTaskFiles_NeverDeletedWhenAllTasksPending()
+        {
+            var storage = new StorageService();
+            DateTime pastDate = new DateTime(2026, 10, 7);
+            DateTime today = DateTime.Today;
+
+            var pastTasks = new List<TaskItem>
+            {
+                new TaskItem { Title = "Only Pending Task 1", IsCompleted = false },
+                new TaskItem { Title = "Only Pending Task 2", IsCompleted = false }
+            };
+            storage.SaveTasksForDate(_testDir, pastDate, pastTasks);
+
+            // Execute carryover
+            var carried = storage.CarryOverPendingTasks(_testDir, today);
+
+            Assert.Equal(2, carried.Count);
+
+            // Past file MUST still exist on disk!
+            string expectedPastFile = Path.Combine(_testDir, $"Task_{pastDate.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}.json");
+            Assert.True(File.Exists(expectedPastFile), "Past task file must NEVER be deleted during carryover!");
+
+            // Past tasks must be preserved with CarriedForwardTo
+            var reloadedPastTasks = storage.LoadTasksForDate(_testDir, pastDate);
+            Assert.Equal(2, reloadedPastTasks.Count);
+            Assert.All(reloadedPastTasks, t => Assert.True(t.IsCarriedForward));
+        }
+
+        [Fact]
+        public void MergeNotesIntoDate_PreservesExistingAndAppendsDistinctContent()
+        {
+            var storage = new StorageService();
+            DateTime date = new DateTime(2026, 10, 7);
+
+            // Start empty
+            storage.MergeNotesIntoDate(_testDir, date, "Initial note from legacy v1.");
+            Assert.Equal("Initial note from legacy v1.", storage.LoadNotesForDate(_testDir, date));
+
+            // Merge another distinct note
+            storage.MergeNotesIntoDate(_testDir, date, "Second note from sqlite.");
+            string combined = storage.LoadNotesForDate(_testDir, date);
+            Assert.Contains("Initial note from legacy v1.", combined);
+            Assert.Contains("Second note from sqlite.", combined);
+
+            // Merging duplicate should not repeat
+            storage.MergeNotesIntoDate(_testDir, date, "Initial note from legacy v1.");
+            Assert.Equal(combined, storage.LoadNotesForDate(_testDir, date));
+        }
+
+        [Fact]
+        public void CaptureTasksFromOtherVersions_CapturesJsonTextAndNotes()
+        {
+            var storage = new StorageService();
+            string activeDir = Path.Combine(_testDir, "ActiveTasks");
+            string legacyDir1 = Path.Combine(_testDir, "LegacyTasks1");
+            string legacyDir2 = Path.Combine(_testDir, "LegacyTasks2");
+
+            Directory.CreateDirectory(activeDir);
+            Directory.CreateDirectory(legacyDir1);
+            Directory.CreateDirectory(legacyDir2);
+
+            DateTime date = new DateTime(2028, 5, 20);
+
+            // Legacy 1: JSON tasks
+            var legacyJsonTasks = new List<TaskItem>
+            {
+                new TaskItem { Title = "Legacy Json Task 1", IsCompleted = false }
+            };
+            storage.SaveTasksForDate(legacyDir1, date, legacyJsonTasks);
+
+            // Legacy 2: Plain text tasks and notes
+            string txtTaskFile = Path.Combine(legacyDir2, "Task_May 20 2028.txt");
+            File.WriteAllText(txtTaskFile, "[ ] Title: Legacy Txt Task 2\nPriority: high\nID: 99\nNotes: none\n---");
+            string txtNoteFile = Path.Combine(legacyDir2, "Notes_May 20 2028.txt");
+            File.WriteAllText(txtNoteFile, "Important site meeting note.");
+
+            // Capture
+            storage.CaptureTasksFromOtherVersions(activeDir, new[] { legacyDir1, legacyDir2 });
+
+            // Verify activeDir has both tasks!
+            var loadedTasks = storage.LoadTasksForDate(activeDir, date);
+            Assert.Equal(2, loadedTasks.Count);
+            Assert.Contains(loadedTasks, t => t.Title == "Legacy Json Task 1");
+            Assert.Contains(loadedTasks, t => t.Title == "Legacy Txt Task 2" && t.IsHighPriority);
+
+            // Verify activeDir has notes!
+            string loadedNotes = storage.LoadNotesForDate(activeDir, date);
+            Assert.Equal("Important site meeting note.", loadedNotes);
         }
     }
 }

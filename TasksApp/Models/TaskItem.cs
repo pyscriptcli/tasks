@@ -68,6 +68,7 @@ namespace TasksApp.Models
         }
 
         private string? _carriedOverFrom;
+        private string? _carriedForwardTo;
 
         [JsonPropertyName("completedAt")]
         public DateTime? CompletedAt
@@ -92,6 +93,18 @@ namespace TasksApp.Models
                 _carriedOverFrom = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsCarriedOver));
+            }
+        }
+
+        [JsonPropertyName("carriedForwardTo")]
+        public string? CarriedForwardTo
+        {
+            get => _carriedForwardTo;
+            set
+            {
+                _carriedForwardTo = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsCarriedForward));
             }
         }
 
@@ -151,6 +164,9 @@ namespace TasksApp.Models
         [JsonIgnore]
         public bool IsCarriedOver => !string.IsNullOrEmpty(_carriedOverFrom);
 
+        [JsonIgnore]
+        public bool IsCarriedForward => !string.IsNullOrEmpty(_carriedForwardTo);
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -170,7 +186,8 @@ namespace TasksApp.Models
                 IsCompleted = this.IsCompleted,
                 CompletedAt = this.CompletedAt,
                 CreatedAt = this.CreatedAt,
-                CarriedOverFrom = this.CarriedOverFrom
+                CarriedOverFrom = this.CarriedOverFrom,
+                CarriedForwardTo = this.CarriedForwardTo
             };
         }
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Data.Sqlite;
 using TasksApp.Models;
 
 namespace TasksApp.Services
@@ -281,23 +282,274 @@ namespace TasksApp.Services
             }
         }
 
+        public void MergeTaskIntoDate(string activeDataDirectory, DateTime date, TaskItem task)
+        {
+            if (string.IsNullOrWhiteSpace(activeDataDirectory)) return;
+            EnsureDirectoryExists(activeDataDirectory);
+
+            var activeTasks = LoadTasksForDate(activeDataDirectory, date);
+            bool exists = activeTasks.Any(t =>
+                string.Equals(t.Id, task.Id, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(t.Title.Trim(), task.Title.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            if (!exists)
+            {
+                task.OrderIndex = activeTasks.Count + 1;
+                activeTasks.Add(task);
+                SaveTasksForDate(activeDataDirectory, date, activeTasks);
+            }
+        }
+
+        public void MergeNotesIntoDate(string activeDataDirectory, DateTime date, string note)
+        {
+            if (string.IsNullOrWhiteSpace(activeDataDirectory) || string.IsNullOrWhiteSpace(note)) return;
+            EnsureDirectoryExists(activeDataDirectory);
+
+            string existing = LoadNotesForDate(activeDataDirectory, date);
+            if (string.IsNullOrWhiteSpace(existing))
+            {
+                SaveNotesForDate(activeDataDirectory, date, note);
+            }
+            else if (!existing.Contains(note, StringComparison.OrdinalIgnoreCase))
+            {
+                SaveNotesForDate(activeDataDirectory, date, existing + Environment.NewLine + note);
+            }
+        }
+
+        public static List<TaskItem> ParseTextTaskFile(string filePath)
+        {
+            var result = new List<TaskItem>();
+            if (!File.Exists(filePath)) return result;
+
+            var lines = File.ReadAllLines(filePath);
+            TaskItem? current = null;
+
+            foreach (var rawLine in lines)
+            {
+                var line = rawLine.Trim();
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                if (line.StartsWith("---") || line.StartsWith("==="))
+                {
+                    if (current != null && !string.IsNullOrWhiteSpace(current.Title))
+                    {
+                        result.Add(current);
+                        current = null;
+                    }
+                    continue;
+                }
+
+                if (line.StartsWith("[ ]") || line.StartsWith("[x]", StringComparison.OrdinalIgnoreCase) || line.StartsWith("[X]"))
+                {
+                    if (current != null && !string.IsNullOrWhiteSpace(current.Title))
+                    {
+                        result.Add(current);
+                    }
+                    current = new TaskItem
+                    {
+                        IsCompleted = !line.StartsWith("[ ]")
+                    };
+
+                    string afterBracket = line.Substring(3).Trim();
+                    if (afterBracket.StartsWith("Title:", StringComparison.OrdinalIgnoreCase))
+                    {
+                        current.Title = afterBracket.Substring(6).Trim();
+                    }
+                    else
+                    {
+                        current.Title = afterBracket;
+                    }
+                    continue;
+                }
+
+                if (current == null)
+                {
+                    current = new TaskItem();
+                }
+
+                if (line.StartsWith("Title:", StringComparison.OrdinalIgnoreCase))
+                {
+                    current.Title = line.Substring(6).Trim();
+                }
+                else if (line.StartsWith("Priority:", StringComparison.OrdinalIgnoreCase))
+                {
+                    string prio = line.Substring(9).Trim();
+                    current.IsHighPriority = prio.Contains("high", StringComparison.OrdinalIgnoreCase) || prio.Equals("1");
+                }
+                else if (line.StartsWith("ID:", StringComparison.OrdinalIgnoreCase))
+                {
+                    string id = line.Substring(3).Trim();
+                    if (!string.IsNullOrWhiteSpace(id))
+                    {
+                        current.Id = "legacy-txt-" + id;
+                    }
+                }
+                else if (line.StartsWith("Notes:", StringComparison.OrdinalIgnoreCase))
+                {
+                    string notes = line.Substring(6).Trim();
+                    if (!notes.Equals("none", StringComparison.OrdinalIgnoreCase))
+                    {
+                        current.Details = notes;
+                    }
+                }
+                else if (line.StartsWith("Details:", StringComparison.OrdinalIgnoreCase))
+                {
+                    current.Details = line.Substring(8).Trim();
+                }
+            }
+
+            if (current != null && !string.IsNullOrWhiteSpace(current.Title))
+            {
+                result.Add(current);
+            }
+
+            return result;
+        }
+
+        public void ImportSQLiteDatabase(string dbPath, string activeDataDirectory)
+        {
+            if (!File.Exists(dbPath) || string.IsNullOrWhiteSpace(activeDataDirectory)) return;
+
+            try
+            {
+                using var conn = new SqliteConnection($"Data Source={dbPath};Mode=ReadOnly");
+                conn.Open();
+
+                // 1. Tasks table
+                bool hasTasksTable = false;
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='tasks';";
+                    var val = cmd.ExecuteScalar();
+                    hasTasksTable = val != null && Convert.ToInt32(val) > 0;
+                }
+
+                if (hasTasksTable)
+                {
+                    using var cmd = conn.CreateCommand();
+                    cmd.CommandText = "SELECT * FROM tasks;";
+                    using var reader = cmd.ExecuteReader();
+                    int dateCol = -1, titleCol = -1, detailsCol = -1, statusCol = -1, prioCol = -1;
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        string name = reader.GetName(i).ToLowerInvariant();
+                        if (name == "date") dateCol = i;
+                        else if (name == "title") titleCol = i;
+                        else if (name is "details" or "notes" or "description") detailsCol = i;
+                        else if (name is "status" or "is_completed" or "isdone") statusCol = i;
+                        else if (name is "priority" or "prio") prioCol = i;
+                    }
+
+                    while (reader.Read())
+                    {
+                        string dateStr = dateCol >= 0 && !reader.IsDBNull(dateCol) ? reader.GetValue(dateCol).ToString() ?? "" : "";
+                        string title = titleCol >= 0 && !reader.IsDBNull(titleCol) ? reader.GetValue(titleCol).ToString() ?? "" : "";
+                        string details = detailsCol >= 0 && !reader.IsDBNull(detailsCol) ? reader.GetValue(detailsCol).ToString() ?? "" : "";
+                        string status = statusCol >= 0 && !reader.IsDBNull(statusCol) ? reader.GetValue(statusCol).ToString() ?? "" : "";
+                        string priority = prioCol >= 0 && !reader.IsDBNull(prioCol) ? reader.GetValue(prioCol).ToString() ?? "" : "";
+
+                        if (string.IsNullOrWhiteSpace(title)) continue;
+
+                        DateTime taskDate = DateTime.Today;
+                        string[] formats = { "yyyy-MM-dd", "yyyyMMdd", "MMMM d yyyy", "MMMM d, yyyy" };
+                        if (!DateTime.TryParseExact(dateStr, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out taskDate))
+                        {
+                            DateTime.TryParse(dateStr, CultureInfo.InvariantCulture, DateTimeStyles.None, out taskDate);
+                        }
+
+                        var task = new TaskItem
+                        {
+                            Id = "legacy-sqlite-" + Guid.NewGuid().ToString("N").Substring(0, 8),
+                            Title = title.Trim(),
+                            Details = details.Trim(),
+                            IsCompleted = status.Equals("completed", StringComparison.OrdinalIgnoreCase),
+                            IsHighPriority = priority.Contains("high", StringComparison.OrdinalIgnoreCase) || priority.Equals("1")
+                        };
+
+                        MergeTaskIntoDate(activeDataDirectory, taskDate, task);
+                    }
+                }
+
+                // 2. Daily Notes table
+                bool hasNotesTable = false;
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='daily_notes';";
+                    var val = cmd.ExecuteScalar();
+                    hasNotesTable = val != null && Convert.ToInt32(val) > 0;
+                }
+
+                if (hasNotesTable)
+                {
+                    using var cmd = conn.CreateCommand();
+                    cmd.CommandText = "SELECT * FROM daily_notes;";
+                    using var reader = cmd.ExecuteReader();
+                    int dateCol = -1, contentCol = -1;
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        string name = reader.GetName(i).ToLowerInvariant();
+                        if (name == "date") dateCol = i;
+                        else if (name is "content" or "note" or "notes" or "text") contentCol = i;
+                    }
+
+                    while (reader.Read())
+                    {
+                        string dateStr = dateCol >= 0 && !reader.IsDBNull(dateCol) ? reader.GetValue(dateCol).ToString() ?? "" : "";
+                        string note = contentCol >= 0 && !reader.IsDBNull(contentCol) ? reader.GetValue(contentCol).ToString() ?? "" : "";
+
+                        if (string.IsNullOrWhiteSpace(note)) continue;
+
+                        DateTime noteDate = DateTime.Today;
+                        string[] formats = { "yyyy-MM-dd", "yyyyMMdd", "MMMM d yyyy", "MMMM d, yyyy" };
+                        if (!DateTime.TryParseExact(dateStr, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out noteDate))
+                        {
+                            DateTime.TryParse(dateStr, CultureInfo.InvariantCulture, DateTimeStyles.None, out noteDate);
+                        }
+
+                        MergeNotesIntoDate(activeDataDirectory, noteDate, note.Trim());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error importing SQLite DB {dbPath}: {ex.Message}");
+            }
+        }
+
         /// <summary>
         /// Automatically discovers and captures tasks and notes from older versions or alternative locations
-        /// (e.g. Documents\Tasks, portable EXEs, %LOCALAPPDATA%), merging them into the active data directory.
+        /// (e.g. Documents\Tasks, Documents\TasksStorage, Documents\PrimeTasks, Documents\TasksApp, portable EXEs, %LOCALAPPDATA%),
+        /// merging them into the active data directory.
         /// </summary>
-        public void CaptureTasksFromOtherVersions(string activeDataDirectory)
+        public void CaptureTasksFromOtherVersions(string activeDataDirectory, IEnumerable<string>? additionalLegacyDirs = null)
         {
             if (string.IsNullOrWhiteSpace(activeDataDirectory)) return;
 
+            string docs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
             var potentialLegacyDirs = new List<string>
             {
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Tasks"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TasksData"),
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tasks"),
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TasksData"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TasksApp", "TasksData"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TasksApp", "TasksData")
+                Path.Combine(docs, "Tasks"),
+                Path.Combine(docs, "TasksStorage"),
+                Path.Combine(docs, "TasksApp"),
+                Path.Combine(docs, "PrimeTasks"),
+                Path.Combine(docs, "TasksData"),
+                Path.Combine(baseDir, "Tasks"),
+                Path.Combine(baseDir, "TasksStorage"),
+                Path.Combine(baseDir, "TasksData"),
+                Path.Combine(localAppData, "TasksApp"),
+                Path.Combine(localAppData, "TasksApp", "TasksData"),
+                Path.Combine(appData, "TasksApp"),
+                Path.Combine(appData, "TasksApp", "TasksData")
             };
+
+            if (additionalLegacyDirs != null)
+            {
+                potentialLegacyDirs.AddRange(additionalLegacyDirs);
+            }
 
             EnsureDirectoryExists(activeDataDirectory);
             string activeNormalized = Path.GetFullPath(activeDataDirectory).TrimEnd('\\');
@@ -313,56 +565,50 @@ namespace TasksApp.Services
 
                 try
                 {
-                    // Copy and merge Task_* files
-                    foreach (var legacyFile in Directory.GetFiles(legacyDir, "Task_*"))
+                    // 1. Process JSON Task_* files
+                    foreach (var legacyFile in Directory.GetFiles(legacyDir, "Task_*.json"))
                     {
                         if (legacyFile.EndsWith(".tmp", StringComparison.OrdinalIgnoreCase)) continue;
-                        string fileName = Path.GetFileName(legacyFile);
-                        string activeFile = Path.Combine(activeDataDirectory, fileName);
-
-                        if (!File.Exists(activeFile))
+                        if (TryParseTaskFileDate(legacyFile, out DateTime fileDate))
                         {
-                            File.Copy(legacyFile, activeFile, true);
-                        }
-                        else
-                        {
-                            // Merge tasks from legacy file into active file
-                            if (TryParseTaskFileDate(legacyFile, out DateTime fileDate))
+                            var legacyTasks = LoadTasksForDate(legacyDir, fileDate);
+                            foreach (var lTask in legacyTasks)
                             {
-                                var activeTasks = LoadTasksForDate(activeDataDirectory, fileDate);
-                                var legacyTasks = LoadTasksForDate(legacyDir, fileDate);
-
-                                var existingIds = new HashSet<string>(activeTasks.Select(t => t.Id), StringComparer.OrdinalIgnoreCase);
-                                var existingTitles = new HashSet<string>(activeTasks.Select(t => t.Title.Trim()), StringComparer.OrdinalIgnoreCase);
-
-                                bool addedAny = false;
-                                foreach (var lTask in legacyTasks)
-                                {
-                                    if (!existingIds.Contains(lTask.Id) && !existingTitles.Contains(lTask.Title.Trim()))
-                                    {
-                                        activeTasks.Add(lTask);
-                                        addedAny = true;
-                                    }
-                                }
-
-                                if (addedAny)
-                                {
-                                    SaveTasksForDate(activeDataDirectory, fileDate, activeTasks);
-                                }
+                                MergeTaskIntoDate(activeDataDirectory, fileDate, lTask);
                             }
                         }
                     }
 
-                    // Copy Notes_* files
+                    // 2. Process plain text Task_* files (Task_*.txt)
+                    foreach (var legacyTxtFile in Directory.GetFiles(legacyDir, "Task_*.txt"))
+                    {
+                        if (TryParseTaskFileDate(legacyTxtFile, out DateTime fileDate))
+                        {
+                            var parsedTasks = ParseTextTaskFile(legacyTxtFile);
+                            foreach (var pTask in parsedTasks)
+                            {
+                                MergeTaskIntoDate(activeDataDirectory, fileDate, pTask);
+                            }
+                        }
+                    }
+
+                    // 3. Process SQLite .db files (e.g. prime_tasks.db, tasks.db)
+                    foreach (var dbFile in Directory.GetFiles(legacyDir, "*.db"))
+                    {
+                        ImportSQLiteDatabase(dbFile, activeDataDirectory);
+                    }
+
+                    // 4. Process Notes_* files (.txt and others)
                     foreach (var legacyNotesFile in Directory.GetFiles(legacyDir, "Notes_*"))
                     {
                         if (legacyNotesFile.EndsWith(".tmp", StringComparison.OrdinalIgnoreCase)) continue;
-                        string fileName = Path.GetFileName(legacyNotesFile);
-                        string activeNotesFile = Path.Combine(activeDataDirectory, fileName);
-
-                        if (!File.Exists(activeNotesFile))
+                        if (TryParseTaskFileDate(legacyNotesFile, out DateTime fileDate))
                         {
-                            File.Copy(legacyNotesFile, activeNotesFile, true);
+                            string noteContent = File.ReadAllText(legacyNotesFile).Trim();
+                            if (!string.IsNullOrWhiteSpace(noteContent))
+                            {
+                                MergeNotesIntoDate(activeDataDirectory, fileDate, noteContent);
+                            }
                         }
                     }
                 }
@@ -377,22 +623,35 @@ namespace TasksApp.Services
         {
             date = default;
             string fileName = Path.GetFileName(filePath);
-            if (!fileName.StartsWith("Task_", StringComparison.OrdinalIgnoreCase))
+            int underscoreIdx = fileName.IndexOf('_');
+            if (underscoreIdx < 0)
             {
                 return false;
             }
 
-            string datePart = fileName.Substring(5); // remove "Task_"
+            string prefix = fileName.Substring(0, underscoreIdx);
+            if (!prefix.Equals("Task", StringComparison.OrdinalIgnoreCase) &&
+                !prefix.Equals("Notes", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            string datePart = fileName.Substring(underscoreIdx + 1);
             if (datePart.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
             {
                 datePart = datePart.Substring(0, datePart.Length - 5);
+            }
+            else if (datePart.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+            {
+                datePart = datePart.Substring(0, datePart.Length - 4);
             }
             else if (datePart.EndsWith(".tmp", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
-            return DateTime.TryParseExact(datePart, "MMMM d yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
+            string[] formats = { "MMMM d yyyy", "MMMM d, yyyy", "yyyy-MM-dd", "yyyyMMdd" };
+            return DateTime.TryParseExact(datePart, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
         }
 
         public List<TaskItem> CarryOverPendingTasks(string dataDirectory, DateTime targetDate)
@@ -405,7 +664,7 @@ namespace TasksApp.Services
 
             try
             {
-                var files = Directory.GetFiles(dataDirectory, "Task_*");
+                var files = Directory.GetFiles(dataDirectory, "Task_*.json");
                 var pastFiles = new List<(DateTime Date, string Path)>();
 
                 foreach (var file in files)
@@ -424,31 +683,30 @@ namespace TasksApp.Services
 
                 foreach (var (pastDate, pastFilePath) in pastFiles)
                 {
-                    var tasks = LoadTasksForDate(dataDirectory, pastDate);
-                    var pending = tasks.Where(t => !t.IsCompleted).ToList();
-                    var completed = tasks.Where(t => t.IsCompleted).ToList();
+                    var pastTasks = LoadTasksForDate(dataDirectory, pastDate);
+                    var pending = pastTasks.Where(t => !t.IsCompleted).ToList();
 
                     if (pending.Count > 0)
                     {
+                        bool updatedPast = false;
                         foreach (var p in pending)
                         {
-                            if (string.IsNullOrEmpty(p.CarriedOverFrom))
+                            if (string.IsNullOrEmpty(p.CarriedForwardTo))
                             {
-                                p.CarriedOverFrom = pastDate.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture);
+                                p.CarriedForwardTo = targetDate.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture);
+                                updatedPast = true;
                             }
-                            carriedOver.Add(p);
+
+                            var targetItem = p.Clone();
+                            targetItem.CarriedOverFrom = pastDate.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture);
+                            targetItem.CarriedForwardTo = null;
+                            carriedOver.Add(targetItem);
                         }
 
-                        if (completed.Count > 0)
+                        // Preserve historical day records so past days are NEVER deleted!
+                        if (updatedPast)
                         {
-                            SaveTasksForDate(dataDirectory, pastDate, completed);
-                        }
-                        else
-                        {
-                            // No tasks remain on this past day; clean up file
-                            try { File.Delete(pastFilePath); } catch { }
-                            string jsonName = Path.Combine(dataDirectory, GetTaskFileName(pastDate));
-                            try { if (File.Exists(jsonName)) File.Delete(jsonName); } catch { }
+                            SaveTasksForDate(dataDirectory, pastDate, pastTasks);
                         }
                     }
                 }
@@ -456,20 +714,31 @@ namespace TasksApp.Services
                 if (carriedOver.Count > 0)
                 {
                     var targetTasks = LoadTasksForDate(dataDirectory, targetDate);
+                    bool addedAny = false;
+
                     foreach (var item in carriedOver)
                     {
-                        if (!targetTasks.Any(t => t.Id == item.Id))
+                        bool exists = targetTasks.Any(t =>
+                            string.Equals(t.Id, item.Id, StringComparison.OrdinalIgnoreCase) ||
+                            (string.Equals(t.Title.Trim(), item.Title.Trim(), StringComparison.OrdinalIgnoreCase) &&
+                             string.Equals(t.CarriedOverFrom, item.CarriedOverFrom, StringComparison.OrdinalIgnoreCase)));
+
+                        if (!exists)
                         {
                             targetTasks.Add(item);
+                            addedAny = true;
                         }
                     }
 
-                    for (int i = 0; i < targetTasks.Count; i++)
+                    if (addedAny)
                     {
-                        targetTasks[i].OrderIndex = i + 1;
-                    }
+                        for (int i = 0; i < targetTasks.Count; i++)
+                        {
+                            targetTasks[i].OrderIndex = i + 1;
+                        }
 
-                    SaveTasksForDate(dataDirectory, targetDate, targetTasks);
+                        SaveTasksForDate(dataDirectory, targetDate, targetTasks);
+                    }
                 }
             }
             catch (Exception ex)

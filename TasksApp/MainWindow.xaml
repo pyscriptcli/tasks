@@ -1292,6 +1292,26 @@
                                                     </StackPanel>
                                                 </Border>
 
+                                                <!-- Carried Forward Badge (UR-028: Preserves historical visibility) -->
+                                                <Border Background="{DynamicResource AppSurfaceBackground}" BorderBrush="{DynamicResource AppTextMuted}" BorderThickness="1"
+                                                        Padding="6,3" Margin="0,0,8,0"
+                                                        ToolTip="{Binding CarriedForwardTo, StringFormat='Carried forward to {0}'}">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsCarriedForward}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Visible" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="CARRIED FORWARD" FontSize="9" FontWeight="SemiBold"
+                                                                   FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppTextMuted}" />
+                                                    </StackPanel>
+                                                </Border>
+
                                                 <!-- SVG Edit Pencil Button (UR-004) -->
                                                 <Button ToolTip="Edit Task" Width="28" Height="28" Background="Transparent"
                                                         BorderThickness="0" Cursor="Hand" Margin="0,0,2,0"
