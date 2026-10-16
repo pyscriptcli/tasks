@@ -33,177 +33,234 @@
 
         <!-- Halloween Ambient Continuous Floating Animations -->
         <Storyboard x:Key="HalloweenAmbientStoryboard" RepeatBehavior="Forever" AutoReverse="True">
-            <!-- Bat 1: Gliding & fluttering -->
-            <DoubleAnimation Storyboard.TargetName="Bat1Translate"
-                             Storyboard.TargetProperty="X"
-                             From="0" To="40" Duration="0:0:3.2">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <!-- Bat 1: Gliding & fluttering across titlebar -->
+            <DoubleAnimation Storyboard.TargetName="Bat1Translate" Storyboard.TargetProperty="X" From="0" To="48" Duration="0:0:3.2">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="Bat1Translate"
-                             Storyboard.TargetProperty="Y"
-                             From="0" To="-25" Duration="0:0:2.1">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="Bat1Translate" Storyboard.TargetProperty="Y" From="0" To="-22" Duration="0:0:2.1">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="Bat1Rotate"
-                             Storyboard.TargetProperty="Angle"
-                             From="-12" To="12" Duration="0:0:1.4">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="Bat1Rotate" Storyboard.TargetProperty="Angle" From="-14" To="14" Duration="0:0:1.4">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Bat1WingScale" Storyboard.TargetProperty="ScaleY" From="1.0" To="-0.65" Duration="0:0:0.18" AutoReverse="True" RepeatBehavior="Forever" />
 
-            <!-- Bat 2: Swooping flutter -->
-            <DoubleAnimation Storyboard.TargetName="Bat2Translate"
-                             Storyboard.TargetProperty="X"
-                             From="0" To="-35" Duration="0:0:2.8">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <!-- Bat 2: Swooping flutter in upper right margin -->
+            <DoubleAnimation Storyboard.TargetName="Bat2Translate" Storyboard.TargetProperty="X" From="0" To="-42" Duration="0:0:2.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="Bat2Translate"
-                             Storyboard.TargetProperty="Y"
-                             From="0" To="18" Duration="0:0:2.0">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="Bat2Translate" Storyboard.TargetProperty="Y" From="0" To="20" Duration="0:0:2.0">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Bat2WingScale" Storyboard.TargetProperty="ScaleY" From="1.0" To="-0.65" Duration="0:0:0.16" AutoReverse="True" RepeatBehavior="Forever" />
+
+            <!-- Roosting Bat: Hanging upside down, gentle pendulum sway -->
+            <DoubleAnimation Storyboard.TargetName="RoostingBatRotate" Storyboard.TargetProperty="Angle" From="-10" To="10" Duration="0:0:2.5">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RoostingBatWingScale" Storyboard.TargetProperty="ScaleX" From="1.0" To="0.75" Duration="0:0:1.3">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
 
             <!-- Ghost 1: Drifting floating up and down with eerie opacity breathing -->
-            <DoubleAnimation Storyboard.TargetName="Ghost1Translate"
-                             Storyboard.TargetProperty="Y"
-                             From="0" To="-30" Duration="0:0:3.5">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="Ghost1Translate" Storyboard.TargetProperty="Y" From="0" To="-34" Duration="0:0:3.5">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="Ghost1Translate"
-                             Storyboard.TargetProperty="X"
-                             From="0" To="20" Duration="0:0:4.0">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="Ghost1Translate" Storyboard.TargetProperty="X" From="0" To="24" Duration="0:0:4.0">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="Ghost1Effect"
-                             Storyboard.TargetProperty="Opacity"
-                             From="0.4" To="0.9" Duration="0:0:2.2" />
+            <DoubleAnimation Storyboard.TargetName="Ghost1Rotate" Storyboard.TargetProperty="Angle" From="-8" To="8" Duration="0:0:2.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Ghost1Effect" Storyboard.TargetProperty="Opacity" From="0.4" To="0.95" Duration="0:0:2.2" />
 
-            <!-- Jack-o'-Lantern 1: Bobbing & subtle sway -->
-            <DoubleAnimation Storyboard.TargetName="Pumpkin1Translate"
-                             Storyboard.TargetProperty="Y"
-                             From="0" To="-14" Duration="0:0:2.4">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <!-- Jack-o'-Lantern 1: Cartoon squash-and-stretch bouncing hop -->
+            <DoubleAnimation Storyboard.TargetName="Pumpkin1Translate" Storyboard.TargetProperty="Y" From="0" To="-22" Duration="0:0:1.1">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="Pumpkin1Rotate"
-                             Storyboard.TargetProperty="Angle"
-                             From="-8" To="8" Duration="0:0:2.8">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="Pumpkin1ScaleX" Storyboard.TargetProperty="ScaleX" From="1.15" To="0.9" Duration="0:0:1.1">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="Pumpkin1Glow"
-                             Storyboard.TargetProperty="BlurRadius"
-                             From="8" To="24" Duration="0:0:1.1" />
+            <DoubleAnimation Storyboard.TargetName="Pumpkin1ScaleY" Storyboard.TargetProperty="ScaleY" From="0.85" To="1.12" Duration="0:0:1.1">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Pumpkin1Rotate" Storyboard.TargetProperty="Angle" From="-10" To="10" Duration="0:0:2.2">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Pumpkin1StemRotate" Storyboard.TargetProperty="Angle" From="-15" To="15" Duration="0:0:0.9">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Pumpkin1Glow" Storyboard.TargetProperty="BlurRadius" From="8" To="28" Duration="0:0:0.8" />
 
-            <!-- Spider 1: Dropping & climbing on web thread -->
-            <DoubleAnimation Storyboard.TargetName="Spider1Translate"
-                             Storyboard.TargetProperty="Y"
-                             From="0" To="28" Duration="0:0:2.6">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <!-- Spider 1: Dropping & climbing on web thread with stretching silk line -->
+            <DoubleAnimation Storyboard.TargetName="Spider1Translate" Storyboard.TargetProperty="Y" From="0" To="44" Duration="0:0:2.4">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Spider1Rotate" Storyboard.TargetProperty="Angle" From="-14" To="14" Duration="0:0:1.6">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="SilkThread1" Storyboard.TargetProperty="Y2" From="28" To="72" Duration="0:0:2.4">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <!-- Spider 2: Bottom corner climbing & dangling spider -->
+            <DoubleAnimation Storyboard.TargetName="Spider2Translate" Storyboard.TargetProperty="Y" From="0" To="-36" Duration="0:0:2.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="Spider2Rotate" Storyboard.TargetProperty="Angle" From="12" To="-12" Duration="0:0:1.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="SilkThread2" Storyboard.TargetProperty="Y2" From="50" To="14" Duration="0:0:2.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <!-- Web Trapped Firefly / Embers Glow Pulsing -->
+            <DoubleAnimation Storyboard.TargetName="WebEmber1Glow" Storyboard.TargetProperty="Opacity" From="0.3" To="1.0" Duration="0:0:1.2" />
+            <DoubleAnimation Storyboard.TargetName="WebEmber2Glow" Storyboard.TargetProperty="Opacity" From="0.2" To="0.9" Duration="0:0:1.5" />
         </Storyboard>
 
-        <!-- Halloween Reminder Banner Animated Takeover Storyboard -->
+        <!-- Halloween Reminder Animated Takeover Storyboard (Grand Spectacle) -->
         <Storyboard x:Key="HalloweenReminderStoryboard" RepeatBehavior="Forever" AutoReverse="True">
-            <!-- Jack-o'-lantern excited spooky bouncing & scaling -->
-            <DoubleAnimation Storyboard.TargetName="RemPumpkinTranslate"
-                             Storyboard.TargetProperty="Y"
-                             From="0" To="-12" Duration="0:0:0.8">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <!-- Midnight Harvest Moon Breathing Glow -->
+            <DoubleAnimation Storyboard.TargetName="RemMoonGlow" Storyboard.TargetProperty="BlurRadius" From="24" To="60" Duration="0:0:1.8" />
+            <DoubleAnimation Storyboard.TargetName="RemMoonGlow" Storyboard.TargetProperty="Opacity" From="0.65" To="1.0" Duration="0:0:1.8" />
+
+            <!-- Radial Bat Swarm Explosion -->
+            <DoubleAnimation Storyboard.TargetName="BurstBat1Translate" Storyboard.TargetProperty="X" From="0" To="-280" Duration="0:0:1.6">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="RemPumpkinScale"
-                             Storyboard.TargetProperty="ScaleX"
-                             From="1.0" To="1.14" Duration="0:0:0.8">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="BurstBat1Translate" Storyboard.TargetProperty="Y" From="0" To="-190" Duration="0:0:1.6">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="RemPumpkinScale"
-                             Storyboard.TargetProperty="ScaleY"
-                             From="1.0" To="1.14" Duration="0:0:0.8">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="BurstBat1Scale" Storyboard.TargetProperty="ScaleX" From="0.6" To="1.5" Duration="0:0:1.6" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat1Scale" Storyboard.TargetProperty="ScaleY" From="0.6" To="1.5" Duration="0:0:1.6" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat1Flap" Storyboard.TargetProperty="ScaleY" From="1.0" To="-0.7" Duration="0:0:0.15" AutoReverse="True" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Storyboard.TargetName="BurstBat2Translate" Storyboard.TargetProperty="X" From="0" To="280" Duration="0:0:1.6">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat2Translate" Storyboard.TargetProperty="Y" From="0" To="-190" Duration="0:0:1.6">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat2Scale" Storyboard.TargetProperty="ScaleX" From="0.6" To="1.5" Duration="0:0:1.6" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat2Scale" Storyboard.TargetProperty="ScaleY" From="0.6" To="1.5" Duration="0:0:1.6" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat2Flap" Storyboard.TargetProperty="ScaleY" From="1.0" To="-0.7" Duration="0:0:0.15" AutoReverse="True" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Storyboard.TargetName="BurstBat3Translate" Storyboard.TargetProperty="X" From="0" To="-340" Duration="0:0:1.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat3Translate" Storyboard.TargetProperty="Y" From="0" To="20" Duration="0:0:1.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat3Scale" Storyboard.TargetProperty="ScaleX" From="0.5" To="1.4" Duration="0:0:1.8" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat3Scale" Storyboard.TargetProperty="ScaleY" From="0.5" To="1.4" Duration="0:0:1.8" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat3Flap" Storyboard.TargetProperty="ScaleY" From="1.0" To="-0.7" Duration="0:0:0.16" AutoReverse="True" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Storyboard.TargetName="BurstBat4Translate" Storyboard.TargetProperty="X" From="0" To="340" Duration="0:0:1.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat4Translate" Storyboard.TargetProperty="Y" From="0" To="20" Duration="0:0:1.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat4Scale" Storyboard.TargetProperty="ScaleX" From="0.5" To="1.4" Duration="0:0:1.8" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat4Scale" Storyboard.TargetProperty="ScaleY" From="0.5" To="1.4" Duration="0:0:1.8" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat4Flap" Storyboard.TargetProperty="ScaleY" From="1.0" To="-0.7" Duration="0:0:0.16" AutoReverse="True" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Storyboard.TargetName="BurstBat5Translate" Storyboard.TargetProperty="X" From="0" To="-260" Duration="0:0:1.7">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat5Translate" Storyboard.TargetProperty="Y" From="0" To="210" Duration="0:0:1.7">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat5Scale" Storyboard.TargetProperty="ScaleX" From="0.7" To="1.5" Duration="0:0:1.7" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat5Scale" Storyboard.TargetProperty="ScaleY" From="0.7" To="1.5" Duration="0:0:1.7" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat5Flap" Storyboard.TargetProperty="ScaleY" From="1.0" To="-0.7" Duration="0:0:0.17" AutoReverse="True" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Storyboard.TargetName="BurstBat6Translate" Storyboard.TargetProperty="X" From="0" To="260" Duration="0:0:1.7">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat6Translate" Storyboard.TargetProperty="Y" From="0" To="210" Duration="0:0:1.7">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="BurstBat6Scale" Storyboard.TargetProperty="ScaleX" From="0.7" To="1.5" Duration="0:0:1.7" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat6Scale" Storyboard.TargetProperty="ScaleY" From="0.7" To="1.5" Duration="0:0:1.7" />
+            <DoubleAnimation Storyboard.TargetName="BurstBat6Flap" Storyboard.TargetProperty="ScaleY" From="1.0" To="-0.7" Duration="0:0:0.17" AutoReverse="True" RepeatBehavior="Forever" />
+
+            <!-- Giant Mascot Jack-o'-Lantern Rocking, Bouncing & Carved Glowing Eyes -->
+            <DoubleAnimation Storyboard.TargetName="RemPumpkinTranslate" Storyboard.TargetProperty="Y" From="0" To="-16" Duration="0:0:0.9">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemPumpkinScale" Storyboard.TargetProperty="ScaleX" From="1.0" To="1.05" Duration="0:0:0.9">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemPumpkinScale" Storyboard.TargetProperty="ScaleY" From="1.0" To="1.05" Duration="0:0:0.9">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemPumpkinRock" Storyboard.TargetProperty="Angle" From="-4" To="4" Duration="0:0:1.2">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="JackStemWiggle" Storyboard.TargetProperty="Angle" From="-14" To="14" Duration="0:0:0.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="HalloweenBannerGlow" Storyboard.TargetProperty="BlurRadius" From="14" To="40" Duration="0:0:0.6" />
+            <DoubleAnimation Storyboard.TargetName="HalloweenBannerGlow" Storyboard.TargetProperty="Opacity" From="0.6" To="1.0" Duration="0:0:0.6" />
+            <DoubleAnimation Storyboard.TargetName="JackLeftEyeGlow" Storyboard.TargetProperty="BlurRadius" From="12" To="34" Duration="0:0:0.65" />
+            <DoubleAnimation Storyboard.TargetName="JackLeftEyeGlow" Storyboard.TargetProperty="Opacity" From="0.65" To="1.0" Duration="0:0:0.65" />
+            <DoubleAnimation Storyboard.TargetName="JackRightEyeGlow" Storyboard.TargetProperty="BlurRadius" From="12" To="34" Duration="0:0:0.55" />
+            <DoubleAnimation Storyboard.TargetName="JackRightEyeGlow" Storyboard.TargetProperty="Opacity" From="0.65" To="1.0" Duration="0:0:0.55" />
+            <DoubleAnimation Storyboard.TargetName="JackMouthGlow" Storyboard.TargetProperty="BlurRadius" From="16" To="45" Duration="0:0:0.75" />
+            <DoubleAnimation Storyboard.TargetName="JackMouthGlow" Storyboard.TargetProperty="Opacity" From="0.7" To="1.0" Duration="0:0:0.75" />
+            <DoubleAnimation Storyboard.TargetName="JackMouthScale" Storyboard.TargetProperty="ScaleY" From="1.0" To="1.3" Duration="0:0:0.6" />
+
+            <!-- Pupil Eye Movement -->
+            <DoubleAnimation Storyboard.TargetName="RemPupilLeft" Storyboard.TargetProperty="X" From="-5" To="5" Duration="0:0:1.4">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemPupilRight" Storyboard.TargetProperty="X" From="-5" To="5" Duration="0:0:1.4">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
 
-            <!-- Candlelight flickering fire glow -->
-            <DoubleAnimation Storyboard.TargetName="HalloweenBannerGlow"
-                             Storyboard.TargetProperty="BlurRadius"
-                             From="12" To="34" Duration="0:0:0.6" />
-            <DoubleAnimation Storyboard.TargetName="HalloweenBannerGlow"
-                             Storyboard.TargetProperty="Opacity"
-                             From="0.5" To="1.0" Duration="0:0:0.6" />
-
-            <!-- Flying Bat Swarm across the reminder -->
-            <DoubleAnimation Storyboard.TargetName="RemBatTranslate"
-                             Storyboard.TargetProperty="X"
-                             From="-15" To="25" Duration="0:0:1.1">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <!-- Banner Character Extras -->
+            <DoubleAnimation Storyboard.TargetName="RemBatTranslate" Storyboard.TargetProperty="X" From="-20" To="30" Duration="0:0:1.1">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="RemBatTranslate"
-                             Storyboard.TargetProperty="Y"
-                             From="5" To="-10" Duration="0:0:0.9">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="RemBatTranslate" Storyboard.TargetProperty="Y" From="6" To="-12" Duration="0:0:0.9">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemGhostTranslate" Storyboard.TargetProperty="X" From="24" To="-24" Duration="0:0:1.5">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemGhostRotate" Storyboard.TargetProperty="Angle" From="-12" To="12" Duration="0:0:1.3">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
 
-            <!-- Ghost swoop -->
-            <DoubleAnimation Storyboard.TargetName="RemGhostTranslate"
-                             Storyboard.TargetProperty="X"
-                             From="20" To="-20" Duration="0:0:1.5">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <!-- Cheering Shoulder Ghosts -->
+            <DoubleAnimation Storyboard.TargetName="RemGhostLeftTranslate" Storyboard.TargetProperty="Y" From="0" To="-20" Duration="0:0:1.2">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="RemGhostRotate"
-                             Storyboard.TargetProperty="Angle"
-                             From="-10" To="10" Duration="0:0:1.3">
-                <DoubleAnimation.EasingFunction>
-                    <SineEase EasingMode="EaseInOut" />
-                </DoubleAnimation.EasingFunction>
+            <DoubleAnimation Storyboard.TargetName="RemGhostLeftRotate" Storyboard.TargetProperty="Angle" From="-10" To="10" Duration="0:0:1.4">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemGhostRightTranslate" Storyboard.TargetProperty="Y" From="0" To="-18" Duration="0:0:1.3">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemGhostRightRotate" Storyboard.TargetProperty="Angle" From="10" To="-10" Duration="0:0:1.5">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
             </DoubleAnimation>
 
-            <!-- Jack-o'-Lantern Carved Eyes & Mouth Candle Flame Flicker -->
-            <DoubleAnimation Storyboard.TargetName="JackLeftEyeGlow"
-                             Storyboard.TargetProperty="BlurRadius"
-                             From="12" To="28" Duration="0:0:0.7" />
-            <DoubleAnimation Storyboard.TargetName="JackLeftEyeGlow"
-                             Storyboard.TargetProperty="Opacity"
-                             From="0.65" To="1.0" Duration="0:0:0.7" />
-            <DoubleAnimation Storyboard.TargetName="JackRightEyeGlow"
-                             Storyboard.TargetProperty="BlurRadius"
-                             From="12" To="28" Duration="0:0:0.55" />
-            <DoubleAnimation Storyboard.TargetName="JackRightEyeGlow"
-                             Storyboard.TargetProperty="Opacity"
-                             From="0.65" To="1.0" Duration="0:0:0.55" />
-            <DoubleAnimation Storyboard.TargetName="JackMouthGlow"
-                             Storyboard.TargetProperty="BlurRadius"
-                             From="14" To="36" Duration="0:0:0.8" />
-            <DoubleAnimation Storyboard.TargetName="JackMouthGlow"
-                             Storyboard.TargetProperty="Opacity"
-                             From="0.7" To="1.0" Duration="0:0:0.8" />
+            <!-- Bungee Rappelling Spiders Beside Modal -->
+            <DoubleAnimation Storyboard.TargetName="RemSpiderLTranslate" Storyboard.TargetProperty="Y" From="0" To="70" Duration="0:0:1.8">
+                <DoubleAnimation.EasingFunction><BounceEase Bounces="2" Bounciness="2" EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemSpiderLThread" Storyboard.TargetProperty="Y2" From="20" To="90" Duration="0:0:1.8">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemSpiderRTranslate" Storyboard.TargetProperty="Y" From="0" To="65" Duration="0:0:2.0">
+                <DoubleAnimation.EasingFunction><BounceEase Bounces="2" Bounciness="2" EasingMode="EaseOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="RemSpiderRThread" Storyboard.TargetProperty="Y2" From="20" To="85" Duration="0:0:2.0">
+                <DoubleAnimation.EasingFunction><SineEase EasingMode="EaseInOut" /></DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
         </Storyboard>
     </Window.Resources>
 
@@ -226,81 +283,240 @@
                     <RowDefinition Height="Auto" /> <!-- Status Bar -->
                 </Grid.RowDefinitions>
 
-                <!-- Ambient Floating Halloween Layer (Cobwebs, Bats, Ghosts, Jack-o'-Lanterns) -->
+                <!-- Ambient Floating Halloween Layer (Storybook Living Creature World) -->
                 <Grid x:Name="HalloweenAmbientGrid" Grid.RowSpan="4" IsHitTestVisible="False"
                       Visibility="{DynamicResource HalloweenOnlyVis}" Panel.ZIndex="0" ClipToBounds="True">
-                    <!-- Top-Left Corner Cobweb with Dangling Spider (Strictly inside titlebar corner) -->
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,2,0,0">
-                        <TextBlock Text="🕸️" FontSize="36" Opacity="0.7" />
-                        <StackPanel Margin="22,14,0,0">
-                            <Line Y2="14" Stroke="#888888" StrokeThickness="1" StrokeDashArray="2,2" />
-                            <TextBlock Text="🕷️" FontSize="13" Margin="-5,0,0,0">
-                                <TextBlock.RenderTransform>
+
+                    <!-- Top Haunted Storybook Eaves & Vine Tendril Silhouette -->
+                    <Path HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="14" Stretch="Fill"
+                          Data="M 0,0 L 1060,0 L 1060,4 C 1000,10 960,3 920,8 C 880,12 840,4 800,9 C 760,13 720,5 680,10 C 640,14 600,4 560,9 C 520,13 480,5 440,9 C 400,13 360,4 320,10 C 280,14 240,5 200,9 C 160,13 120,4 80,9 C 40,13 0,4 0,4 Z">
+                        <Path.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#000000" Offset="0.0" />
+                                <GradientStop Color="#240B36" Offset="0.7" />
+                                <GradientStop Color="#FF6B00" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Path.Fill>
+                    </Path>
+
+                    <!-- Top-Left Corner Intricate Spiderweb with Dangling Silk Spider -->
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="110" Margin="0,0,0,0">
+                        <!-- Intricate Web Radial Spokes and Sagging Concentric Threads -->
+                        <Path Data="M 0,0 L 90,0 M 0,0 L 80,40 M 0,0 L 50,75 M 0,0 L 0,85
+                                    M 25,0 Q 22,12 14,24 Q 8,26 0,27
+                                    M 50,0 Q 44,24 28,48 Q 16,52 0,55
+                                    M 75,0 Q 66,36 42,70 Q 24,76 0,82"
+                              Stroke="#5A3A7E" StrokeThickness="1.2" Opacity="0.75" />
+                        <!-- Trapped Magic Amber Ember / Firefly -->
+                        <Ellipse Canvas.Left="42" Canvas.Top="24" Width="4" Height="4" Fill="#FFD000">
+                            <Ellipse.Effect>
+                                <DropShadowEffect x:Name="WebEmber1Glow" Color="#FF9100" BlurRadius="8" ShadowDepth="0" Opacity="0.8" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+
+                        <!-- Stretchy Silk Web Thread -->
+                        <Line x:Name="SilkThread1" X1="32" Y1="0" X2="32" Y2="28" Stroke="#B3FFFFFF" StrokeThickness="1" StrokeDashArray="3,2" />
+
+                        <!-- Vector Rappelling Spider -->
+                        <Grid Canvas.Left="19" Canvas.Top="24" Width="26" Height="26" RenderTransformOrigin="0.5,0.2">
+                            <Grid.RenderTransform>
+                                <TransformGroup>
                                     <TranslateTransform x:Name="Spider1Translate" Y="0" />
-                                </TextBlock.RenderTransform>
-                            </TextBlock>
-                        </StackPanel>
-                    </Grid>
+                                    <RotateTransform x:Name="Spider1Rotate" Angle="0" />
+                                </TransformGroup>
+                            </Grid.RenderTransform>
+                            <!-- 8 Curved Articulated Legs -->
+                            <Path Data="M 13,10 C 6,4 2,8 0,15 M 13,12 C 4,10 0,14 1,21 M 13,14 C 5,16 2,21 3,25 M 13,10 C 20,4 24,8 26,15 M 13,12 C 22,10 26,14 25,21 M 13,14 C 21,16 24,21 23,25"
+                                  Stroke="#FF6B00" StrokeThickness="1.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                            <!-- Spider Abdomen & Head -->
+                            <Ellipse Width="11" Height="13" Fill="#140620" Stroke="#FFA000" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse Width="7" Height="6" Fill="#2A0B42" Margin="0,11,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                            <!-- Glowing Red/Yellow Eyes -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0">
+                                <Ellipse Width="2" Height="2" Fill="#FF2200" Margin="0,0,1,0" />
+                                <Ellipse Width="2" Height="2" Fill="#FFFF00" Margin="0,0,1,0" />
+                                <Ellipse Width="2" Height="2" Fill="#FF2200" />
+                            </StackPanel>
+                        </Grid>
+                    </Canvas>
 
-                    <!-- Top-Right Corner Cobweb (In titlebar before buttons) -->
-                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,145,0">
-                        <TextBlock Text="🕸️" FontSize="34" Opacity="0.65" />
-                    </Grid>
+                    <!-- Top-Right Corner Spiderweb with Upside-Down Hanging Roosting Bat -->
+                    <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="170" Height="90" Margin="0,0,120,0">
+                        <!-- Corner Web -->
+                        <Path Data="M 170,0 L 80,0 M 170,0 L 90,35 M 170,0 L 120,70 M 170,0 L 170,80
+                                    M 145,0 Q 148,12 156,24 Q 162,26 170,27
+                                    M 120,0 Q 126,24 142,48 Q 154,52 170,55"
+                              Stroke="#5A3A7E" StrokeThickness="1.2" Opacity="0.7" />
+                        <!-- Trapped Magic Amber Ember 2 -->
+                        <Ellipse Canvas.Left="126" Canvas.Top="20" Width="4" Height="4" Fill="#FFD000">
+                            <Ellipse.Effect>
+                                <DropShadowEffect x:Name="WebEmber2Glow" Color="#FF9100" BlurRadius="8" ShadowDepth="0" Opacity="0.8" />
+                            </Ellipse.Effect>
+                        </Ellipse>
 
-                    <!-- Bottom-Left Corner Cobweb -->
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="2,0,0,2">
-                        <TextBlock Text="🕸️" FontSize="32" Opacity="0.55" />
-                    </Grid>
+                        <!-- Upside-down Roosting Bat Suspended by Claws -->
+                        <Grid Canvas.Left="84" Canvas.Top="4" Width="28" Height="36" RenderTransformOrigin="0.5,0.0">
+                            <Grid.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform x:Name="RoostingBatRotate" Angle="0" />
+                                    <ScaleTransform x:Name="RoostingBatWingScale" ScaleX="1.0" />
+                                </TransformGroup>
+                            </Grid.RenderTransform>
+                            <!-- Little Claws gripping the web -->
+                            <Path Data="M 11,0 L 12,3 M 15,0 L 15,3 M 17,0 L 16,3" Stroke="#FFA000" StrokeThickness="1.2" />
+                            <!-- Cocoon Wrapped Wings -->
+                            <Path Data="M 14,4 C 6,6 4,20 14,34 C 24,20 22,6 14,4 Z" Fill="#140620" Stroke="#FF6B00" StrokeThickness="0.8">
+                                <Path.Effect>
+                                    <DropShadowEffect Color="#FF6B00" BlurRadius="6" ShadowDepth="0" Opacity="0.5" />
+                                </Path.Effect>
+                            </Path>
+                            <!-- Upside Down Ears & Glowing Eyes -->
+                            <Polygon Points="9,34 7,39 12,36" Fill="#140620" />
+                            <Polygon Points="19,34 21,39 16,36" Fill="#140620" />
+                            <Ellipse Width="2.5" Height="2.5" Fill="#FFFF55" Margin="0,0,5,6" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+                            <Ellipse Width="2.5" Height="2.5" Fill="#FFFF55" Margin="5,0,0,6" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+                        </Grid>
+                    </Canvas>
 
-                    <!-- Bottom-Right Corner Cobweb -->
-                    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
-                        <TextBlock Text="🕸️" FontSize="32" Opacity="0.55" />
-                    </Grid>
-
-                    <!-- Floating Bat 1 (Drifting gently in empty titlebar space) -->
-                    <TextBlock Text="🦇" FontSize="22" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="210,12,0,0">
-                        <TextBlock.RenderTransform>
+                    <!-- Flying Vector Bat 1 (Swarming Across Titlebar with Flapping Wings) -->
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,10,0,0" Width="44" Height="26" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
                             <TransformGroup>
                                 <TranslateTransform x:Name="Bat1Translate" X="0" Y="0" />
                                 <RotateTransform x:Name="Bat1Rotate" Angle="0" />
                             </TransformGroup>
-                        </TextBlock.RenderTransform>
-                        <TextBlock.Effect>
-                            <DropShadowEffect Color="#FF6B00" BlurRadius="6" ShadowDepth="0" Opacity="0.5" />
-                        </TextBlock.Effect>
-                    </TextBlock>
+                        </Grid.RenderTransform>
+                        <!-- Flapping Wings Transform -->
+                        <Grid RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="Bat1WingScale" ScaleY="1.0" />
+                            </Grid.RenderTransform>
+                            <!-- Left Wing -->
+                            <Path Data="M 22,14 C 18,5 10,2 2,6 C 4,13 10,17 16,17 C 18,21 22,19 22,14 Z" Fill="#1A0A2A" Stroke="#FF7A00" StrokeThickness="0.7" />
+                            <!-- Right Wing -->
+                            <Path Data="M 22,14 C 26,5 34,2 42,6 C 40,13 34,17 28,17 C 26,21 22,19 22,14 Z" Fill="#1A0A2A" Stroke="#FF7A00" StrokeThickness="0.7" />
+                            <!-- Bat Head & Body with Pointy Ears -->
+                            <Ellipse Width="10" Height="14" Fill="#0D0316" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Polygon Points="19,5 21,10 18,10" Fill="#0D0316" />
+                            <Polygon Points="25,5 23,10 26,10" Fill="#0D0316" />
+                            <!-- Glowing Amber Eyes -->
+                            <Ellipse Width="2" Height="2" Fill="#FFFF55" Margin="0,0,4,2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse Width="2" Height="2" Fill="#FFFF55" Margin="4,0,0,2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                        <Grid.Effect>
+                            <DropShadowEffect Color="#FF6B00" BlurRadius="8" ShadowDepth="0" Opacity="0.6" />
+                        </Grid.Effect>
+                    </Grid>
 
-                    <!-- Floating Bat 2 (Fluttering across upper right titlebar space) -->
-                    <TextBlock Text="🦇" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,12,230,0">
-                        <TextBlock.RenderTransform>
+                    <!-- Flying Vector Bat 2 (Swooping Playful Flutter) -->
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,320,0" Width="36" Height="22" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
                             <TransformGroup>
                                 <TranslateTransform x:Name="Bat2Translate" X="0" Y="0" />
                             </TransformGroup>
-                        </TextBlock.RenderTransform>
-                    </TextBlock>
+                        </Grid.RenderTransform>
+                        <!-- Flapping Wings Transform -->
+                        <Grid RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="Bat2WingScale" ScaleY="1.0" />
+                            </Grid.RenderTransform>
+                            <Path Data="M 18,12 C 14,4 8,2 2,5 C 3,11 8,15 13,15 C 15,18 18,16 18,12 Z" Fill="#1A0A2A" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Path Data="M 18,12 C 22,4 28,2 34,5 C 33,11 28,15 23,15 C 21,18 18,16 18,12 Z" Fill="#1A0A2A" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Ellipse Width="8" Height="11" Fill="#0D0316" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse Width="1.8" Height="1.8" Fill="#FFFF55" Margin="0,0,3,1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse Width="1.8" Height="1.8" Fill="#FFFF55" Margin="3,0,0,1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Grid>
 
-                    <!-- Floating Ghost (Subtle eerie drift in far left outer margin) -->
-                    <TextBlock Text="👻" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="6,0,0,32" RenderTransformOrigin="0.5,0.5">
-                        <TextBlock.RenderTransform>
-                            <TranslateTransform x:Name="Ghost1Translate" X="0" Y="0" />
-                        </TextBlock.RenderTransform>
-                        <TextBlock.Effect>
-                            <DropShadowEffect x:Name="Ghost1Effect" Color="#00FFFF" BlurRadius="12" ShadowDepth="0" Opacity="0.6" />
-                        </TextBlock.Effect>
-                    </TextBlock>
+                    <!-- Bottom-Left Corner Intricate Web with Climbing/Dangling Spider 2 -->
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="90" Height="90" Margin="0,0,0,0">
+                        <Path Data="M 0,90 L 80,90 M 0,90 L 70,55 M 0,90 L 45,20 M 0,90 L 0,10
+                                    M 22,90 Q 20,78 12,68 Q 6,66 0,65
+                                    M 45,90 Q 40,68 25,46 Q 14,42 0,38"
+                              Stroke="#5A3A7E" StrokeThickness="1.2" Opacity="0.65" />
+                        <Line x:Name="SilkThread2" X1="20" Y1="60" X2="20" Y2="50" Stroke="#B3FFFFFF" StrokeThickness="1" StrokeDashArray="3,2" />
+                        <Grid Canvas.Left="9" Canvas.Top="45" Width="22" Height="22" RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform x:Name="Spider2Translate" Y="0" />
+                                    <RotateTransform x:Name="Spider2Rotate" Angle="0" />
+                                </TransformGroup>
+                            </Grid.RenderTransform>
+                            <Path Data="M 11,8 C 5,3 2,6 0,12 M 11,10 C 3,8 0,11 1,17 M 11,12 C 4,13 2,17 3,21 M 11,8 C 17,3 20,6 22,12 M 11,10 C 19,8 22,11 21,17 M 11,12 C 18,13 20,17 19,21"
+                                  Stroke="#FF6B00" StrokeThickness="1.1" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                            <Ellipse Width="9" Height="11" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.8" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Canvas>
 
-                    <!-- Floating Jack-o'-Lantern (Bobbing near far right outer margin) -->
-                    <TextBlock Text="🎃" FontSize="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,30" RenderTransformOrigin="0.5,0.5">
-                        <TextBlock.RenderTransform>
+                    <!-- Friendly Drifting Cartoon Ghostling (Left Margin Floating) -->
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,45" Width="38" Height="48" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="Ghost1Translate" X="0" Y="0" />
+                                <RotateTransform x:Name="Ghost1Rotate" Angle="0" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <!-- Ghost Body with Flowing Wavy Sheet Hem -->
+                        <Path Data="M 19,4 C 10,4 3,12 3,24 C 3,36 8,42 12,44 C 15,46 17,41 20,44 C 23,47 26,42 29,44 C 32,46 35,36 35,24 C 35,12 28,4 19,4 Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#FFFFFF" Offset="0.0" />
+                                    <GradientStop Color="#D0F0FD" Offset="0.6" />
+                                    <GradientStop Color="#70D6FF" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <!-- Ghost Cheerful Eyes & Open Mouth -->
+                        <Ellipse Width="3.5" Height="4.5" Fill="#120A2A" Margin="0,0,9,14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Ellipse Width="3.5" Height="4.5" Fill="#120A2A" Margin="9,0,0,14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Ellipse Width="4" Height="5.5" Fill="#120A2A" Margin="0,0,0,2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <!-- Rosy Cheeks -->
+                        <Ellipse Width="4" Height="2" Fill="#FFA0B0" Opacity="0.8" Margin="0,0,13,6" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Ellipse Width="4" Height="2" Fill="#FFA0B0" Opacity="0.8" Margin="13,0,0,6" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Grid.Effect>
+                            <DropShadowEffect x:Name="Ghost1Effect" Color="#00E5FF" BlurRadius="16" ShadowDepth="0" Opacity="0.75" />
+                        </Grid.Effect>
+                    </Grid>
+
+                    <!-- Cheerful Cartoon Bouncing Jack-o'-Lantern Mascot (Bottom-Right Margin) -->
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,12,38" Width="44" Height="42" RenderTransformOrigin="0.5,1.0">
+                        <Grid.RenderTransform>
                             <TransformGroup>
                                 <TranslateTransform x:Name="Pumpkin1Translate" Y="0" />
+                                <ScaleTransform x:Name="Pumpkin1ScaleX" ScaleX="1.0" />
+                                <ScaleTransform x:Name="Pumpkin1ScaleY" ScaleY="1.0" />
                                 <RotateTransform x:Name="Pumpkin1Rotate" Angle="0" />
                             </TransformGroup>
-                        </TextBlock.RenderTransform>
-                        <TextBlock.Effect>
-                            <DropShadowEffect x:Name="Pumpkin1Glow" Color="#FF6B00" BlurRadius="12" ShadowDepth="0" Opacity="0.75" />
-                        </TextBlock.Effect>
-                    </TextBlock>
+                        </Grid.RenderTransform>
+                        <!-- Curly Wiggling Green Stem -->
+                        <Path Data="M 22,12 C 20,6 23,2 26,1 C 28,0 29,3 27,6 C 25,9 26,12 26,12 Z" Fill="#388E3C" RenderTransformOrigin="0.5,1.0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0">
+                            <Path.RenderTransform>
+                                <RotateTransform x:Name="Pumpkin1StemRotate" Angle="0" />
+                            </Path.RenderTransform>
+                        </Path>
+                        <!-- Pumpkin Body with Shaded Ribs -->
+                        <Path Data="M 12,12 C 4,13 0,20 0,27 C 0,35 6,40 14,41 C 18,42 26,42 30,41 C 38,40 44,35 44,27 C 44,20 40,13 32,12 C 28,11 16,11 12,12 Z">
+                            <Path.Fill>
+                                <RadialGradientBrush Center="0.5,0.4" GradientOrigin="0.5,0.4" RadiusX="0.6" RadiusY="0.6">
+                                    <GradientStop Color="#FFB300" Offset="0.0" />
+                                    <GradientStop Color="#FF6D00" Offset="0.55" />
+                                    <GradientStop Color="#E65100" Offset="0.9" />
+                                    <GradientStop Color="#BF360C" Offset="1.0" />
+                                </RadialGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <!-- Pumpkin Vertical Rib Ridges -->
+                        <Path Data="M 22,12 C 20,22 20,32 22,41 M 14,13 C 9,21 9,33 15,40 M 30,13 C 35,21 35,33 29,40"
+                              Stroke="#C43C00" StrokeThickness="1.2" Opacity="0.5" />
+                        <!-- Carved Glowing Triangular Eyes -->
+                        <Polygon Points="13,23 18,17 17,24" Fill="#FFFF55" />
+                        <Polygon Points="31,23 26,17 27,24" Fill="#FFFF55" />
+                        <!-- Carved Jagged Smiling Mouth -->
+                        <Path Data="M 10,29 Q 22,38 34,29 L 32,32 L 28,29 L 24,33 L 20,29 L 16,33 L 12,29 Z" Fill="#FFFF44" />
+                        <Grid.Effect>
+                            <DropShadowEffect x:Name="Pumpkin1Glow" Color="#FF7A00" BlurRadius="14" ShadowDepth="0" Opacity="0.85" />
+                        </Grid.Effect>
+                    </Grid>
                 </Grid>
 
                 <!-- 1. Custom Title Bar (UR-040, UR-041, UR-070) -->
@@ -999,23 +1215,251 @@
         <!-- ======================================================== -->
         <!-- REMINDER OVERLAY DIALOG (UR-020, UR-021, UR-022, UR-024) -->
         <!-- ======================================================== -->
-        <Border Background="#8A000000" Visibility="{Binding IsReminderOverlayVisible, Converter={StaticResource BoolToVis}}" Panel.ZIndex="200">
+        <Border Background="#9C04010C" Visibility="{Binding IsReminderOverlayVisible, Converter={StaticResource BoolToVis}}" Panel.ZIndex="200">
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                <!-- Sculpted Jack-o'-Lantern Silhouette, Stem, Eyes & Mouth (Visible only in Halloween Theme) -->
-                <Grid Visibility="{DynamicResource HalloweenOnlyVis}" IsHitTestVisible="False" Margin="-55,-65,-55,-55">
+
+                <!-- 1. Full-Screen Halloween Atmosphere & Moon (Visible only in Halloween Theme) -->
+                <Grid Visibility="{DynamicResource HalloweenOnlyVis}" IsHitTestVisible="False">
+                    <!-- Spooky Full Midnight Moon -->
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-160,0,0">
+                        <Ellipse Width="150" Height="150">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush Center="0.4,0.4" GradientOrigin="0.4,0.4" RadiusX="0.6" RadiusY="0.6">
+                                    <GradientStop Color="#FFFFDD" Offset="0.0" />
+                                    <GradientStop Color="#FFE082" Offset="0.5" />
+                                    <GradientStop Color="#FFB300" Offset="0.85" />
+                                    <GradientStop Color="#FF8F00" Offset="1.0" />
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                            <Ellipse.Effect>
+                                <DropShadowEffect x:Name="RemMoonGlow" Color="#FFC107" BlurRadius="40" ShadowDepth="0" Opacity="0.85" />
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <!-- Soft Moon Craters -->
+                        <Ellipse Width="24" Height="18" Fill="#E6A100" Opacity="0.35" Margin="40,35,0,0" />
+                        <Ellipse Width="16" Height="14" Fill="#E6A100" Opacity="0.3" Margin="85,60,0,0" />
+                        <Ellipse Width="12" Height="10" Fill="#E6A100" Opacity="0.25" Margin="55,90,0,0" />
+                    </Grid>
+
+                    <!-- Radial Bat Explosion Swarm (6 Dynamic Flapping Bats bursting outward) -->
+                    <!-- Burst Bat 1: Top-Left -->
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="36" Height="22" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="BurstBat1Translate" X="0" Y="0" />
+                                <ScaleTransform x:Name="BurstBat1Scale" ScaleX="0.8" ScaleY="0.8" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Grid RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="BurstBat1Flap" ScaleY="1.0" />
+                            </Grid.RenderTransform>
+                            <Path Data="M 18,12 C 14,3 7,1 2,5 C 3,11 8,15 13,15 C 15,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Path Data="M 18,12 C 22,3 29,1 34,5 C 33,11 28,15 23,15 C 21,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Ellipse Width="7" Height="10" Fill="#090110" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse Width="1.5" Height="1.5" Fill="#FFFF55" Margin="0,0,2.5,1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse Width="1.5" Height="1.5" Fill="#FFFF55" Margin="2.5,0,0,1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- Burst Bat 2: Top-Right -->
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="36" Height="22" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="BurstBat2Translate" X="0" Y="0" />
+                                <ScaleTransform x:Name="BurstBat2Scale" ScaleX="0.8" ScaleY="0.8" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Grid RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="BurstBat2Flap" ScaleY="1.0" />
+                            </Grid.RenderTransform>
+                            <Path Data="M 18,12 C 14,3 7,1 2,5 C 3,11 8,15 13,15 C 15,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Path Data="M 18,12 C 22,3 29,1 34,5 C 33,11 28,15 23,15 C 21,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Ellipse Width="7" Height="10" Fill="#090110" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse Width="1.5" Height="1.5" Fill="#FFFF55" Margin="0,0,2.5,1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse Width="1.5" Height="1.5" Fill="#FFFF55" Margin="2.5,0,0,1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- Burst Bat 3: Far-Left -->
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="36" Height="22" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="BurstBat3Translate" X="0" Y="0" />
+                                <ScaleTransform x:Name="BurstBat3Scale" ScaleX="0.7" ScaleY="0.7" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Grid RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="BurstBat3Flap" ScaleY="1.0" />
+                            </Grid.RenderTransform>
+                            <Path Data="M 18,12 C 14,3 7,1 2,5 C 3,11 8,15 13,15 C 15,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Path Data="M 18,12 C 22,3 29,1 34,5 C 33,11 28,15 23,15 C 21,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Ellipse Width="7" Height="10" Fill="#090110" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- Burst Bat 4: Far-Right -->
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="36" Height="22" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="BurstBat4Translate" X="0" Y="0" />
+                                <ScaleTransform x:Name="BurstBat4Scale" ScaleX="0.7" ScaleY="0.7" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Grid RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="BurstBat4Flap" ScaleY="1.0" />
+                            </Grid.RenderTransform>
+                            <Path Data="M 18,12 C 14,3 7,1 2,5 C 3,11 8,15 13,15 C 15,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Path Data="M 18,12 C 22,3 29,1 34,5 C 33,11 28,15 23,15 C 21,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Ellipse Width="7" Height="10" Fill="#090110" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- Burst Bat 5: Bottom-Left -->
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="36" Height="22" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="BurstBat5Translate" X="0" Y="0" />
+                                <ScaleTransform x:Name="BurstBat5Scale" ScaleX="0.8" ScaleY="0.8" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Grid RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="BurstBat5Flap" ScaleY="1.0" />
+                            </Grid.RenderTransform>
+                            <Path Data="M 18,12 C 14,3 7,1 2,5 C 3,11 8,15 13,15 C 15,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Path Data="M 18,12 C 22,3 29,1 34,5 C 33,11 28,15 23,15 C 21,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Ellipse Width="7" Height="10" Fill="#090110" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- Burst Bat 6: Bottom-Right -->
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="36" Height="22" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="BurstBat6Translate" X="0" Y="0" />
+                                <ScaleTransform x:Name="BurstBat6Scale" ScaleX="0.8" ScaleY="0.8" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Grid RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="BurstBat6Flap" ScaleY="1.0" />
+                            </Grid.RenderTransform>
+                            <Path Data="M 18,12 C 14,3 7,1 2,5 C 3,11 8,15 13,15 C 15,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Path Data="M 18,12 C 22,3 29,1 34,5 C 33,11 28,15 23,15 C 21,18 18,16 18,12 Z" Fill="#140620" Stroke="#FFA000" StrokeThickness="0.6" />
+                            <Ellipse Width="7" Height="10" Fill="#090110" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+
+                    <!-- Rappelling Bungee Spiders Flanking the Dialog -->
+                    <!-- Left Bungee Spider -->
+                    <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="280" Margin="-60,-40,0,0">
+                        <Line x:Name="RemSpiderLThread" X1="25" Y1="0" X2="25" Y2="20" Stroke="#B3FFFFFF" StrokeThickness="1.2" StrokeDashArray="3,2" />
+                        <Grid Canvas.Left="12" Canvas.Top="15" Width="26" Height="26">
+                            <Grid.RenderTransform>
+                                <TranslateTransform x:Name="RemSpiderLTranslate" Y="0" />
+                            </Grid.RenderTransform>
+                            <Path Data="M 13,10 C 6,4 2,8 0,15 M 13,12 C 4,10 0,14 1,21 M 13,14 C 5,16 2,21 3,25 M 13,10 C 20,4 24,8 26,15 M 13,12 C 22,10 26,14 25,21 M 13,14 C 21,16 24,21 23,25"
+                                  Stroke="#FF6B00" StrokeThickness="1.2" />
+                            <Ellipse Width="11" Height="13" Fill="#140620" Stroke="#FFA000" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0">
+                                <Ellipse Width="2" Height="2" Fill="#FF2200" Margin="0,0,1,0" />
+                                <Ellipse Width="2" Height="2" Fill="#FFFF00" />
+                            </StackPanel>
+                        </Grid>
+                    </Canvas>
+
+                    <!-- Right Bungee Spider -->
+                    <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Height="280" Margin="0,-40,-60,0">
+                        <Line x:Name="RemSpiderRThread" X1="25" Y1="0" X2="25" Y2="20" Stroke="#B3FFFFFF" StrokeThickness="1.2" StrokeDashArray="3,2" />
+                        <Grid Canvas.Left="12" Canvas.Top="15" Width="26" Height="26">
+                            <Grid.RenderTransform>
+                                <TranslateTransform x:Name="RemSpiderRTranslate" Y="0" />
+                            </Grid.RenderTransform>
+                            <Path Data="M 13,10 C 6,4 2,8 0,15 M 13,12 C 4,10 0,14 1,21 M 13,14 C 5,16 2,21 3,25 M 13,10 C 20,4 24,8 26,15 M 13,12 C 22,10 26,14 25,21 M 13,14 C 21,16 24,21 23,25"
+                                  Stroke="#FF6B00" StrokeThickness="1.2" />
+                            <Ellipse Width="11" Height="13" Fill="#140620" Stroke="#FFA000" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0">
+                                <Ellipse Width="2" Height="2" Fill="#FF2200" Margin="0,0,1,0" />
+                                <Ellipse Width="2" Height="2" Fill="#FFFF00" />
+                            </StackPanel>
+                        </Grid>
+                    </Canvas>
+
+                    <!-- Cheering Ghostling Peeking on Left Pumpkin Shoulder -->
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-25,18,0,0" Width="44" Height="54" RenderTransformOrigin="0.5,0.8">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="RemGhostLeftTranslate" Y="0" />
+                                <RotateTransform x:Name="RemGhostLeftRotate" Angle="0" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Path Data="M 22,4 C 12,4 4,13 4,26 C 4,40 10,46 14,48 C 18,50 20,44 24,48 C 28,52 32,46 36,48 C 40,50 44,40 44,26 C 44,13 32,4 22,4 Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#FFFFFF" Offset="0.0" />
+                                    <GradientStop Color="#C5E8F8" Offset="0.6" />
+                                    <GradientStop Color="#80D8FF" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Ellipse Width="4" Height="5" Fill="#100A25" Margin="0,0,10,16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Ellipse Width="4" Height="5" Fill="#100A25" Margin="10,0,0,16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Ellipse Width="4.5" Height="6" Fill="#100A25" Margin="0,0,0,4" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Grid.Effect>
+                            <DropShadowEffect Color="#00E5FF" BlurRadius="18" ShadowDepth="0" Opacity="0.8" />
+                        </Grid.Effect>
+                    </Grid>
+
+                    <!-- Cheering Ghostling Peeking on Right Pumpkin Shoulder -->
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,18,-25,0" Width="44" Height="54" RenderTransformOrigin="0.5,0.8">
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform x:Name="RemGhostRightTranslate" Y="0" />
+                                <RotateTransform x:Name="RemGhostRightRotate" Angle="0" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                        <Path Data="M 22,4 C 12,4 4,13 4,26 C 4,40 10,46 14,48 C 18,50 20,44 24,48 C 28,52 32,46 36,48 C 40,50 44,40 44,26 C 44,13 32,4 22,4 Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#FFFFFF" Offset="0.0" />
+                                    <GradientStop Color="#C5E8F8" Offset="0.6" />
+                                    <GradientStop Color="#80D8FF" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Ellipse Width="4" Height="5" Fill="#100A25" Margin="0,0,10,16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Ellipse Width="4" Height="5" Fill="#100A25" Margin="10,0,0,16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Ellipse Width="4.5" Height="6" Fill="#100A25" Margin="0,0,0,4" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Grid.Effect>
+                            <DropShadowEffect Color="#00E5FF" BlurRadius="18" ShadowDepth="0" Opacity="0.8" />
+                        </Grid.Effect>
+                    </Grid>
+                </Grid>
+
+                <!-- 2. Sculpted Mascot Jack-o'-Lantern Body, Stem, Glowing Eyes & Grin -->
+                <Grid Visibility="{DynamicResource HalloweenOnlyVis}" IsHitTestVisible="False" Margin="-55,-65,-55,-55" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform x:Name="RemPumpkinRock" Angle="0" />
+                        </TransformGroup>
+                    </Grid.RenderTransform>
                     <!-- Giant Pumpkin Outer Silhouette Body -->
                     <Path Data="M 140,80 C 40,110 0,220 0,380 C 0,550 50,680 180,720 C 270,750 490,750 580,720 C 710,680 760,550 760,380 C 760,220 720,110 620,80 C 560,55 490,65 380,70 C 270,65 200,55 140,80 Z"
                           Stretch="Fill">
                         <Path.Fill>
                             <RadialGradientBrush Center="0.5,0.45" GradientOrigin="0.5,0.45" RadiusX="0.65" RadiusY="0.6">
-                                <GradientStop Color="#FF7A00" Offset="0.0" />
-                                <GradientStop Color="#E65100" Offset="0.65" />
-                                <GradientStop Color="#BF360C" Offset="0.9" />
-                                <GradientStop Color="#2B0A00" Offset="1.0" />
+                                <GradientStop Color="#FF8F00" Offset="0.0" />
+                                <GradientStop Color="#FF6D00" Offset="0.5" />
+                                <GradientStop Color="#D84315" Offset="0.85" />
+                                <GradientStop Color="#2E0C00" Offset="1.0" />
                             </RadialGradientBrush>
                         </Path.Fill>
                         <Path.Effect>
-                            <DropShadowEffect Color="#FF6B00" BlurRadius="50" ShadowDepth="0" Opacity="0.85" />
+                            <DropShadowEffect Color="#FF6B00" BlurRadius="55" ShadowDepth="0" Opacity="0.9" />
                         </Path.Effect>
                     </Path>
 
@@ -1024,12 +1468,15 @@
                     <Path Data="M 230,70 C 170,230 170,550 240,715" Stroke="#8C2500" StrokeThickness="4" Opacity="0.45" Stretch="Fill" Margin="10,0,10,0" />
                     <Path Data="M 530,70 C 590,230 590,550 520,715" Stroke="#8C2500" StrokeThickness="4" Opacity="0.45" Stretch="Fill" Margin="10,0,10,0" />
 
-                    <!-- Top Green Carved Stem & Twisting Tendril Vine -->
+                    <!-- Top Green Carved Stem & Twisting Tendril Vine with Wiggle -->
                     <Canvas Height="90" Width="140" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-32,0,0">
                         <!-- Tendril Vine -->
                         <Path Data="M 75,45 C 95,20 120,35 110,60 C 100,80 125,85 135,70" Stroke="#43A047" StrokeThickness="3.5" Fill="Transparent" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
-                        <!-- Carved Pumpkin Stem -->
-                        <Path Data="M 50,85 C 45,55 35,28 60,10 C 72,2 84,10 78,30 C 72,50 78,70 88,85 Z">
+                        <!-- Carved Pumpkin Stem with Wiggle Transform -->
+                        <Path Data="M 50,85 C 45,55 35,28 60,10 C 72,2 84,10 78,30 C 72,50 78,70 88,85 Z" RenderTransformOrigin="0.5,1.0">
+                            <Path.RenderTransform>
+                                <RotateTransform x:Name="JackStemWiggle" Angle="0" />
+                            </Path.RenderTransform>
                             <Path.Fill>
                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                     <GradientStop Color="#2E7D32" Offset="0.0" />
@@ -1045,7 +1492,7 @@
                         <Path Data="M 46,65 C 25,50 15,65 30,80 C 40,88 48,78 46,65 Z" Fill="#4CAF50" />
                     </Canvas>
 
-                    <!-- Top Carved Glowing Menacing Triangular Eyes -->
+                    <!-- Top Carved Glowing Menacing Triangular Eyes with Darting Pupils -->
                     <Grid VerticalAlignment="Top" Margin="70,18,70,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -1053,19 +1500,27 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <!-- Left Carved Eye -->
-                        <Polygon Grid.Column="0" Points="0,32 46,4 40,38" Margin="25,0,0,0">
-                            <Polygon.Fill>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                    <GradientStop Color="#FFFF66" Offset="0.0" />
-                                    <GradientStop Color="#FF9100" Offset="0.6" />
-                                    <GradientStop Color="#FF3D00" Offset="1.0" />
-                                </LinearGradientBrush>
-                            </Polygon.Fill>
-                            <Polygon.Effect>
-                                <DropShadowEffect x:Name="JackLeftEyeGlow" Color="#FFA500" BlurRadius="18" ShadowDepth="0" Opacity="0.9" />
-                            </Polygon.Effect>
-                        </Polygon>
+                        <!-- Left Carved Eye Socket & Pupil -->
+                        <Grid Grid.Column="0" Margin="25,0,0,0">
+                            <Polygon Points="0,32 46,4 40,38">
+                                <Polygon.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#FFFF66" Offset="0.0" />
+                                        <GradientStop Color="#FF9100" Offset="0.6" />
+                                        <GradientStop Color="#FF3D00" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Polygon.Fill>
+                                <Polygon.Effect>
+                                    <DropShadowEffect x:Name="JackLeftEyeGlow" Color="#FFA500" BlurRadius="18" ShadowDepth="0" Opacity="0.9" />
+                                </Polygon.Effect>
+                            </Polygon>
+                            <!-- Darting Flame Pupil -->
+                            <Ellipse Width="6" Height="8" Fill="#FF2200" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform x:Name="RemPupilLeft" X="0" />
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                        </Grid>
 
                         <!-- Carved Nose (Center) -->
                         <Polygon Grid.Column="1" HorizontalAlignment="Center" Points="0,26 15,0 30,26" Margin="0,10,0,0">
@@ -1080,24 +1535,35 @@
                             </Polygon.Effect>
                         </Polygon>
 
-                        <!-- Right Carved Eye -->
-                        <Polygon Grid.Column="2" Points="46,32 0,4 6,38" Margin="0,0,25,0">
-                            <Polygon.Fill>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                    <GradientStop Color="#FFFF66" Offset="0.0" />
-                                    <GradientStop Color="#FF9100" Offset="0.6" />
-                                    <GradientStop Color="#FF3D00" Offset="1.0" />
-                                </LinearGradientBrush>
-                            </Polygon.Fill>
-                            <Polygon.Effect>
-                                <DropShadowEffect x:Name="JackRightEyeGlow" Color="#FFA500" BlurRadius="18" ShadowDepth="0" Opacity="0.9" />
-                            </Polygon.Effect>
-                        </Polygon>
+                        <!-- Right Carved Eye Socket & Pupil -->
+                        <Grid Grid.Column="2" Margin="0,0,25,0">
+                            <Polygon Points="46,32 0,4 6,38">
+                                <Polygon.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#FFFF66" Offset="0.0" />
+                                        <GradientStop Color="#FF9100" Offset="0.6" />
+                                        <GradientStop Color="#FF3D00" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Polygon.Fill>
+                                <Polygon.Effect>
+                                    <DropShadowEffect x:Name="JackRightEyeGlow" Color="#FFA500" BlurRadius="18" ShadowDepth="0" Opacity="0.9" />
+                                </Polygon.Effect>
+                            </Polygon>
+                            <!-- Darting Flame Pupil -->
+                            <Ellipse Width="6" Height="8" Fill="#FF2200" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform x:Name="RemPupilRight" X="0" />
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                        </Grid>
                     </Grid>
 
-                    <!-- Bottom Carved Jagged Smiling Mouth -->
-                    <Path VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10"
+                    <!-- Bottom Carved Jagged Smiling Mouth with Grinning Scaling -->
+                    <Path VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10" RenderTransformOrigin="0.5,0.5"
                           Data="M 0,16 Q 60,32 120,38 Q 180,42 240,38 Q 300,32 360,16 L 340,30 L 315,20 L 290,36 L 260,22 L 225,38 L 195,22 L 165,38 L 135,22 L 105,36 L 80,20 L 55,30 Z">
+                        <Path.RenderTransform>
+                            <ScaleTransform x:Name="JackMouthScale" ScaleY="1.0" />
+                        </Path.RenderTransform>
                         <Path.Fill>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                 <GradientStop Color="#FFFF66" Offset="0.0" />
@@ -1106,7 +1572,7 @@
                             </LinearGradientBrush>
                         </Path.Fill>
                         <Path.Effect>
-                            <DropShadowEffect x:Name="JackMouthGlow" Color="#FFA500" BlurRadius="22" ShadowDepth="0" Opacity="0.95" />
+                            <DropShadowEffect x:Name="JackMouthGlow" Color="#FFA500" BlurRadius="24" ShadowDepth="0" Opacity="0.95" />
                         </Path.Effect>
                     </Path>
                 </Grid>

@@ -71,6 +71,7 @@ namespace TasksApp
             StateChanged += MainWindow_StateChanged;
 
             ThemeManager.ThemeChanged += OnThemeChanged;
+            Closed += (s, e) => ThemeManager.ThemeChanged -= OnThemeChanged;
             OnThemeChanged(_settings.Theme);
         }
 
@@ -91,6 +92,21 @@ namespace TasksApp
 
         private void OnThemeChanged(string newTheme)
         {
+            if (Dispatcher.HasShutdownStarted || Dispatcher.HasShutdownFinished)
+            {
+                return;
+            }
+
+            if (!Dispatcher.CheckAccess())
+            {
+                try
+                {
+                    Dispatcher.Invoke(() => OnThemeChanged(newTheme));
+                }
+                catch { }
+                return;
+            }
+
             var chrome = System.Windows.Shell.WindowChrome.GetWindowChrome(this);
             if (chrome != null)
             {

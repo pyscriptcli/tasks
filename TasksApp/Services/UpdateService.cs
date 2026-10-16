@@ -12,7 +12,7 @@ namespace TasksApp.Services
 {
     public class UpdateService
     {
-        public const string CurrentVersion = "3";
+        public const string CurrentVersion = "4";
         public const string GitHubRepo = "pyscriptcli/tasks";
         private const string LatestReleaseApiUrl = $"https://api.github.com/repos/{GitHubRepo}/releases/latest";
 
