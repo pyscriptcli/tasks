@@ -24,6 +24,7 @@ namespace TasksApp
         private Point _dragStartPoint;
         private TaskItem? _draggedItem;
         private Storyboard? _glowStoryboard;
+        private Storyboard? _cocoStoryboard;
 
         public MainWindow()
         {
@@ -62,6 +63,7 @@ namespace TasksApp
             _viewModel.RequestEditTask += OpenEditTaskDialog;
             _viewModel.RequestAddTaskModal += OpenAddTaskDialog;
             _viewModel.RequestOpenSettings += OpenSettingsDialog;
+            _viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
             RestoreWindowBounds();
             Loaded += MainWindow_Loaded;
@@ -71,6 +73,21 @@ namespace TasksApp
             OnThemeChanged(_settings.Theme);
         }
 
+        private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MainViewModel.IsReminderOverlayVisible))
+            {
+                if (_viewModel.IsReminderOverlayVisible && ThemeManager.IsCoco)
+                {
+                    _cocoStoryboard?.Begin(this, true);
+                }
+                else
+                {
+                    _cocoStoryboard?.Stop(this);
+                }
+            }
+        }
+
         private void OnThemeChanged(string newTheme)
         {
             var chrome = System.Windows.Shell.WindowChrome.GetWindowChrome(this);
@@ -78,11 +95,21 @@ namespace TasksApp
             {
                 chrome.CaptionHeight = ThemeManager.IsWin95 ? 26 : 48;
             }
+
+            if (ThemeManager.IsCoco && _viewModel?.IsReminderOverlayVisible == true)
+            {
+                _cocoStoryboard?.Begin(this, true);
+            }
+            else
+            {
+                _cocoStoryboard?.Stop(this);
+            }
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             _glowStoryboard = TryFindResource("ReminderGlowAnimation") as Storyboard;
+            _cocoStoryboard = TryFindResource("CocoCharacterStoryboard") as Storyboard;
             await _viewModel.InitializeStartupAsync();
         }
 
@@ -267,6 +294,11 @@ namespace TasksApp
                 // Start glowing border animation (UR-023)
                 ReminderGlowBorder.Visibility = Visibility.Visible;
                 _glowStoryboard?.Begin(this, true);
+
+                if (ThemeManager.IsCoco)
+                {
+                    _cocoStoryboard?.Begin(this, true);
+                }
             });
         }
 
@@ -276,6 +308,7 @@ namespace TasksApp
             {
                 // Stop glowing animation and remove topmost forcing (UR-028)
                 _glowStoryboard?.Stop(this);
+                _cocoStoryboard?.Stop(this);
                 ReminderGlowBorder.Visibility = Visibility.Collapsed;
                 Topmost = _viewModel.AlwaysOnTop; // Reset to user's setting
             });

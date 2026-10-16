@@ -10,17 +10,19 @@ namespace TasksApp.Services
         public const string Win95Theme = "Win95";
         public const string RetroTheme = "Retro";
         public const string TerminalTheme = "Terminal";
+        public const string CocoTheme = "Coco";
 
         public static string CurrentTheme { get; private set; } = DefaultTheme;
 
         public static bool IsWin95 => string.Equals(CurrentTheme, Win95Theme, StringComparison.OrdinalIgnoreCase);
         public static bool IsRetro => string.Equals(CurrentTheme, RetroTheme, StringComparison.OrdinalIgnoreCase);
         public static bool IsTerminal => string.Equals(CurrentTheme, TerminalTheme, StringComparison.OrdinalIgnoreCase);
+        public static bool IsCoco => string.Equals(CurrentTheme, CocoTheme, StringComparison.OrdinalIgnoreCase);
 
         public static event Action<string>? ThemeChanged;
 
         /// <summary>
-        /// Applies the requested theme ("Default", "Win95", "Retro", or "Terminal") to the entire application.
+        /// Applies the requested theme ("Default", "Win95", "Retro", "Terminal", or "Coco") to the entire application.
         /// </summary>
         public static void ApplyTheme(string? themeName)
         {
@@ -37,6 +39,10 @@ namespace TasksApp.Services
             {
                 targetTheme = TerminalTheme;
             }
+            else if (string.Equals(themeName, CocoTheme, StringComparison.OrdinalIgnoreCase))
+            {
+                targetTheme = CocoTheme;
+            }
             else
             {
                 targetTheme = DefaultTheme;
@@ -51,6 +57,7 @@ namespace TasksApp.Services
                     Win95Theme => "/Themes/Win95Theme.xaml",
                     RetroTheme => "/Themes/RetroTheme.xaml",
                     TerminalTheme => "/Themes/TerminalTheme.xaml",
+                    CocoTheme => "/Themes/CocoTheme.xaml",
                     _ => "/Themes/DefaultTheme.xaml"
                 };
 
@@ -69,7 +76,8 @@ namespace TasksApp.Services
                             d.Source.OriginalString.Contains("DefaultTheme.xaml") || 
                             d.Source.OriginalString.Contains("Win95Theme.xaml") ||
                             d.Source.OriginalString.Contains("RetroTheme.xaml") ||
-                            d.Source.OriginalString.Contains("TerminalTheme.xaml")))
+                            d.Source.OriginalString.Contains("TerminalTheme.xaml") ||
+                            d.Source.OriginalString.Contains("CocoTheme.xaml")))
                         .ToList();
 
                     foreach (var oldDict in existingThemeDicts)

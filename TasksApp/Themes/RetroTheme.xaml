@@ -58,6 +58,9 @@
     <sys:Boolean x:Key="IsWin95">False</sys:Boolean>
     <Visibility x:Key="Win95OnlyVis">Collapsed</Visibility>
     <Visibility x:Key="ModernOnlyVis">Visible</Visibility>
+    <sys:Boolean x:Key="IsCoco">False</sys:Boolean>
+    <Visibility x:Key="CocoOnlyVis">Collapsed</Visibility>
+    <Visibility x:Key="NotCocoVis">Visible</Visibility>
 
     <!-- Outer Window / Dialog Frame Style: Bold Vintage Chocolate Border with Warm 3D Offset Shadow -->
     <Style x:Key="DialogOuterFrameStyle" TargetType="Border">

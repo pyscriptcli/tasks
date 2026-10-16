@@ -64,6 +64,10 @@ namespace TasksApp.Views
             {
                 RbThemeTerminal.IsChecked = true;
             }
+            else if (string.Equals(UpdatedSettings.Theme, ThemeManager.CocoTheme, StringComparison.OrdinalIgnoreCase))
+            {
+                RbThemeCoco.IsChecked = true;
+            }
             else
             {
                 RbThemeDefault.IsChecked = true;
@@ -197,6 +201,10 @@ namespace TasksApp.Views
             {
                 UpdatedSettings.Theme = ThemeManager.TerminalTheme;
             }
+            else if (RbThemeCoco.IsChecked == true)
+            {
+                UpdatedSettings.Theme = ThemeManager.CocoTheme;
+            }
             else
             {
                 UpdatedSettings.Theme = ThemeManager.DefaultTheme;
@@ -216,7 +224,9 @@ namespace TasksApp.Views
                 ? ThemeManager.Win95Theme
                 : (RbThemeRetro.IsChecked == true 
                     ? ThemeManager.RetroTheme 
-                    : (RbThemeTerminal.IsChecked == true ? ThemeManager.TerminalTheme : ThemeManager.DefaultTheme));
+                    : (RbThemeTerminal.IsChecked == true 
+                        ? ThemeManager.TerminalTheme 
+                        : (RbThemeCoco.IsChecked == true ? ThemeManager.CocoTheme : ThemeManager.DefaultTheme)));
             ThemeManager.ApplyTheme(selected);
         }
 

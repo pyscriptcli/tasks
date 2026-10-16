@@ -30,14 +30,49 @@
                              Storyboard.TargetProperty="Opacity"
                              From="0.4" To="1.0" Duration="0:0:1.2" />
         </Storyboard>
+
+        <!-- Coco Characters Musical Bobbing, Guitar Rock & Glowing Marigold Storyboard -->
+        <Storyboard x:Key="CocoCharacterStoryboard" RepeatBehavior="Forever" AutoReverse="True">
+            <!-- Musical sway / strumming bounce -->
+            <DoubleAnimation Storyboard.TargetName="CocoCharTranslate"
+                             Storyboard.TargetProperty="Y"
+                             From="0" To="-6" Duration="0:0:1.3">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Gentle joyful guitar angle rock -->
+            <DoubleAnimation Storyboard.TargetName="CocoCharRotate"
+                             Storyboard.TargetProperty="Angle"
+                             From="-1.5" To="1.5" Duration="0:0:1.6">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- Glowing Marigold bridge aura breathing -->
+            <DoubleAnimation Storyboard.TargetName="CocoBannerGlow"
+                             Storyboard.TargetProperty="BlurRadius"
+                             From="10" To="26" Duration="0:0:1.3" />
+            <DoubleAnimation Storyboard.TargetName="CocoBannerGlow"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.45" To="0.95" Duration="0:0:1.3" />
+            <!-- Animated Petal Sway -->
+            <DoubleAnimation Storyboard.TargetName="CocoPetalsTranslate"
+                             Storyboard.TargetProperty="X"
+                             From="-5" To="5" Duration="0:0:2.0">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </Window.Resources>
 
     <Grid>
         <!-- Outer Glowing Reminder Border (Normally invisible, pulses when reminder active) -->
-        <Border x:Name="ReminderGlowBorder" BorderBrush="#C9A84C" BorderThickness="3"
+        <Border x:Name="ReminderGlowBorder" BorderBrush="{DynamicResource AppPrimaryColor}" BorderThickness="3"
                 Visibility="Collapsed" IsHitTestVisible="False" Panel.ZIndex="999">
             <Border.Effect>
-                <DropShadowEffect x:Name="GlowEffect" Color="#C9A84C" BlurRadius="20" ShadowDepth="0" Opacity="0.8" />
+                <DropShadowEffect x:Name="GlowEffect" Color="#FF7E00" BlurRadius="20" ShadowDepth="0" Opacity="0.8" />
             </Border.Effect>
         </Border>
 
@@ -83,6 +118,8 @@
                                    FontSize="{DynamicResource AppTitleFontSize}"
                                    FontWeight="{DynamicResource AppTitleFontWeight}"
                                    FontFamily="{DynamicResource AppTitleFontFamily}" VerticalAlignment="Center" />
+                        <TextBlock Text=" 🎸 🏵️" FontSize="13" Foreground="#FFFDF8" VerticalAlignment="Center"
+                                   Visibility="{DynamicResource CocoOnlyVis}" Margin="4,0,0,0" ToolTip="Coco Fiesta Theme" />
                     </StackPanel>
 
                     <!-- Draggable Caption Area (UR-041) -->
@@ -741,18 +778,83 @@
         <!-- REMINDER OVERLAY DIALOG (UR-020, UR-021, UR-022, UR-024) -->
         <!-- ======================================================== -->
         <Border Background="#70000000" Visibility="{Binding IsReminderOverlayVisible, Converter={StaticResource BoolToVis}}" Panel.ZIndex="200">
-            <Border Style="{DynamicResource DialogOuterFrameStyle}" Width="660" MaxHeight="520"
+            <Border Style="{DynamicResource DialogOuterFrameStyle}" Width="660" MaxHeight="620"
                     VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid Margin="24">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" /> <!-- 0. Coco Character Banner -->
+                        <RowDefinition Height="Auto" /> <!-- 1. Header with SVG Bell Alert -->
+                        <RowDefinition Height="Auto" /> <!-- 2. Subhead Description -->
+                        <RowDefinition Height="*" />    <!-- 3. Tasks List -->
+                        <RowDefinition Height="Auto" /> <!-- 4. Footer Actions -->
                     </Grid.RowDefinitions>
 
-                    <!-- Header with SVG Bell Alert -->
-                    <Border Grid.Row="0" BorderBrush="{DynamicResource AppTitleBarBackground}" BorderThickness="0,0,0,2" Padding="0,0,0,10" Margin="0,0,0,12">
+                    <!-- 0. Coco Animated Character Banner (Miguel, Héctor & Dante on Marigold Bridge) -->
+                    <Border Grid.Row="0" x:Name="CocoReminderBanner" CornerRadius="8" Margin="0,0,0,14" Height="140"
+                            ClipToBounds="True" BorderBrush="#FF7E00" BorderThickness="2"
+                            Visibility="{DynamicResource CocoOnlyVis}">
+                        <Border.Effect>
+                            <DropShadowEffect x:Name="CocoBannerGlow" Color="#FFB800" BlurRadius="16" ShadowDepth="0" Opacity="0.75" />
+                        </Border.Effect>
+                        <Grid>
+                            <!-- The Characters: Miguel, Héctor & Dante on the Marigold Bridge -->
+                            <Image x:Name="ImgCocoCharacters" Source="/Assets/coco_banner.jpg" Stretch="UniformToFill"
+                                   RenderTransformOrigin="0.5, 0.5">
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform x:Name="CocoCharTranslate" Y="0" />
+                                        <RotateTransform x:Name="CocoCharRotate" Angle="0" />
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                            <!-- Festive Twilight Gradient Overlay -->
+                            <Border>
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#00000000" Offset="0.0" />
+                                        <GradientStop Color="#2516072C" Offset="0.5" />
+                                        <GradientStop Color="#E616072C" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                            </Border>
+                            <!-- Floating Cempasúchil Petals & Musical Notes Overlay -->
+                            <Canvas IsHitTestVisible="False">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform x:Name="CocoPetalsTranslate" X="0" />
+                                </Canvas.RenderTransform>
+                                <TextBlock Text="♪" FontSize="18" Foreground="#FFD633" Canvas.Left="20" Canvas.Top="20" FontWeight="Bold">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#FF7E00" BlurRadius="6" ShadowDepth="0" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                                <TextBlock Text="♫" FontSize="22" Foreground="#FFB800" Canvas.Right="40" Canvas.Top="15" FontWeight="Bold">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#FF7E00" BlurRadius="8" ShadowDepth="0" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                                <TextBlock Text="🏵️" FontSize="16" Canvas.Left="75" Canvas.Top="35" />
+                                <TextBlock Text="🏵️" FontSize="14" Canvas.Right="85" Canvas.Top="45" />
+                                <TextBlock Text="♪" FontSize="16" Foreground="#FFD633" Canvas.Right="140" Canvas.Top="18" FontWeight="Bold" />
+                            </Canvas>
+                            <!-- Caption Badge -->
+                            <StackPanel VerticalAlignment="Bottom" Margin="14,0,14,8" Orientation="Horizontal">
+                                <Border Background="#C01E35" CornerRadius="4" Padding="8,3" Margin="0,0,8,0">
+                                    <TextBlock Text="REMEMBER ME 🎸" FontSize="10" FontWeight="Bold" Foreground="#FFFDF8"
+                                               FontFamily="Century Gothic, Arial Rounded MT Bold, sans-serif" />
+                                </Border>
+                                <TextBlock Text="Miguel, Héctor &amp; Dante: Don't forget your tasks today!"
+                                           FontSize="11" FontWeight="SemiBold" Foreground="#FFD633"
+                                           FontFamily="Segoe UI, sans-serif" VerticalAlignment="Center">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#000000" BlurRadius="4" ShadowDepth="1" />
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 1. Header with SVG Bell Alert -->
+                    <Border Grid.Row="1" BorderBrush="{DynamicResource AppTitleBarBackground}" BorderThickness="0,0,0,2" Padding="0,0,0,10" Margin="0,0,0,12">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -783,12 +885,12 @@
                         </Grid>
                     </Border>
 
-                    <!-- Subhead Description -->
-                    <TextBlock Grid.Row="1" Text="Here is the current status of all tasks scheduled for today:"
+                    <!-- 2. Subhead Description -->
+                    <TextBlock Grid.Row="2" Text="Here is the current status of all tasks scheduled for today:"
                                FontSize="13" Foreground="{DynamicResource AppTextForeground}" FontFamily="{DynamicResource AppBaseFontFamily}" Margin="0,0,0,12" />
 
-                    <!-- Tasks List for Reminder (UR-021) -->
-                    <Border Grid.Row="2" Background="{DynamicResource AppCardBackground}" BorderBrush="{DynamicResource AppCardBorder}" BorderThickness="1" MaxHeight="260" Margin="0,0,0,18">
+                    <!-- 3. Tasks List for Reminder (UR-021) -->
+                    <Border Grid.Row="3" Background="{DynamicResource AppCardBackground}" BorderBrush="{DynamicResource AppCardBorder}" BorderThickness="1" MaxHeight="240" Margin="0,0,0,18">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <ItemsControl ItemsSource="{Binding ReminderTasks}">
                                 <ItemsControl.ItemTemplate>
@@ -889,7 +991,7 @@
                     </Border>
 
                     <!-- Footer Actions: Dismiss & Snooze Options (UR-024) -->
-                    <Grid Grid.Row="3">
+                    <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
