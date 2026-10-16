@@ -713,15 +713,8 @@
 
                     <!-- Top Evergreen Pine Garland Eave Silhouette -->
                     <Path HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="16" Stretch="Fill"
-                          Data="M 0,0 L 1060,0 L 1060,5 C 1020,14 980,6 940,12 C 900,16 860,6 820,13 C 780,16 740,7 700,14 C 660,17 620,6 580,13 C 540,17 500,7 460,13 C 420,17 380,6 340,14 C 300,17 260,7 220,13 C 180,17 140,6 100,13 C 60,17 20,6 0,12 Z">
-                        <Path.Fill>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#0D3B12" Offset="0.0" />
-                                <GradientStop Color="#1B5E20" Offset="0.6" />
-                                <GradientStop Color="#2E7D32" Offset="1.0" />
-                            </LinearGradientBrush>
-                        </Path.Fill>
-                    </Path>
+                          Data="M 0,0 L 1060,0 L 1060,5 C 1020,14 980,6 940,12 C 900,16 860,6 820,13 C 780,16 740,7 700,14 C 660,17 620,6 580,13 C 540,17 500,7 460,13 C 420,17 380,6 340,14 C 300,17 260,7 220,13 C 180,17 140,6 100,13 C 60,17 20,6 0,12 Z"
+                          Fill="#1B5E20" />
 
                     <!-- Top Fairy Lights String Along Garland -->
                     <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="28">
@@ -1079,7 +1072,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Left Pane: Today's Tasks List (UR-004 to UR-007) -->
-                <Border Grid.Column="0" Style="{DynamicResource AppSunkenBorderStyle}">
+                <Border Grid.Column="0" Style="{DynamicResource AppSunkenBorderStyle}" BorderBrush="{DynamicResource AppTasksBorder}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -1087,8 +1080,8 @@
                         </Grid.RowDefinitions>
 
                         <!-- Pane Header -->
-                        <Border Grid.Row="0" Background="{DynamicResource AppCardBackground}"
-                                BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,0,0,1" Padding="14,10">
+                        <Border Grid.Row="0" Background="{DynamicResource AppTasksHeaderBackground}"
+                                BorderBrush="{DynamicResource AppTasksBorder}" BorderThickness="0,0,0,1" Padding="14,10">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -1392,7 +1385,7 @@
                 </Border>
 
                 <!-- Right Pane: Daily Notes (UR-010, UR-011) -->
-                <Border Grid.Column="2" Style="{DynamicResource AppSunkenBorderStyle}">
+                <Border Grid.Column="2" Style="{DynamicResource AppSunkenBorderStyle}" BorderBrush="{DynamicResource AppNotesBorder}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -1400,8 +1393,8 @@
                         </Grid.RowDefinitions>
 
                         <!-- Pane Header with SVG Document Icon and Saved Status -->
-                        <Border Grid.Row="0" Background="{DynamicResource AppCardBackground}"
-                                BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,0,0,1" Padding="14,10">
+                        <Border Grid.Row="0" Background="{DynamicResource AppNotesHeaderBackground}"
+                                BorderBrush="{DynamicResource AppNotesBorder}" BorderThickness="0,0,0,1" Padding="14,10">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -1613,20 +1606,20 @@
             </Grid>
 
             <!-- 4. Status Bar -->
-            <Border Grid.Row="3" Background="{DynamicResource AppPanelBackground}"
-                    BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,1,0,0" Padding="8,2">
+            <Border Grid.Row="3" Background="{DynamicResource AppStatusBarBackground}"
+                    BorderBrush="{DynamicResource AppStatusBarBorder}" BorderThickness="0,1,0,0" Padding="8,2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" Style="{DynamicResource AppSunkenBorderStyle}" Padding="8,2" Margin="0,0,6,0">
+                    <Border Grid.Column="0" Style="{DynamicResource AppSunkenBorderStyle}" BorderBrush="{DynamicResource AppStatusBarBorder}" Padding="8,2" Margin="0,0,6,0">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="Storage: " FontSize="11" Foreground="{DynamicResource AppMutedForeground}" />
                             <TextBlock Text="{Binding Settings.DataDirectory}" FontSize="11" Foreground="{DynamicResource AppTextForeground}" TextTrimming="CharacterEllipsis" MaxWidth="500" />
                         </StackPanel>
                     </Border>
-                    <Border Grid.Column="1" Style="{DynamicResource AppSunkenBorderStyle}" Padding="8,2">
+                    <Border Grid.Column="1" Style="{DynamicResource AppSunkenBorderStyle}" BorderBrush="{DynamicResource AppStatusBarBorder}" Padding="8,2">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="Reminders: " FontSize="11" Foreground="{DynamicResource AppMutedForeground}" />
                             <TextBlock Text="{Binding RemindersEnabled, Converter={x:Null}, StringFormat='Active'}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AppPrimaryColor}">
@@ -2307,17 +2300,8 @@
                             <DropShadowEffect x:Name="ChristmasBannerGlow" Color="#FFD700" BlurRadius="18" ShadowDepth="0" Opacity="0.85" />
                         </Border.Effect>
                         <Grid>
-                            <!-- Festive Winter Hearth Gradient Background -->
-                            <Border>
-                                <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#08101E" Offset="0.0" />
-                                        <GradientStop Color="#1B5E20" Offset="0.4" />
-                                        <GradientStop Color="#7F0000" Offset="0.8" />
-                                        <GradientStop Color="#D32F2F" Offset="1.0" />
-                                    </LinearGradientBrush>
-                                </Border.Background>
-                            </Border>
+                            <!-- Festive Winter Hearth Solid Background (No Gradients) -->
+                            <Border Background="#153E23" />
 
                             <!-- Decorative Snow Dusting -->
                             <TextBlock Text="❄️" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,10,0,0" Opacity="0.6" />

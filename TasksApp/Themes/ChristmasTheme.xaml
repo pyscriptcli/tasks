@@ -17,27 +17,24 @@
     <SolidColorBrush x:Key="PrimeBorder" Color="#D32F2F" />        <!-- Festive Crimson Border -->
     <SolidColorBrush x:Key="PrimeSubtleBg" Color="#0D182E" />      <!-- Deep Pine/Midnight Tint -->
 
-    <!-- Semantic App Brushes -->
-    <SolidColorBrush x:Key="AppWindowBackground" Color="#080F1E" /> <!-- Deep Winter Hearth Blue -->
+    <!-- Semantic App Brushes: Solid Colors for Distinct Layout Boxes (No Gradients) -->
+    <SolidColorBrush x:Key="AppWindowBackground" Color="#0B132B" /> <!-- Solid Deep Midnight Winter Sky (Canvas Box) -->
     
-    <!-- Title Bar: Santa Crimson & Pine Garland Ribbon Gradient -->
-    <LinearGradientBrush x:Key="AppTitleBarBackground" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#5D0000" Offset="0.0" />
-        <GradientStop Color="#C62828" Offset="0.3" />
-        <GradientStop Color="#1B5E20" Offset="0.75" />
-        <GradientStop Color="#2E7D32" Offset="0.9" />
-        <GradientStop Color="#B8860B" Offset="1.0" />
-    </LinearGradientBrush>
-
+    <!-- Title Bar Box: Solid Santa Crimson Red with Jingle Bell Gold Border -->
+    <SolidColorBrush x:Key="AppTitleBarBackground" Color="#B71C1C" />
     <SolidColorBrush x:Key="AppTitleBarForeground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="AppTitleBarBorder" Color="#FFD700" />
-    <SolidColorBrush x:Key="AppPanelBackground" Color="#0F1B33" />
+
+    <!-- Date Navigation & Toolbar Box: Solid Evergreen Forest Pine -->
+    <SolidColorBrush x:Key="AppPanelBackground" Color="#153E23" />
     <SolidColorBrush x:Key="AppPanelBorder" Color="#2E7D32" />
+    <SolidColorBrush x:Key="AppToolbarForeground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AppToolbarMutedForeground" Color="#FFD700" />
     
     <!-- Task Cards & Daily Notes Wells: Solid Pure White (#FFFFFF) with #121212 text -->
     <SolidColorBrush x:Key="AppCardBackground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="AppCardBorder" Color="#D32F2F" />
-    <SolidColorBrush x:Key="AppSurfaceBackground" Color="#F5F7FA" />
+    <SolidColorBrush x:Key="AppSurfaceBackground" Color="#FFFDF8" />
     <SolidColorBrush x:Key="AppTextForeground" Color="#121212" />     <!-- High-contrast dark text on white cards -->
     <SolidColorBrush x:Key="AppMutedForeground" Color="#555555" />    <!-- Muted text on white cards -->
     <SolidColorBrush x:Key="AppPrimaryColor" Color="#D32F2F" />      <!-- Santa Crimson -->
@@ -46,9 +43,13 @@
     <SolidColorBrush x:Key="AppHeaderAccentColor" Color="#FFD700" />
     <SolidColorBrush x:Key="AppDialogHeaderBorder" Color="#D32F2F" />
 
-    <!-- Toolbar / Chrome Foreground: Pure Crisp Warm White and Jingle Bell Gold -->
-    <SolidColorBrush x:Key="AppToolbarForeground" Color="#FFFDF8" />
-    <SolidColorBrush x:Key="AppToolbarMutedForeground" Color="#FFE082" />
+    <!-- Distinct Layout Box Brushes (Different Colors for Different Layout Boxes) -->
+    <SolidColorBrush x:Key="AppTasksHeaderBackground" Color="#FFF8F8" /> <!-- Solid Soft Crimson Hearth Tint -->
+    <SolidColorBrush x:Key="AppNotesHeaderBackground" Color="#F2F9F4" /> <!-- Solid Soft Pine Mist Tint -->
+    <SolidColorBrush x:Key="AppTasksBorder" Color="#D32F2F" />           <!-- Solid Santa Crimson Border -->
+    <SolidColorBrush x:Key="AppNotesBorder" Color="#2E7D32" />           <!-- Solid Evergreen Pine Border -->
+    <SolidColorBrush x:Key="AppStatusBarBackground" Color="#091A14" />   <!-- Solid Deep Winter Spruce Footer Box -->
+    <SolidColorBrush x:Key="AppStatusBarBorder" Color="#1B5E20" />
 
     <!-- Dimensions & Metrics -->
     <sys:Double x:Key="AppTitleBarHeight">48</sys:Double>
@@ -76,32 +77,15 @@
     <Visibility x:Key="ChristmasOnlyVis">Visible</Visibility>
     <Visibility x:Key="NotChristmasVis">Collapsed</Visibility>
 
-    <!-- Outer Window / Dialog Frame Style: Santa's Workshop Frame with Golden Hearth Glow -->
+    <!-- Outer Window / Dialog Frame Style: Solid Deep Santa Velvet Red with Solid Gold Trim (No Gradients) -->
     <Style x:Key="DialogOuterFrameStyle" TargetType="Border">
-        <Setter Property="Background">
-            <Setter.Value>
-                <RadialGradientBrush Center="0.5,0.0" GradientOrigin="0.5,0.0" RadiusX="1.2" RadiusY="1.1">
-                    <GradientStop Color="#182A4D" Offset="0.0" />
-                    <GradientStop Color="#0E1A33" Offset="0.55" />
-                    <GradientStop Color="#060C1A" Offset="1.0" />
-                </RadialGradientBrush>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#FFD700" Offset="0.0" />
-                    <GradientStop Color="#D32F2F" Offset="0.5" />
-                    <GradientStop Color="#2E7D32" Offset="0.8" />
-                    <GradientStop Color="#FFD700" Offset="1.0" />
-                </LinearGradientBrush>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="BorderThickness" Value="2.5" />
-        <Setter Property="CornerRadius" Value="18" />
+        <Setter Property="Background" Value="#7A0C0C" />
+        <Setter Property="BorderBrush" Value="#FFD700" />
+        <Setter Property="BorderThickness" Value="3" />
+        <Setter Property="CornerRadius" Value="16" />
         <Setter Property="Effect">
             <Setter.Value>
-                <DropShadowEffect Color="#FFD700" Direction="0" ShadowDepth="0" BlurRadius="22" Opacity="0.75" />
+                <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="4" BlurRadius="20" Opacity="0.65" />
             </Setter.Value>
         </Setter>
     </Style>
@@ -169,16 +153,9 @@
         <Setter Property="Margin" Value="0,0,4,0" />
     </Style>
 
-    <!-- Primary Action Button: Santa Crimson with Golden Embers Glow -->
+    <!-- Primary Action Button: Solid Santa Crimson with Gold Accent (No Gradients) -->
     <Style x:Key="PrimaryActionBtn" TargetType="Button">
-        <Setter Property="Background">
-            <Setter.Value>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#E53935" Offset="0.0" />
-                    <GradientStop Color="#C62828" Offset="1.0" />
-                </LinearGradientBrush>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Background" Value="#C62828" />
         <Setter Property="Foreground" Value="#FFFFFF" />
         <Setter Property="FontFamily" Value="Century Gothic, Segoe UI, sans-serif" />
         <Setter Property="FontWeight" Value="Bold" />
@@ -191,20 +168,13 @@
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Face" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
                         <Border.Effect>
-                            <DropShadowEffect Color="#FFD700" Direction="0" ShadowDepth="0" BlurRadius="8" Opacity="0.5" />
+                            <DropShadowEffect Color="#FFD700" Direction="0" ShadowDepth="0" BlurRadius="6" Opacity="0.4" />
                         </Border.Effect>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Face" Property="Background">
-                                <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#FF5252" Offset="0.0" />
-                                        <GradientStop Color="#D32F2F" Offset="1.0" />
-                                    </LinearGradientBrush>
-                                </Setter.Value>
-                            </Setter>
+                            <Setter TargetName="Face" Property="Background" Value="#D32F2F" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="Face" Property="Background" Value="#8B0000" />
@@ -215,10 +185,10 @@
         </Setter>
     </Style>
 
-    <!-- Secondary Action Button: Evergreen Pine with Gold Accent -->
+    <!-- Secondary Action Button: Solid Evergreen Forest Pine with Emerald Hover -->
     <Style x:Key="SecondaryActionBtn" TargetType="Button">
-        <Setter Property="Background" Value="#102517" />
-        <Setter Property="Foreground" Value="#81C784" />
+        <Setter Property="Background" Value="#153E23" />
+        <Setter Property="Foreground" Value="#FFFFFF" />
         <Setter Property="BorderBrush" Value="#2E7D32" />
         <Setter Property="BorderThickness" Value="1.5" />
         <Setter Property="FontFamily" Value="Century Gothic, Segoe UI, sans-serif" />
@@ -241,7 +211,7 @@
                             <Setter Property="Foreground" Value="#FFFFFF" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Face" Property="Background" Value="#1B5E20" />
+                            <Setter TargetName="Face" Property="Background" Value="#0C2B16" />
                             <Setter Property="Foreground" Value="#FFE082" />
                         </Trigger>
                     </ControlTemplate.Triggers>

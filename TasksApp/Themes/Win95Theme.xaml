@@ -38,6 +38,14 @@
     <SolidColorBrush x:Key="AppToolbarForeground" Color="#000000" />
     <SolidColorBrush x:Key="AppToolbarMutedForeground" Color="#404040" />
 
+    <!-- Distinct Layout Box Brushes -->
+    <SolidColorBrush x:Key="AppTasksHeaderBackground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AppNotesHeaderBackground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AppTasksBorder" Color="#808080" />
+    <SolidColorBrush x:Key="AppNotesBorder" Color="#808080" />
+    <SolidColorBrush x:Key="AppStatusBarBackground" Color="#C0C0C0" />
+    <SolidColorBrush x:Key="AppStatusBarBorder" Color="#808080" />
+
     <!-- Dimensions & Metrics -->
     <sys:Double x:Key="AppTitleBarHeight">26</sys:Double>
     <sys:Double x:Key="AppCaptionHeight">26</sys:Double>
