@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using TasksApp.Helpers;
@@ -21,28 +23,38 @@ namespace TasksApp
 
             if (!isFirstInstance)
             {
-                // Another instance is already running -> signal it and exit (UR-049)
-                try
-                {
-                    using var existingEvent = EventWaitHandle.OpenExisting(EventName);
-                    existingEvent.Set();
-                }
-                catch
-                {
-                    // Fallback to Win32 window message/activation
-                    IntPtr hwnd = NativeMethods.FindWindow(null, "Tasks");
-                    if (hwnd != IntPtr.Zero)
-                    {
-                        if (NativeMethods.IsIconic(hwnd))
-                        {
-                            NativeMethods.ShowWindow(hwnd, NativeMethods.SW_RESTORE);
-                        }
-                        NativeMethods.SetForegroundWindow(hwnd);
-                    }
-                }
+                var currentPid = Environment.ProcessId;
+                var otherProcesses = Process.GetProcesses()
+                    .Where(p => (p.ProcessName.Equals("Tasks", StringComparison.OrdinalIgnoreCase) ||
+                                 p.ProcessName.StartsWith("Tasks", StringComparison.OrdinalIgnoreCase)) &&
+                                p.Id != currentPid)
+                    .ToList();
 
-                Shutdown();
-                return;
+                if (otherProcesses.Count > 0)
+                {
+                    // Another instance is already running -> signal it and exit (UR-049)
+                    try
+                    {
+                        using var existingEvent = EventWaitHandle.OpenExisting(EventName);
+                        existingEvent.Set();
+                    }
+                    catch
+                    {
+                        // Fallback to Win32 window message/activation
+                        IntPtr hwnd = NativeMethods.FindWindow(null, "Tasks");
+                        if (hwnd != IntPtr.Zero)
+                        {
+                            if (NativeMethods.IsIconic(hwnd))
+                            {
+                                NativeMethods.ShowWindow(hwnd, NativeMethods.SW_RESTORE);
+                            }
+                            NativeMethods.SetForegroundWindow(hwnd);
+                        }
+                    }
+
+                    Shutdown();
+                    return;
+                }
             }
 
             try

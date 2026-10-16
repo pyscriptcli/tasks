@@ -31,10 +31,12 @@ namespace TasksApp
         private Storyboard? _halloweenReminderStoryboard;
         private Storyboard? _christmasAmbientStoryboard;
         private Storyboard? _christmasReminderStoryboard;
-        private readonly System.Windows.Threading.DispatcherTimer _olafRunTimer = new System.Windows.Threading.DispatcherTimer();
+        private readonly System.Windows.Threading.DispatcherTimer _olafRunTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(4.0) };
         private readonly Random _rng = new Random();
         private bool _olafMovedToStage = false;
         private bool _isOlafRunning = false;
+        private bool _isOlafMoving = false;
+        private bool _isChristmasInitialized = false;
 
         public MainWindow()
         {
@@ -127,6 +129,11 @@ namespace TasksApp
             if (chrome != null)
             {
                 chrome.CaptionHeight = ThemeManager.IsWin95 ? 26 : 48;
+            }
+
+            if (!IsLoaded)
+            {
+                return;
             }
 
             if (ThemeManager.IsHalloween)
@@ -307,10 +314,16 @@ namespace TasksApp
         {
             if (WindowState == WindowState.Normal)
             {
-                _settings.WindowLeft = Left;
-                _settings.WindowTop = Top;
-                _settings.WindowWidth = ActualWidth;
-                _settings.WindowHeight = ActualHeight;
+                if (!double.IsNaN(Left) && !double.IsNaN(Top))
+                {
+                    _settings.WindowLeft = Left;
+                    _settings.WindowTop = Top;
+                }
+                if (ActualWidth >= 400 && ActualHeight >= 300)
+                {
+                    _settings.WindowWidth = ActualWidth;
+                    _settings.WindowHeight = ActualHeight;
+                }
                 _settings.IsMaximized = false;
             }
             else if (WindowState == WindowState.Maximized)
@@ -527,7 +540,9 @@ namespace TasksApp
 
         private void InitializeChristmasFeatures()
         {
-            _olafRunTimer.Interval = TimeSpan.FromSeconds(3.5);
+            if (_isChristmasInitialized) return;
+            _isChristmasInitialized = true;
+            _olafRunTimer.Interval = TimeSpan.FromSeconds(4.0);
             _olafRunTimer.Tick += (s, e) => PerformOlafRunStep();
         }
 
@@ -869,7 +884,9 @@ namespace TasksApp
 
         private void StartOlafRunning()
         {
-            if (!ThemeManager.IsChristmas || OlafPet == null || OlafStage == null) return;
+            if (!IsLoaded || !ThemeManager.IsChristmas || OlafPet == null || OlafStage == null) return;
+
+            InitializeChristmasFeatures();
 
             if (!_olafMovedToStage)
             {
@@ -892,6 +909,7 @@ namespace TasksApp
         private void StopOlafRunning()
         {
             _isOlafRunning = false;
+            _isOlafMoving = false;
             _olafRunTimer.Stop();
 
             if (_olafMovedToStage && OlafPet != null)
@@ -902,7 +920,8 @@ namespace TasksApp
 
         private void PerformOlafRunStep()
         {
-            if (!_isOlafRunning || !ThemeManager.IsChristmas || OlafPet == null || OlafStage == null) return;
+            if (!_isOlafRunning || _isOlafMoving || !ThemeManager.IsChristmas || OlafPet == null || OlafStage == null) return;
+            _isOlafMoving = true;
 
             double stageW = OlafStage.ActualWidth > 200 ? OlafStage.ActualWidth : (ActualWidth > 200 ? ActualWidth - 50 : 900);
             double stageH = OlafStage.ActualHeight > 200 ? OlafStage.ActualHeight : (ActualHeight > 200 ? ActualHeight - 120 : 450);
@@ -938,7 +957,11 @@ namespace TasksApp
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
             };
 
-            moveX.Completed += (s, e) => PlayOlafIdleAction();
+            moveX.Completed += (s, e) =>
+            {
+                _isOlafMoving = false;
+                PlayOlafIdleAction();
+            };
 
             OlafPet.BeginAnimation(Canvas.LeftProperty, moveX);
             OlafPet.BeginAnimation(Canvas.TopProperty, moveY);
