@@ -261,6 +261,56 @@ namespace TasksApp.Tests
         }
 
         [Fact]
+        public void ReminderStatus_UsesOnAndOffLabels()
+        {
+            var vm = new MainViewModel(new StorageService(), new ReminderService(), new AppSettings { DataDirectory = _testDir });
+
+            Assert.Equal("On", vm.RemindersStatusText);
+            vm.RemindersEnabled = false;
+            Assert.Equal("Off", vm.RemindersStatusText);
+        }
+
+        [Fact]
+        public void OpenDataFolderCommand_RequestsConfiguredStorageLocation()
+        {
+            var vm = new MainViewModel(new StorageService(), new ReminderService(), new AppSettings { DataDirectory = _testDir });
+            string? requestedPath = null;
+            vm.RequestOpenDataFolder += path => requestedPath = path;
+
+            vm.OpenDataFolderCommand.Execute(null);
+
+            Assert.Equal(_testDir, requestedPath);
+        }
+
+        [Fact]
+        public void CloseReminderCommand_HidesReminderAndKeepsMainWindowVisible()
+        {
+            var vm = new MainViewModel(new StorageService(), new ReminderService(), new AppSettings { DataDirectory = _testDir });
+            bool minimizeRequested = false;
+            vm.RequestMinimize += () => minimizeRequested = true;
+            vm.IsReminderOverlayVisible = true;
+
+            vm.CloseReminderCommand.Execute(null);
+
+            Assert.False(vm.IsReminderOverlayVisible);
+            Assert.False(minimizeRequested);
+        }
+
+        [Fact]
+        public void DismissReminderCommand_HidesReminderAndMinimizesMainWindow()
+        {
+            var vm = new MainViewModel(new StorageService(), new ReminderService(), new AppSettings { DataDirectory = _testDir });
+            bool minimizeRequested = false;
+            vm.RequestMinimize += () => minimizeRequested = true;
+            vm.IsReminderOverlayVisible = true;
+
+            vm.DismissReminderCommand.Execute(null);
+
+            Assert.False(vm.IsReminderOverlayVisible);
+            Assert.True(minimizeRequested);
+        }
+
+        [Fact]
         public void PendingTasks_AutomaticallyCarryOverToNextDayOrToday()
         {
             var storage = new StorageService();
@@ -834,6 +884,28 @@ namespace TasksApp.Tests
             storage.MergeTaskIntoDate(targetDirectory, date, targetTask);
 
             Assert.Empty(storage.LoadTasksForDate(targetDirectory, date));
+
+        }
+
+        [Fact]
+        public void CarryOverPendingTasks_DoesNotRestoreTaskDeletedFromTargetDate()
+        {
+            var storage = new StorageService();
+            var sourceDate = new DateTime(2026, 10, 18);
+            var targetDate = new DateTime(2026, 10, 19);
+            var sourceTask = new TaskItem { Title = "Carried task" };
+
+            storage.SaveTasksForDate(_testDir, sourceDate, new[] { sourceTask });
+            storage.CarryOverPendingTasks(_testDir, targetDate);
+            Assert.Single(storage.LoadTasksForDate(_testDir, targetDate));
+
+            // Deleting the task on Oct 19 empties the target file. Loading that day
+            // again reruns carry-over, which must not resurrect the source task.
+            storage.SaveTasksForDate(_testDir, targetDate, Array.Empty<TaskItem>());
+            storage.LoadTasksForDate(_testDir, new DateTime(2026, 10, 20));
+            storage.CarryOverPendingTasks(_testDir, targetDate);
+
+            Assert.Empty(storage.LoadTasksForDate(_testDir, targetDate));
         }
 
         [Fact]
@@ -861,6 +933,7 @@ namespace TasksApp.Tests
             string current = UpdateService.CurrentVersion;
             Assert.False(string.IsNullOrWhiteSpace(current));
             Assert.True(UpdateService.TryParseVersion(current, out var currentVer));
+            Assert.Equal(typeof(UpdateService).Assembly.GetName().Version!.ToString(3), current);
 
             // Same major version is not newer
             Assert.False(UpdateService.IsVersionNewer($"v{current}", current));
@@ -873,6 +946,8 @@ namespace TasksApp.Tests
             // Newer version is newer
             Assert.True(UpdateService.IsVersionNewer("v8", "7"));
             Assert.True(UpdateService.IsVersionNewer("v10", "7"));
+            Assert.True(UpdateService.IsVersionNewer("v9.0.1", "9.0.0"));
+            Assert.False(UpdateService.IsVersionNewer("v9.0.1", "9.0.1"));
         }
 
         [Fact]

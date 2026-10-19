@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -77,6 +78,8 @@ namespace TasksApp
             _viewModel.RequestOpenSettings += OpenSettingsDialog;
             _viewModel.RequestStorageError += message =>
                 MessageBox.Show(this, message, "Tasks", MessageBoxButton.OK, MessageBoxImage.Error);
+            _viewModel.RequestOpenDataFolder += OpenDataFolder;
+            _viewModel.RequestMinimize += MinimizeForReminderDismissal;
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
             RestoreWindowBounds();
@@ -160,8 +163,8 @@ namespace TasksApp
             {
                 _christmasAmbientStoryboard?.Begin(this, true);
                 StartOlafRunning();
-                SetupSlowSnow(TasksSnowCanvas, 14, 11.0, 18.0);
-                SetupSlowSnow(NotesSnowCanvas, 12, 10.0, 17.0);
+                SetupSlowSnow(TasksSnowCanvas, 30, 8.0, 15.0);
+                SetupSlowSnow(NotesSnowCanvas, 26, 8.0, 15.0);
 
                 if (_viewModel?.IsReminderOverlayVisible == true)
                 {
@@ -203,8 +206,8 @@ namespace TasksApp
             {
                 _christmasAmbientStoryboard?.Begin(this, true);
                 StartOlafRunning();
-                SetupSlowSnow(TasksSnowCanvas, 14, 11.0, 18.0);
-                SetupSlowSnow(NotesSnowCanvas, 12, 10.0, 17.0);
+                SetupSlowSnow(TasksSnowCanvas, 30, 8.0, 15.0);
+                SetupSlowSnow(NotesSnowCanvas, 26, 8.0, 15.0);
             }
 
             await _viewModel.InitializeStartupAsync();
@@ -367,6 +370,16 @@ namespace TasksApp
         private void ToggleReminders()
         {
             _viewModel.RemindersEnabled = !_viewModel.RemindersEnabled;
+        }
+
+        private void OpenDataFolder(string path)
+        {
+            Process.Start("explorer.exe", $"\"{path}\"");
+        }
+
+        private void MinimizeForReminderDismissal()
+        {
+            WindowState = WindowState.Minimized;
         }
 
         // ========================================================
@@ -564,9 +577,9 @@ namespace TasksApp
                 var tb = new TextBlock
                 {
                     Text = snowChars[_rng.Next(snowChars.Length)],
-                    FontSize = _rng.Next(12, 22),
+                    FontSize = _rng.Next(20, 35),
                     Foreground = (Brush)new BrushConverter().ConvertFromString(snowColors[_rng.Next(snowColors.Length)])!,
-                    Opacity = 0.35 + (_rng.NextDouble() * 0.5),
+                    Opacity = 0.5 + (_rng.NextDouble() * 0.45),
                     IsHitTestVisible = false
                 };
 
@@ -596,7 +609,7 @@ namespace TasksApp
                 tb.RenderTransformOrigin = new Point(0.5, 0.5);
                 tb.RenderTransform = swayGroup;
 
-                var swayX = new DoubleAnimation(-6 - _rng.Next(0, 8), 6 + _rng.Next(0, 8), TimeSpan.FromSeconds(2.5 + (_rng.NextDouble() * 2.5)))
+                var swayX = new DoubleAnimation(-14 - _rng.Next(0, 14), 14 + _rng.Next(0, 14), TimeSpan.FromSeconds(2.0 + (_rng.NextDouble() * 2.5)))
                 {
                     AutoReverse = true,
                     RepeatBehavior = RepeatBehavior.Forever,
@@ -886,7 +899,7 @@ namespace TasksApp
 
         private void StartOlafRunning()
         {
-            if (!IsLoaded || !ThemeManager.IsChristmas || OlafPet == null || OlafStage == null) return;
+            if (!IsLoaded || !ThemeManager.IsChristmas || OlafPet == null || NotesPetStage == null) return;
 
             InitializeChristmasFeatures();
 
@@ -896,13 +909,29 @@ namespace TasksApp
                 {
                     p.Children.Remove(OlafPet);
                 }
-                OlafStage.Children.Add(OlafPet);
-                Canvas.SetLeft(OlafPet, 180);
-                Canvas.SetTop(OlafPet, 140);
+                if (ElsaPet.Parent is Panel elsaParent) elsaParent.Children.Remove(ElsaPet);
+                if (AnnaPet.Parent is Panel annaParent) annaParent.Children.Remove(AnnaPet);
+                NotesPetStage.Children.Add(OlafPet);
+                double stageW = NotesPetStage.ActualWidth > 120 ? NotesPetStage.ActualWidth : 340;
+                double stageH = NotesPetStage.ActualHeight > 120 ? NotesPetStage.ActualHeight : 420;
+                double startX = Math.Max(70, (stageW / 2.0) - 35);
+                double startY = Math.Max(25, stageH - 150);
+                Canvas.SetLeft(OlafPet, startX);
+                Canvas.SetTop(OlafPet, startY);
+                ElsaPet.Visibility = Visibility.Visible;
+                AnnaPet.Visibility = Visibility.Visible;
+                NotesPetStage.Children.Add(ElsaPet);
+                NotesPetStage.Children.Add(AnnaPet);
+                Canvas.SetLeft(ElsaPet, startX - 26);
+                Canvas.SetTop(ElsaPet, startY + 8);
+                Canvas.SetLeft(AnnaPet, startX - 52);
+                Canvas.SetTop(AnnaPet, startY + 16);
                 _olafMovedToStage = true;
             }
 
             OlafPet.Visibility = Visibility.Visible;
+            ElsaPet.Visibility = Visibility.Visible;
+            AnnaPet.Visibility = Visibility.Visible;
             _isOlafRunning = true;
             _olafRunTimer.Start();
             PerformOlafRunStep();
@@ -917,21 +946,23 @@ namespace TasksApp
             if (_olafMovedToStage && OlafPet != null)
             {
                 OlafPet.Visibility = Visibility.Collapsed;
+                ElsaPet.Visibility = Visibility.Collapsed;
+                AnnaPet.Visibility = Visibility.Collapsed;
             }
         }
 
         private void PerformOlafRunStep()
         {
-            if (!_isOlafRunning || _isOlafMoving || !ThemeManager.IsChristmas || OlafPet == null || OlafStage == null) return;
+            if (!_isOlafRunning || _isOlafMoving || !ThemeManager.IsChristmas || OlafPet == null || NotesPetStage == null) return;
             _isOlafMoving = true;
 
-            double stageW = OlafStage.ActualWidth > 200 ? OlafStage.ActualWidth : (ActualWidth > 200 ? ActualWidth - 50 : 900);
-            double stageH = OlafStage.ActualHeight > 200 ? OlafStage.ActualHeight : (ActualHeight > 200 ? ActualHeight - 120 : 450);
+            double stageW = NotesPetStage.ActualWidth > 120 ? NotesPetStage.ActualWidth : 340;
+            double stageH = NotesPetStage.ActualHeight > 120 ? NotesPetStage.ActualHeight : 420;
 
-            double minX = 20;
-            double maxX = Math.Max(minX + 50, stageW - 140);
-            double minY = 20;
-            double maxY = Math.Max(minY + 50, stageH - 170);
+            double minX = 65;
+            double maxX = Math.Max(minX + 50, stageW - 115);
+            double minY = Math.Max(25, stageH - 165);
+            double maxY = Math.Max(minY + 20, stageH - 105);
 
             double targetX = _rng.Next((int)minX, (int)maxX);
             double targetY = _rng.Next((int)minY, (int)maxY);
@@ -940,6 +971,14 @@ namespace TasksApp
             if (double.IsNaN(curX)) curX = 100;
             double curY = Canvas.GetTop(OlafPet);
             if (double.IsNaN(curY)) curY = 100;
+            double elsaX = Canvas.GetLeft(ElsaPet);
+            double elsaY = Canvas.GetTop(ElsaPet);
+            double annaX = Canvas.GetLeft(AnnaPet);
+            double annaY = Canvas.GetTop(AnnaPet);
+            if (double.IsNaN(elsaX)) elsaX = curX - 24;
+            if (double.IsNaN(elsaY)) elsaY = curY;
+            if (double.IsNaN(annaX)) annaX = elsaX - 24;
+            if (double.IsNaN(annaY)) annaY = elsaY;
 
             // Turn Olaf to face the running direction
             if (OlafFacingScale != null)
@@ -948,7 +987,7 @@ namespace TasksApp
             }
 
             double dist = Math.Sqrt(Math.Pow(targetX - curX, 2) + Math.Pow(targetY - curY, 2));
-            double durationSec = Math.Clamp(dist / 160.0, 1.6, 3.6);
+            double durationSec = Math.Clamp(dist / 210.0, 1.2, 2.6);
 
             var moveX = new DoubleAnimation(curX, targetX, TimeSpan.FromSeconds(durationSec))
             {
@@ -968,6 +1007,10 @@ namespace TasksApp
             OlafPet.BeginAnimation(Canvas.LeftProperty, moveX);
             OlafPet.BeginAnimation(Canvas.TopProperty, moveY);
 
+            // The sisters chase the leader's previous positions so the trio reads as a playful follow-the-leader game.
+            AnimateChaser(ElsaPet, elsaX, elsaY, curX - 24, curY + 8, durationSec * 1.15, 0.14);
+            AnimateChaser(AnnaPet, annaX, annaY, elsaX - 24, elsaY + 8, durationSec * 1.25, 0.3);
+
             // Bouncing wobble while running
             if (OlafPetTranslate != null)
             {
@@ -980,7 +1023,47 @@ namespace TasksApp
             }
 
             // Schedule next run
-            _olafRunTimer.Interval = TimeSpan.FromSeconds(durationSec + _rng.Next(1, 4));
+            _olafRunTimer.Interval = TimeSpan.FromSeconds(durationSec + _rng.Next(0, 2));
+        }
+
+        private static void AnimateChaser(FrameworkElement character, double fromX, double fromY, double toX, double toY, double durationSec, double delaySec)
+        {
+            var x = new DoubleAnimation(fromX, toX, TimeSpan.FromSeconds(durationSec))
+            {
+                BeginTime = TimeSpan.FromSeconds(delaySec),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+            var y = new DoubleAnimation(fromY, toY, TimeSpan.FromSeconds(durationSec))
+            {
+                BeginTime = TimeSpan.FromSeconds(delaySec),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+            character.BeginAnimation(Canvas.LeftProperty, x);
+            character.BeginAnimation(Canvas.TopProperty, y);
+
+            TranslateTransform? bounce = null;
+            if (character.RenderTransform is TransformGroup transforms)
+            {
+                foreach (var transform in transforms.Children)
+                {
+                    if (transform is TranslateTransform translate)
+                    {
+                        bounce = translate;
+                        break;
+                    }
+                }
+            }
+
+            if (bounce != null)
+            {
+                var hop = new DoubleAnimation(0, -5, TimeSpan.FromSeconds(0.18))
+                {
+                    AutoReverse = true,
+                    RepeatBehavior = new RepeatBehavior(Math.Max(2, durationSec * 2)),
+                    BeginTime = TimeSpan.FromSeconds(delaySec)
+                };
+                bounce.BeginAnimation(TranslateTransform.YProperty, hop);
+            }
         }
 
         private void PlayOlafIdleAction()

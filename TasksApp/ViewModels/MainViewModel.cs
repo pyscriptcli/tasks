@@ -49,6 +49,8 @@ namespace TasksApp.ViewModels
         public event Action? RequestAddTaskModal;
         public event Action? RequestOpenSettings;
         public event Action<string>? RequestStorageError;
+        public event Action<string>? RequestOpenDataFolder;
+        public event Action? RequestMinimize;
 
         public AppSettings Settings => _settings;
 
@@ -230,9 +232,12 @@ namespace TasksApp.ViewModels
                     _reminderService.IsEnabled = value;
                     _storageService.SaveSettings(_settings);
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(RemindersStatusText));
                 }
             }
         }
+
+        public string RemindersStatusText => RemindersEnabled ? "On" : "Off";
 
         // Commands
         public ICommand PreviousDayCommand { get; }
@@ -244,9 +249,11 @@ namespace TasksApp.ViewModels
         public ICommand EditTaskCommand { get; }
         public ICommand ToggleDetailsVisibilityCommand { get; }
         public ICommand ShowReminderCommand { get; }
+        public ICommand CloseReminderCommand { get; }
         public ICommand DismissReminderCommand { get; }
         public ICommand SnoozeReminderCommand { get; }
         public ICommand OpenSettingsCommand { get; }
+        public ICommand OpenDataFolderCommand { get; }
 
         public MainViewModel(StorageService storageService, ReminderService reminderService, AppSettings settings)
         {
@@ -291,9 +298,11 @@ namespace TasksApp.ViewModels
             EditTaskCommand = new RelayCommand(p => ExecuteEditTask(p as TaskItem));
             ToggleDetailsVisibilityCommand = new RelayCommand(() => IsDetailsInputVisible = !IsDetailsInputVisible);
             ShowReminderCommand = new RelayCommand(ExecuteShowReminder);
+            CloseReminderCommand = new RelayCommand(ExecuteCloseReminder);
             DismissReminderCommand = new RelayCommand(ExecuteDismissReminder);
             SnoozeReminderCommand = new RelayCommand(p => ExecuteSnoozeReminder(p));
             OpenSettingsCommand = new RelayCommand(() => RequestOpenSettings?.Invoke());
+            OpenDataFolderCommand = new RelayCommand(() => RequestOpenDataFolder?.Invoke(_settings.DataDirectory));
 
             ThemeManager.ThemeChanged += _ => OnPropertyChanged(nameof(IsWin95Theme));
         }
@@ -374,7 +383,27 @@ namespace TasksApp.ViewModels
             if (e.PropertyName == nameof(TaskItem.IsCompleted))
             {
                 UpdateCounts();
+                MoveCompletedTasksToBottom();
                 SaveCurrentTasks();
+            }
+        }
+
+        private void MoveCompletedTasksToBottom()
+        {
+            // Stable partition: keep the existing order within pending and completed tasks.
+            var orderedTasks = Tasks.OrderBy(task => task.IsCompleted).ToList();
+            for (var targetIndex = 0; targetIndex < orderedTasks.Count; targetIndex++)
+            {
+                var currentIndex = Tasks.IndexOf(orderedTasks[targetIndex]);
+                if (currentIndex != targetIndex)
+                {
+                    Tasks.Move(currentIndex, targetIndex);
+                }
+            }
+
+            for (var i = 0; i < Tasks.Count; i++)
+            {
+                Tasks[i].OrderIndex = i + 1;
             }
         }
 
@@ -583,11 +612,18 @@ namespace TasksApp.ViewModels
             RequestCenterAndActivate?.Invoke(); // UR-023: Comes to front, centered, with glowing animation
         }
 
+        private void ExecuteCloseReminder()
+        {
+            IsReminderOverlayVisible = false;
+            RequestStopForcingFront?.Invoke();
+        }
+
         private void ExecuteDismissReminder()
         {
             IsReminderOverlayVisible = false;
             _reminderService.DismissReminder();
             RequestStopForcingFront?.Invoke(); // UR-028: Stops forcing to front
+            RequestMinimize?.Invoke();
         }
 
         private void ExecuteSnoozeReminder(object? parameter)
@@ -614,6 +650,15 @@ namespace TasksApp.ViewModels
             bool enabledChanged = _settings.RemindersEnabled != newSettings.RemindersEnabled;
             bool themeChanged = !string.Equals(_settings.Theme, newSettings.Theme, StringComparison.OrdinalIgnoreCase);
 
+            if (pathChanged)
+            {
+                _notesSaveDebounceTimer.Stop();
+                if (!string.IsNullOrWhiteSpace(_dailyNotes))
+                {
+                    FlushNotesSave();
+                }
+            }
+
             _settings = newSettings;
             _storageService.SaveSettings(_settings);
 
@@ -634,11 +679,15 @@ namespace TasksApp.ViewModels
 
             if (pathChanged)
             {
+                _storageService.EnsureDirectoryExists(_settings.DataDirectory);
+                _storageService.CaptureTasksFromOtherVersions(_settings.DataDirectory);
+                _storageService.CarryOverPendingTasks(_settings.DataDirectory, DateTime.Today);
                 LoadDayData();
             }
 
             OnPropertyChanged(nameof(Settings));
             OnPropertyChanged(nameof(RemindersEnabled));
+            OnPropertyChanged(nameof(RemindersStatusText));
             OnPropertyChanged(nameof(AlwaysOnTop));
             OnPropertyChanged(nameof(IsWin95Theme));
         }

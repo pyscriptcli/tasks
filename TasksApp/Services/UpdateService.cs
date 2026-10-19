@@ -21,7 +21,7 @@ namespace TasksApp.Services
                 {
                     return asmVer.ToString(3);
                 }
-                return "8.0.0";
+                return "9.0.0";
             }
         }
         public const string GitHubRepo = "pyscriptcli/tasks";

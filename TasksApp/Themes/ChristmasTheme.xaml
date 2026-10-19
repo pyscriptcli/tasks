@@ -237,11 +237,13 @@
         <Setter Property="Foreground" Value="#000000" />
     </Style>
 
-    <!-- TextBox Style: Clean Solid White with Santa Crimson Border -->
+    <!-- Text stays dark on the white entry surface; evergreen focus remains distinct and visible. -->
     <Style x:Key="AppTextBoxStyle" TargetType="TextBox">
         <Setter Property="Background" Value="#FFFFFF" />
         <Setter Property="Foreground" Value="#121212" />
         <Setter Property="CaretBrush" Value="#D32F2F" />
+        <Setter Property="SelectionBrush" Value="#D32F2F" />
+        <Setter Property="SelectionTextBrush" Value="#FFFFFF" />
         <Setter Property="BorderBrush" Value="#D32F2F" />
         <Setter Property="BorderThickness" Value="1.5" />
         <Setter Property="FontFamily" Value="Segoe UI, Montserrat, sans-serif" />
@@ -255,16 +257,16 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="5">
-                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
+                        <!-- The custom template must pass the input color into its text rendering host. -->
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"
+                                      VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="#FFD700" />
-                            <Setter TargetName="Bd" Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect Color="#FFD700" Direction="0" ShadowDepth="0" BlurRadius="6" Opacity="0.5" />
-                                </Setter.Value>
-                            </Setter>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="#2E7D32" />
+                            <Setter TargetName="Bd" Property="BorderThickness" Value="2" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

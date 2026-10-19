@@ -684,6 +684,113 @@ namespace TasksApp.Services
             }
         }
 
+        private void ImportLegacyTasksJson(string filePath, string activeDataDirectory)
+        {
+            if (!File.Exists(filePath) || string.IsNullOrWhiteSpace(activeDataDirectory)) return;
+
+            try
+            {
+                using var document = JsonDocument.Parse(File.ReadAllText(filePath));
+                var root = document.RootElement;
+                var fallbackDate = DateTime.Today;
+
+                if (root.ValueKind == JsonValueKind.Array)
+                {
+                    ImportTaskArray(root, activeDataDirectory, fallbackDate);
+                    return;
+                }
+
+                if (root.ValueKind != JsonValueKind.Object) return;
+
+                foreach (var property in root.EnumerateObject())
+                {
+                    if (property.Name.Equals("tasks", StringComparison.OrdinalIgnoreCase) ||
+                        property.Name.Equals("items", StringComparison.OrdinalIgnoreCase) ||
+                        property.Name.Equals("taskList", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (property.Value.ValueKind == JsonValueKind.Array)
+                        {
+                            var date = ReadDateProperty(root) ?? fallbackDate;
+                            ImportTaskArray(property.Value, activeDataDirectory, date);
+                            return;
+                        }
+                    }
+                }
+
+                // Some older exports group task arrays under date-named properties.
+                foreach (var property in root.EnumerateObject())
+                {
+                    if (property.Value.ValueKind == JsonValueKind.Array && TryParseLegacyDate(property.Name, out var date))
+                    {
+                        ImportTaskArray(property.Value, activeDataDirectory, date);
+                    }
+                }
+
+                if (TryReadTask(root, out var singleTask))
+                {
+                    MergeTaskIntoDate(activeDataDirectory, ReadDateProperty(root) ?? fallbackDate, singleTask);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to import legacy tasks file {filePath}: {ex.Message}");
+            }
+        }
+
+        private void ImportTaskArray(JsonElement tasks, string activeDataDirectory, DateTime fallbackDate)
+        {
+            foreach (var item in tasks.EnumerateArray())
+            {
+                if (!TryReadTask(item, out var task)) continue;
+                var taskDate = ReadDateProperty(item) ?? fallbackDate;
+                MergeTaskIntoDate(activeDataDirectory, taskDate, task);
+            }
+        }
+
+        private static bool TryReadTask(JsonElement element, out TaskItem task)
+        {
+            task = new TaskItem();
+            if (element.ValueKind != JsonValueKind.Object || !TryGetProperty(element, "title", out _)) return false;
+            task = JsonSerializer.Deserialize<TaskItem>(element.GetRawText(), JsonOptions) ?? new TaskItem();
+            return !string.IsNullOrWhiteSpace(task.Title);
+        }
+
+        private static DateTime? ReadDateProperty(JsonElement element)
+        {
+            foreach (var name in new[] { "taskDate", "dueDate", "date" })
+            {
+                if (TryGetProperty(element, name, out var value) && value.ValueKind == JsonValueKind.String &&
+                    DateTime.TryParse(value.GetString(), CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+                {
+                    return date.Date;
+                }
+            }
+            return null;
+        }
+
+        private static bool TryGetProperty(JsonElement element, string name, out JsonElement value)
+        {
+            if (element.ValueKind == JsonValueKind.Object)
+            {
+                foreach (var property in element.EnumerateObject())
+                {
+                    if (property.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        value = property.Value;
+                        return true;
+                    }
+                }
+            }
+            value = default;
+            return false;
+        }
+
+        private static bool TryParseLegacyDate(string value, out DateTime date)
+        {
+            string[] formats = { "MMMM d yyyy", "MMMM d, yyyy", "yyyy-MM-dd", "yyyyMMdd" };
+            return DateTime.TryParseExact(value, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
+        }
+
         /// <summary>
         /// Automatically discovers and captures tasks and notes from older versions or alternative locations
         /// (e.g. Documents\Tasks, Documents\TasksStorage, Documents\PrimeTasks, Documents\TasksApp, portable EXEs, %LOCALAPPDATA%),
@@ -692,6 +799,11 @@ namespace TasksApp.Services
         public void CaptureTasksFromOtherVersions(string activeDataDirectory, IEnumerable<string>? additionalLegacyDirs = null)
         {
             if (string.IsNullOrWhiteSpace(activeDataDirectory)) return;
+            EnsureDirectoryExists(activeDataDirectory);
+
+            // v1-v4 stored all tasks together in tasks.json instead of one file per date.
+            ImportLegacyTasksJson(Path.Combine(activeDataDirectory, "tasks.json"), activeDataDirectory);
+            ImportLegacyTextTaskFiles(activeDataDirectory, activeDataDirectory);
 
             string docs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -719,7 +831,6 @@ namespace TasksApp.Services
                 potentialLegacyDirs.AddRange(additionalLegacyDirs);
             }
 
-            EnsureDirectoryExists(activeDataDirectory);
             string activeNormalized = Path.GetFullPath(activeDataDirectory).TrimEnd('\\');
 
             foreach (var legacyDir in potentialLegacyDirs)
@@ -733,6 +844,8 @@ namespace TasksApp.Services
 
                 try
                 {
+                    ImportLegacyTasksJson(Path.Combine(legacyDir, "tasks.json"), activeDataDirectory);
+
                     // 1. Process JSON Task_* files
                     foreach (var legacyFile in Directory.GetFiles(legacyDir, "Task_*.json"))
                     {
@@ -748,17 +861,7 @@ namespace TasksApp.Services
                     }
 
                     // 2. Process plain text Task_* files (Task_*.txt)
-                    foreach (var legacyTxtFile in Directory.GetFiles(legacyDir, "Task_*.txt"))
-                    {
-                        if (TryParseTaskFileDate(legacyTxtFile, out DateTime fileDate))
-                        {
-                            var parsedTasks = ParseTextTaskFile(legacyTxtFile);
-                            foreach (var pTask in parsedTasks)
-                            {
-                                MergeTaskIntoDate(activeDataDirectory, fileDate, pTask);
-                            }
-                        }
-                    }
+                    ImportLegacyTextTaskFiles(legacyDir, activeDataDirectory);
 
                     // 3. Process SQLite .db files (e.g. prime_tasks.db, tasks.db)
                     foreach (var dbFile in Directory.GetFiles(legacyDir, "*.db"))
@@ -802,6 +905,18 @@ namespace TasksApp.Services
             string datePart = fileName.Substring(prefix.Length, fileName.Length - prefix.Length - suffix.Length);
             string[] formats = { "yyyy-MM-dd", "MMMM d yyyy" };
             return DateTime.TryParseExact(datePart, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
+        }
+
+        private void ImportLegacyTextTaskFiles(string sourceDirectory, string activeDataDirectory)
+        {
+            foreach (var taskFile in Directory.GetFiles(sourceDirectory, "Task_*.txt"))
+            {
+                if (!TryParseTaskFileDate(taskFile, out var taskDate)) continue;
+                foreach (var task in ParseTextTaskFile(taskFile))
+                {
+                    MergeTaskIntoDate(activeDataDirectory, taskDate, task);
+                }
+            }
         }
 
         public static bool TryParseTaskFileDate(string filePath, out DateTime date)
@@ -878,16 +993,20 @@ namespace TasksApp.Services
                         bool updatedPast = false;
                         foreach (var p in pending)
                         {
+                            // A source task is forwarded only once. The copy on the target
+                            // date has no CarriedForwardTo value, so it can roll forward on
+                            // a later day without resurrecting a deleted earlier copy.
                             if (!string.IsNullOrEmpty(p.CarriedForwardTo))
                             {
                                 continue;
                             }
 
+                            p.CarriedForwardTo = targetDate.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture);
+                            updatedPast = true;
+
                             var targetItem = p.Clone();
                             targetItem.CarriedOverFrom = pastDate.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture);
                             targetItem.CarriedForwardTo = null;
-                            p.CarriedForwardTo = targetDate.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture);
-                            updatedPast = true;
 
                             if (!IsTaskMarkedDeleted(deletedMarkers, targetItem, includeSignature: true))
                             {

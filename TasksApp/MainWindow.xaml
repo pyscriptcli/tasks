@@ -21,6 +21,113 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
+        <!-- Date selection stays native and keyboard-operable, with a compact field and a calendar that matches the active theme. -->
+        <Style x:Key="TaskCalendarDayButtonStyle" TargetType="CalendarDayButton">
+            <Setter Property="Foreground" Value="{DynamicResource AppTextForeground}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="MinWidth" Value="30" />
+            <Setter Property="MinHeight" Value="30" />
+            <Setter Property="Margin" Value="1" />
+            <Style.Triggers>
+                <Trigger Property="IsToday" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource AppPrimaryColor}" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource AppPrimaryColor}" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+                <Trigger Property="IsInactive" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource AppMutedForeground}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TaskCalendarButtonStyle" TargetType="CalendarButton">
+            <Setter Property="Foreground" Value="{DynamicResource AppTextForeground}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="MinWidth" Value="42" />
+            <Setter Property="MinHeight" Value="32" />
+        </Style>
+        <Style x:Key="TaskCalendarStyle" TargetType="Calendar">
+            <Setter Property="Foreground" Value="{DynamicResource AppTextForeground}" />
+            <Setter Property="Background" Value="{DynamicResource AppCardBackground}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CalendarDayButtonStyle" Value="{StaticResource TaskCalendarDayButtonStyle}" />
+            <Setter Property="CalendarButtonStyle" Value="{StaticResource TaskCalendarButtonStyle}" />
+        </Style>
+        <Style x:Key="TaskDatePickerStyle" TargetType="DatePicker">
+            <Setter Property="Foreground" Value="{DynamicResource AppTextForeground}" />
+            <Setter Property="Background" Value="{DynamicResource AppCardBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AppPanelBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CalendarStyle" Value="{StaticResource TaskCalendarStyle}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePicker">
+                        <Grid x:Name="PART_Root">
+                            <Border x:Name="PickerFrame" Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="36" />
+                                    </Grid.ColumnDefinitions>
+                                    <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" BorderThickness="0"
+                                                       Background="Transparent" Foreground="{TemplateBinding Foreground}"
+                                                       TextElement.Foreground="{TemplateBinding Foreground}"
+                                                       FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                                       Padding="8,0" VerticalContentAlignment="Center" />
+                                    <Button x:Name="PART_Button" Grid.Column="1" Background="Transparent" BorderThickness="0"
+                                            Focusable="False" IsTabStop="False" ToolTip="Open calendar">
+                                        <Viewbox Width="15" Height="15">
+                                            <Canvas Width="24" Height="24">
+                                                <Path Data="M 5,4 L 19,4 C 20,4 21,5 21,6 L 21,19 C 21,20 20,21 19,21 L 5,21 C 4,21 3,20 3,19 L 3,6 C 3,5 4,4 5,4 Z M 3,9 L 21,9 M 8,2 L 8,6 M 16,2 L 16,6 M 7,12 L 9,12 M 12,12 L 14,12 M 17,12 L 19,12 M 7,16 L 9,16 M 12,16 L 14,16"
+                                                      Stroke="{DynamicResource AppPrimaryColor}" StrokeThickness="1.8"
+                                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                            </Canvas>
+                                        </Viewbox>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <Popup x:Name="PART_Popup" Placement="Bottom" PlacementTarget="{Binding ElementName=PART_TextBox}"
+                                   AllowsTransparency="True" Focusable="False" StaysOpen="False"
+                                   IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border Background="{DynamicResource AppCardBackground}"
+                                        BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="1"
+                                        CornerRadius="6" Padding="6">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="#40000000" BlurRadius="12" ShadowDepth="2" Opacity="0.28" />
+                                    </Border.Effect>
+                                    <Calendar x:Name="PART_Calendar" Style="{TemplateBinding CalendarStyle}"
+                                              Foreground="{DynamicResource AppTextForeground}" BorderThickness="0"
+                                              SelectedDate="{Binding SelectedDate, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                              DisplayDate="{Binding DisplayDate, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                              DisplayDateStart="{Binding DisplayDateStart, RelativeSource={RelativeSource TemplatedParent}}"
+                                              DisplayDateEnd="{Binding DisplayDateEnd, RelativeSource={RelativeSource TemplatedParent}}"
+                                              FirstDayOfWeek="{Binding FirstDayOfWeek, RelativeSource={RelativeSource TemplatedParent}}"
+                                              IsTodayHighlighted="{Binding IsTodayHighlighted, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="PickerFrame" Property="BorderBrush" Value="{DynamicResource AppPrimaryColor}" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PickerFrame" Property="BorderBrush" Value="{DynamicResource AppPrimaryColor}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="PickerFrame" Property="Opacity" Value="0.55" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- Glowing Animation Storyboard for Reminder (UR-023) -->
         <Storyboard x:Key="ReminderGlowAnimation" RepeatBehavior="Forever" AutoReverse="True">
             <DoubleAnimation Storyboard.TargetName="GlowEffect"
@@ -459,7 +566,7 @@
         </Border>
 
         <!-- Primary Layout Grid Wrapped in Dynamic Outer Frame (3D Beveled in Win95) -->
-        <Border Style="{DynamicResource DialogOuterFrameStyle}">
+        <Border Style="{DynamicResource DialogOuterFrameStyle}" CornerRadius="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" /> <!-- Title Bar -->
@@ -1007,10 +1114,9 @@
 
                         <!-- Date Picker Helper (UR-008: pick any day) -->
                         <DatePicker SelectedDate="{Binding CurrentDate, Mode=TwoWay}"
-                                    VerticalAlignment="Center" Height="32" Width="130" Margin="4,0,0,0"
-                                    FontFamily="{DynamicResource AppBaseFontFamily}" FontSize="11"
-                                    BorderThickness="1" BorderBrush="{DynamicResource AppPanelBorder}"
-                                    Background="{DynamicResource AppCardBackground}" Foreground="{DynamicResource AppTextForeground}"
+                                    Style="{StaticResource TaskDatePickerStyle}"
+                                    VerticalAlignment="Center" Height="36" Width="158" Margin="4,0,0,0"
+                                    FontFamily="{DynamicResource AppBaseFontFamily}" FontSize="12"
                                     Cursor="Hand" ToolTip="Select any date from calendar (UR-008)" />
                     </StackPanel>
 
@@ -1491,6 +1597,7 @@
                             <Grid.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform x:Name="OlafFacingScale" ScaleX="1.0" ScaleY="1.0" />
+                                    <ScaleTransform x:Name="OlafSizeScale" ScaleX="0.68" ScaleY="0.68" />
                                     <TranslateTransform x:Name="OlafPetTranslate" X="0" Y="0" />
                                 </TransformGroup>
                             </Grid.RenderTransform>
@@ -1612,12 +1719,89 @@
                                 <TextBlock Text="Olaf ⛄" FontSize="9" FontWeight="Bold" Foreground="#FFFDF8" />
                             </Border>
                         </Grid>
+
+                        <!-- Companion choreography stays inside Daily Notes so it never crosses the task list. -->
+                        <Canvas x:Name="NotesPetStage" Grid.Row="1" IsHitTestVisible="False"
+                                Visibility="{DynamicResource ChristmasOnlyVis}" ClipToBounds="True" Panel.ZIndex="4" />
+
+                        <!-- Elsa's platinum side braid, ice gown, and sheer cape carry her recognizable Frozen silhouette at a quiet scale. -->
+                        <Grid x:Name="ElsaPet" Width="54" Height="76" IsHitTestVisible="False"
+                              Visibility="Collapsed" Panel.ZIndex="5" RenderTransformOrigin="0.5,1">
+                            <Grid.RenderTransform>
+                                <TransformGroup><ScaleTransform ScaleX="0.72" ScaleY="0.72" /><TranslateTransform /></TransformGroup>
+                            </Grid.RenderTransform>
+                            <Path Data="M 18,15 C 10,5 14,0 28,1 C 42,2 42,15 39,29 L 36,55 L 30,57 L 32,25 L 19,25 Z"
+                                  Fill="#E8D79A" Stroke="#BCA75F" StrokeThickness="1" />
+                            <Path Data="M 18,30 Q 27,26 36,30 L 46,72 Q 29,77 8,72 L 15,42 Z"
+                                  Fill="#D5F5FC" Stroke="#73C8DC" StrokeThickness="1" Opacity="0.78" />
+                            <Path Data="M 17,33 Q 27,28 37,33 L 43,68 Q 28,75 12,68 Z"
+                                  Fill="#78CDE2" Stroke="#3D9EB9" StrokeThickness="1" />
+                            <Path Data="M 20,34 L 34,34 L 27,62 Z" Fill="#D8F7FF" />
+                            <Path Data="M 17,12 C 13,2 34,3 37,12 C 34,8 29,9 25,13 Q 21,18 18,23 L 14,18 Z"
+                                  Fill="#F2E4B0" Stroke="#C4B273" StrokeThickness="0.8" />
+                            <Ellipse Width="18" Height="21" Fill="#F7D8C2" Stroke="#D8B49F" StrokeThickness="0.8"
+                                     HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,7,0,0" />
+                            <Path Data="M 18,16 Q 23,12 27,17 M 28,17 Q 32,13 36,17" Stroke="#8B755D" StrokeThickness="1" />
+                            <Ellipse Width="2" Height="3" Fill="#5B8F9E" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-4,19,0,0" />
+                            <Ellipse Width="2" Height="3" Fill="#5B8F9E" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="4,19,0,0" />
+                            <Path Data="M 24,27 Q 27,29 30,27" Stroke="#B85C62" StrokeThickness="1" />
+                            <Path Data="M 16,19 C 11,25 17,29 13,34 C 8,40 17,44 12,50 C 8,55 15,59 11,65"
+                                  Stroke="#E8D79A" StrokeThickness="4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                            <Path Data="M 15,28 L 18,31 M 13,37 L 17,40 M 13,47 L 17,50 M 12,57 L 16,60"
+                                  Stroke="#C4B273" StrokeThickness="0.8" />
+                        </Grid>
+                        <!-- Anna's auburn braids, dark bodice, rose embroidery, and magenta cape distinguish her at the same quiet scale. -->
+                        <Grid x:Name="AnnaPet" Width="54" Height="76" IsHitTestVisible="False"
+                              Visibility="Collapsed" Panel.ZIndex="5" RenderTransformOrigin="0.5,1">
+                            <Grid.RenderTransform>
+                                <TransformGroup><ScaleTransform ScaleX="0.72" ScaleY="0.72" /><TranslateTransform /></TransformGroup>
+                            </Grid.RenderTransform>
+                            <Path Data="M 16,15 C 10,4 18,0 28,2 C 40,3 42,13 39,25 L 37,48 L 31,49 L 32,22 L 18,22 Z"
+                                  Fill="#8F452F" Stroke="#643020" StrokeThickness="1" />
+                            <Path Data="M 18,32 Q 27,28 36,32 L 43,70 Q 28,76 11,70 Z"
+                                  Fill="#923E69" Stroke="#6E294F" StrokeThickness="1" />
+                            <Path Data="M 18,35 Q 27,31 36,35 L 38,49 L 16,49 Z"
+                                  Fill="#203C3A" Stroke="#142A29" StrokeThickness="0.8" />
+                            <Path Data="M 21,36 L 27,44 L 33,36" Stroke="#E8BE62" StrokeThickness="1.5" />
+                            <Path Data="M 27,40 C 23,37 22,42 27,46 C 32,42 31,37 27,40 Z" Fill="#D85156" />
+                            <Path Data="M 17,15 C 11,8 18,4 24,9 Q 30,4 37,10 L 35,17 Q 27,13 20,19 Z"
+                                  Fill="#AD5B3B" Stroke="#713622" StrokeThickness="0.8" />
+                            <Ellipse Width="18" Height="21" Fill="#F6D4BD" Stroke="#D8B49F" StrokeThickness="0.8"
+                                     HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,7,0,0" />
+                            <Path Data="M 18,17 Q 22,12 26,17 M 28,17 Q 32,12 36,17" Stroke="#713622" StrokeThickness="1" />
+                            <Ellipse Width="2" Height="3" Fill="#536F68" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-4,19,0,0" />
+                            <Ellipse Width="2" Height="3" Fill="#536F68" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="4,19,0,0" />
+                            <Path Data="M 24,27 Q 27,29 30,27" Stroke="#B85C62" StrokeThickness="1" />
+                            <Path Data="M 17,18 C 11,24 17,29 13,34 C 9,40 16,43 12,48 M 37,18 C 43,24 37,29 41,34 C 45,40 38,43 42,48"
+                                  Stroke="#9A4C32" StrokeThickness="4" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                            <Path Data="M 14,27 L 17,30 M 13,37 L 17,40 M 39,27 L 36,30 M 40,37 L 36,40"
+                                  Stroke="#D58A58" StrokeThickness="0.8" />
+                        </Grid>
+
+                        <!-- Small edge ornaments frame the bottom of Daily Notes without covering its writing area. -->
+                        <Canvas x:Name="NotesChristmasDecor" Grid.Row="1" VerticalAlignment="Bottom" Height="44"
+                                IsHitTestVisible="False" Visibility="{DynamicResource ChristmasOnlyVis}" Panel.ZIndex="6">
+                            <Grid Canvas.Left="13" Canvas.Bottom="2" Width="24" Height="39">
+                                <Path Data="M 6,37 L 6,15 C 6,3 22,3 22,15 L 22,21" Stroke="#FFFFFF" StrokeThickness="7" Fill="Transparent" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                <Path Data="M 6,37 L 6,15 C 6,3 22,3 22,15 L 22,21" Stroke="#D32F2F" StrokeThickness="3" StrokeDashArray="2,2.5" Fill="Transparent" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                            </Grid>
+                            <Grid Canvas.Left="43" Canvas.Bottom="3" Width="22" Height="34">
+                                <Path Data="M 5,2 L 17,2 L 17,17 C 17,21 22,22 21,27 C 20,33 3,34 2,28 C 1,23 5,21 5,17 Z"
+                                      Fill="#D32F2F" Stroke="#8B0000" StrokeThickness="1" />
+                                <Border Width="15" Height="5" Background="#FFFDF8" BorderBrush="#D7D7D7" BorderThickness="0.5"
+                                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,0,0,0" />
+                                <Path Data="M 6,11 L 15,11 M 6,15 L 15,15" Stroke="#FFD700" StrokeThickness="1" />
+                            </Grid>
+                            <Grid Canvas.Right="13" Canvas.Bottom="3" Width="22" Height="34">
+                                <Path Data="M 5,2 L 17,2 L 17,17 C 17,21 22,22 21,27 C 20,33 3,34 2,28 C 1,23 5,21 5,17 Z"
+                                      Fill="#D32F2F" Stroke="#8B0000" StrokeThickness="1" />
+                                <Border Width="15" Height="5" Background="#FFFDF8" BorderBrush="#D7D7D7" BorderThickness="0.5"
+                                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,0,0,0" />
+                                <Path Data="M 6,11 L 15,11 M 6,15 L 15,15" Stroke="#FFD700" StrokeThickness="1" />
+                            </Grid>
+                        </Canvas>
                     </Grid>
                 </Border>
-
-                <!-- Olaf runs across both panes on this stage (hit-test off so tasks and notes stay usable) -->
-                <Canvas x:Name="OlafStage" Grid.Column="0" Grid.ColumnSpan="3" IsHitTestVisible="False" ClipToBounds="True"
-                        Visibility="{DynamicResource ChristmasOnlyVis}" Panel.ZIndex="5" />
             </Grid>
 
             <!-- 4. Status Bar -->
@@ -1632,18 +1816,20 @@
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="Storage: " FontSize="11" Foreground="{DynamicResource AppMutedForeground}" />
                             <TextBlock Text="{Binding Settings.DataDirectory}" FontSize="11" Foreground="{DynamicResource AppTextForeground}" TextTrimming="CharacterEllipsis" MaxWidth="500" />
+                            <Button Content="Open folder" ToolTip="Open the folder containing task and notes files"
+                                    Command="{Binding OpenDataFolderCommand}" Style="{DynamicResource SecondaryActionBtn}"
+                                    Margin="8,0,0,0" Padding="6,1" FontSize="10" />
                         </StackPanel>
                     </Border>
                     <Border Grid.Column="1" Style="{DynamicResource AppSunkenBorderStyle}" BorderBrush="{DynamicResource AppStatusBarBorder}" Padding="8,2">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="Reminders: " FontSize="11" Foreground="{DynamicResource AppMutedForeground}" />
-                            <TextBlock Text="{Binding RemindersEnabled, Converter={x:Null}, StringFormat='Active'}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AppPrimaryColor}">
+                            <TextBlock Text="{Binding RemindersStatusText}" FontSize="11" FontWeight="Bold">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="Active" />
+                                        <Setter Property="Foreground" Value="{DynamicResource AppPrimaryColor}" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding RemindersEnabled}" Value="False">
-                                                <Setter Property="Text" Value="Off" />
                                                 <Setter Property="Foreground" Value="{DynamicResource AppMutedForeground}" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -2543,11 +2729,12 @@
                         </ScrollViewer>
                     </Border>
 
-                    <!-- Footer Actions: Dismiss & Snooze Options (UR-024) -->
+                    <!-- Footer Actions: Close, Dismiss, and Snooze Options (UR-024) -->
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
@@ -2569,8 +2756,11 @@
                                     Command="{Binding SnoozeReminderCommand}" CommandParameter="60" />
                         </StackPanel>
 
-                        <!-- Dismiss Button -->
-                        <Button Grid.Column="2" Content="DISMISS" Style="{DynamicResource GoldActionBtn}"
+                        <Button Grid.Column="2" Content="CLOSE" Style="{DynamicResource SecondaryActionBtn}"
+                                Margin="0,0,6,0" Command="{Binding CloseReminderCommand}"
+                                ToolTip="Close this reminder and keep Tasks open" />
+                        <Button Grid.Column="3" Content="DISMISS &amp; MINIMIZE" Style="{DynamicResource GoldActionBtn}"
+                                ToolTip="Dismiss this reminder and minimize Tasks"
                                 Command="{Binding DismissReminderCommand}" />
                     </Grid>
                 </Grid>
