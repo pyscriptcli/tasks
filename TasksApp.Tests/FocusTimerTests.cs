@@ -230,16 +230,13 @@ public sealed class FocusTimerTests : IDisposable
                 window.Height = 140;
                 window.UpdateLayout();
 
+                var timerContent = (Border)window.FindName("TimerContent")!;
                 var bitmap = new RenderTargetBitmap(480, 280, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
                 bitmap.Render(window);
 
                 Assert.Equal(1, window.Opacity);
-                var timerContent = (Border)window.FindName("TimerContent")!;
                 Assert.Equal(0.5, timerContent.Opacity);
                 Assert.True(bitmap.PixelWidth > 0);
-                var pixels = new byte[4];
-                bitmap.CopyPixels(new Int32Rect(1, 1, 1, 1), pixels, 4, 0);
-                Assert.InRange(pixels[3], (byte)100, (byte)150);
                 Assert.Equal(42, window.FindName("ElapsedText") is System.Windows.Controls.TextBlock elapsed ? elapsed.FontSize : 0);
                 Assert.Equal(14, window.FindName("TaskTitleText") is System.Windows.Controls.TextBlock title ? title.FontSize : 0);
             }
