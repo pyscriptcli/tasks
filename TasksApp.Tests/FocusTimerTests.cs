@@ -83,7 +83,7 @@ public sealed class FocusTimerTests : IDisposable
     }
 
     [Fact]
-    public void TimerWindow_IsAlwaysOnTopAndResizable_AndMainWindowCanReopenIt()
+    public void TimerWindow_IsCompactReadableAndUsesAccessibleIconControls()
     {
         var root = new DirectoryInfo(AppContext.BaseDirectory);
         while (root != null && !File.Exists(Path.Combine(root.FullName, "Tasks.sln")))
@@ -96,8 +96,28 @@ public sealed class FocusTimerTests : IDisposable
         Assert.Equal("True", (string?)window.Attribute("Topmost"));
         Assert.Equal("CanResizeWithGrip", (string?)window.Attribute("ResizeMode"));
         Assert.Equal("False", (string?)window.Attribute("ShowInTaskbar"));
-        Assert.Contains(window.Descendants(), element =>
-            element.Name.LocalName == "Button" && (string?)element.Attribute("Content") == "HIDE");
+
+        var elements = window.Descendants().ToList();
+        var taskTitle = elements.Single(element => (string?)element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml")) == "TaskTitleText");
+        var elapsed = elements.Single(element => (string?)element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml")) == "ElapsedText");
+        Assert.True(elements.IndexOf(taskTitle) < elements.IndexOf(elapsed));
+        Assert.Equal("{DynamicResource AppToolbarForeground}", (string?)taskTitle.Attribute("Foreground"));
+        Assert.Equal("{DynamicResource AppToolbarForeground}", (string?)elapsed.Attribute("Foreground"));
+
+        foreach (var name in new[] { "PauseResumeButton", "FinishButton", "HideButton" })
+        {
+            var button = Assert.Single(elements.Where(element =>
+                element.Name.LocalName == "Button" &&
+                (string?)element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml")) == name));
+            Assert.Null(button.Attribute("Content"));
+            Assert.NotNull(button.Attribute("ToolTip"));
+            Assert.Contains(button.Attributes(), attribute =>
+                attribute.Name.LocalName == "AutomationProperties.Name");
+            Assert.Contains(button.Descendants(), child =>
+                child.Name.LocalName == "TextBlock" &&
+                child.Attribute("Text") != null &&
+                (string?)child.Attribute("FontFamily") == "Segoe MDL2 Assets");
+        }
 
         var mainWindow = XDocument.Load(Path.Combine(root.FullName, "TasksApp", "MainWindow.xaml"));
         Assert.Contains(mainWindow.Descendants(), element =>

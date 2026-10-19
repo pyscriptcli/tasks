@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Threading;
 using TasksApp.Models;
 using TasksApp.Services;
@@ -67,7 +68,11 @@ public partial class FocusTimerWindow : Window
         TaskTitleText.Text = session.TaskTitle;
         var elapsed = _focusTimer.Elapsed;
         ElapsedText.Text = $"{(int)elapsed.TotalHours:00}:{elapsed.Minutes:00}:{elapsed.Seconds:00}";
-        PauseResumeButton.Content = session.Status == FocusSessionStatus.Paused ? "RESUME" : "PAUSE";
+        var paused = session.Status == FocusSessionStatus.Paused;
+        PauseResumeIcon.Text = paused ? "\uE768" : "\uE769";
+        var action = paused ? "Resume" : "Pause";
+        PauseResumeButton.ToolTip = action;
+        AutomationProperties.SetName(PauseResumeButton, action);
     }
 
     private void OnPauseResumeClick(object sender, RoutedEventArgs e)

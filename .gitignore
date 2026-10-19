@@ -41,3 +41,27 @@ TestResults/
 # Crash dumps
 *.dmp
 *.dump
+
+# Secrets and local credentials
+.env
+.env.*
+*.key
+*.pem
+auth.json
+
+# Dependencies and generated caches
+node_modules/
+vendor/
+.venv/
+env/
+dist/
+build/
+__pycache__/
+.cache/
+
+# Local tool state
+.codex/
+.gemini/
+
+# App publish output
+/TasksApp/publish-v*/
