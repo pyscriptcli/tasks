@@ -127,7 +127,7 @@ public partial class FocusTimerWindow : Window
 
     public void ApplyAppearance(AppSettings settings)
     {
-        Opacity = Math.Clamp(double.IsFinite(settings.FocusTimerOpacity) ? settings.FocusTimerOpacity : 100, 50, 100) / 100d;
+        TimerContent.Opacity = Math.Clamp(double.IsFinite(settings.FocusTimerOpacity) ? settings.FocusTimerOpacity : 100, 50, 100) / 100d;
         ElapsedText.FontSize = settings.FocusTimerClockFontSize is 26 or 34 or 42 ? settings.FocusTimerClockFontSize : 34;
         TaskTitleText.FontSize = settings.FocusTimerTaskFontSize is 10 or 12 or 14 ? settings.FocusTimerTaskFontSize : 12;
     }

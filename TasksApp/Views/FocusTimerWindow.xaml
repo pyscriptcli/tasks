@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Width="240" Height="140" MinWidth="220" MinHeight="132"
-        WindowStyle="None" ResizeMode="CanResizeWithGrip" ShowInTaskbar="False"
+        WindowStyle="None" ResizeMode="CanResizeWithGrip" ShowInTaskbar="False" AllowsTransparency="True"
         Topmost="True" WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource AppWindowBackground}" FontFamily="{DynamicResource AppBaseFontFamily}">
+        Background="Transparent" FontFamily="{DynamicResource AppBaseFontFamily}">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome CaptionHeight="0" ResizeBorderThickness="6" GlassFrameThickness="0" />
     </shell:WindowChrome.WindowChrome>
@@ -29,7 +29,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Border Background="{DynamicResource AppPanelBackground}"
+    <Border x:Name="TimerContent" Background="{DynamicResource AppPanelBackground}"
             BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="1" Padding="8,5"
             MouseLeftButtonDown="OnWindowMouseLeftButtonDown">
         <Grid>

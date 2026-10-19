@@ -153,6 +153,8 @@ public sealed class FocusTimerTests : IDisposable
         Assert.Equal("None", (string?)window.Attribute("WindowStyle"));
         Assert.Equal("CanResizeWithGrip", (string?)window.Attribute("ResizeMode"));
         Assert.Equal("False", (string?)window.Attribute("ShowInTaskbar"));
+        Assert.Equal("True", (string?)window.Attribute("AllowsTransparency"));
+        Assert.Equal("Transparent", (string?)window.Attribute("Background"));
         Assert.Equal("240", (string?)window.Attribute("Width"));
         Assert.Equal("140", (string?)window.Attribute("Height"));
         Assert.Equal("220", (string?)window.Attribute("MinWidth"));
@@ -165,6 +167,9 @@ public sealed class FocusTimerTests : IDisposable
         Assert.Equal("1", (string?)taskTitle.Attribute("Grid.Row"));
         Assert.Equal("Center", (string?)taskTitle.Attribute("HorizontalAlignment"));
         Assert.Equal("CharacterEllipsis", (string?)taskTitle.Attribute("TextTrimming"));
+        Assert.Contains(elements, element =>
+            element.Name.LocalName == "Border" &&
+            (string?)element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml")) == "TimerContent");
         Assert.True(int.Parse(taskTitle.Attribute("FontSize")!.Value) < int.Parse(elapsed.Attribute("FontSize")!.Value));
         Assert.Equal("{DynamicResource AppToolbarForeground}", (string?)taskTitle.Attribute("Foreground"));
         Assert.Equal("{DynamicResource AppToolbarForeground}", (string?)elapsed.Attribute("Foreground"));
@@ -228,8 +233,13 @@ public sealed class FocusTimerTests : IDisposable
                 var bitmap = new RenderTargetBitmap(480, 280, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
                 bitmap.Render(window);
 
-                Assert.Equal(0.5, window.Opacity);
+                Assert.Equal(1, window.Opacity);
+                var timerContent = (Border)window.FindName("TimerContent")!;
+                Assert.Equal(0.5, timerContent.Opacity);
                 Assert.True(bitmap.PixelWidth > 0);
+                var pixels = new byte[4];
+                bitmap.CopyPixels(new Int32Rect(1, 1, 1, 1), pixels, 4, 0);
+                Assert.InRange(pixels[3], (byte)100, (byte)150);
                 Assert.Equal(42, window.FindName("ElapsedText") is System.Windows.Controls.TextBlock elapsed ? elapsed.FontSize : 0);
                 Assert.Equal(14, window.FindName("TaskTitleText") is System.Windows.Controls.TextBlock title ? title.FontSize : 0);
             }
