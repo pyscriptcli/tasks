@@ -275,7 +275,10 @@
                         <Border.Effect>
                             <DropShadowEffect Color="#3D2314" Direction="315" ShadowDepth="2" BlurRadius="0" Opacity="0.6" />
                         </Border.Effect>
-                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"
+                                      VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

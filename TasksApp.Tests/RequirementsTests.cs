@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using TasksApp.Models;
 using TasksApp.Services;
 using TasksApp.ViewModels;
@@ -93,6 +94,119 @@ namespace TasksApp.Tests
             Assert.Equal(2, vm.Tasks[1].OrderIndex);
             Assert.Equal("First", vm.Tasks[2].Title);
             Assert.Equal(3, vm.Tasks[2].OrderIndex);
+        }
+
+        [Fact]
+        public void LoadDayData_PutsHighPriorityTasksFirstWithinPendingAndCompletedGroups()
+        {
+            var storage = new StorageService();
+            var settings = new AppSettings { DataDirectory = _testDir };
+            var tasks = new[]
+            {
+                new TaskItem { Id = "pending-normal", Title = "Pending normal" },
+                new TaskItem { Id = "pending-high", Title = "Pending high", IsHighPriority = true },
+                new TaskItem { Id = "done-normal", Title = "Done normal", IsCompleted = true },
+                new TaskItem { Id = "done-high", Title = "Done high", IsHighPriority = true, IsCompleted = true }
+            };
+            storage.SaveTasksForDate(_testDir, DateTime.Today, tasks);
+
+            var viewModel = new MainViewModel(storage, new ReminderService(), settings);
+            viewModel.LoadDayData();
+
+            Assert.Equal(new[] { "pending-high", "pending-normal", "done-high", "done-normal" },
+                viewModel.Tasks.Select(task => task.Id));
+            Assert.Equal(Enumerable.Range(1, 4), viewModel.Tasks.Select(task => task.OrderIndex));
+        }
+
+        [Fact]
+        public void PriorityChangesAndNewTasks_AreSortedWithinPendingAndCompletedGroups()
+        {
+            var settings = new AppSettings { DataDirectory = _testDir };
+            var viewModel = new MainViewModel(new StorageService(), new ReminderService(), settings);
+            var pendingNormal = new TaskItem { Id = "pending-normal", Title = "Pending normal" };
+            var completedNormal = new TaskItem { Id = "done-normal", Title = "Done normal", IsCompleted = true };
+            viewModel.AddNewTask(pendingNormal);
+            viewModel.AddNewTask(completedNormal);
+
+            pendingNormal.IsHighPriority = true;
+            var pendingHigh = new TaskItem { Id = "pending-high", Title = "Pending high", IsHighPriority = true };
+            var completedHigh = new TaskItem { Id = "done-high", Title = "Done high", IsHighPriority = true, IsCompleted = true };
+            viewModel.AddNewTask(pendingHigh);
+            viewModel.AddNewTask(completedHigh);
+
+            Assert.Equal(new[] { "pending-normal", "pending-high", "done-high", "done-normal" },
+                viewModel.Tasks.Select(task => task.Id));
+            Assert.Equal(Enumerable.Range(1, 4), viewModel.Tasks.Select(task => task.OrderIndex));
+        }
+
+        [Fact]
+        public void EveryTheme_TextBoxHasReadableContrastAndForwardsForegroundToTextHost()
+        {
+            var root = new DirectoryInfo(AppContext.BaseDirectory);
+            while (root != null && !File.Exists(Path.Combine(root.FullName, "Tasks.sln")))
+            {
+                root = root.Parent;
+            }
+
+            Assert.NotNull(root);
+            var themesPath = Path.Combine(root!.FullName, "TasksApp", "Themes");
+            var themeFiles = Directory.GetFiles(themesPath, "*Theme.xaml");
+            Assert.Equal(6, themeFiles.Length);
+
+            foreach (var themeFile in themeFiles)
+            {
+                var document = XDocument.Load(themeFile);
+                var themeBrushes = document.Descendants().Where(element => element.Name.LocalName == "SolidColorBrush")
+                    .ToDictionary(element => (string)element.Attribute("{http://schemas.microsoft.com/winfx/2006/xaml}Key")!,
+                        element => (string)element.Attribute("Color")!);
+                Assert.True(ContrastRatio(themeBrushes["AppTextForeground"], themeBrushes["AppCardBackground"]) >= 4.5,
+                    $"{Path.GetFileName(themeFile)} daily notes contrast is below 4.5:1.");
+
+                var textBoxStyle = document.Descendants().Single(element =>
+                    element.Name.LocalName == "Style" &&
+                    (string?)element.Attribute("{http://schemas.microsoft.com/winfx/2006/xaml}Key") == "AppTextBoxStyle");
+                var setters = textBoxStyle.Elements().Where(element => element.Name.LocalName == "Setter")
+                    .ToDictionary(element => (string)element.Attribute("Property")!,
+                        element => (string)element.Attribute("Value")!);
+
+                Assert.True(ContrastRatio(setters["Foreground"], setters["Background"]) >= 4.5,
+                    $"{Path.GetFileName(themeFile)} TextBox contrast is below 4.5:1.");
+
+                var contentHost = textBoxStyle.Descendants().SingleOrDefault(element =>
+                    element.Name.LocalName == "ScrollViewer" &&
+                    (string?)element.Attribute("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "PART_ContentHost");
+                if (contentHost != null)
+                {
+                    Assert.Equal("{TemplateBinding Foreground}", (string?)contentHost.Attribute("Foreground"));
+                    Assert.Equal("{TemplateBinding Foreground}", (string?)contentHost.Attribute("TextElement.Foreground"));
+                }
+            }
+
+            var mainWindow = XDocument.Load(Path.Combine(root!.FullName, "TasksApp", "MainWindow.xaml"));
+            var notesTextBox = mainWindow.Descendants().Single(element =>
+                element.Name.LocalName == "TextBox" &&
+                ((string?)element.Attribute("Text"))?.Contains("Binding DailyNotes", StringComparison.Ordinal) == true);
+            Assert.Equal("{DynamicResource AppTextForeground}", (string?)notesTextBox.Attribute("Foreground"));
+            Assert.Equal("{DynamicResource AppCardBackground}", (string?)notesTextBox.Attribute("Background"));
+        }
+
+        private static double ContrastRatio(string foreground, string background)
+        {
+            static double Luminance(string hex)
+            {
+                var color = hex.TrimStart('#');
+                var red = Convert.ToInt32(color.Substring(color.Length - 6, 2), 16) / 255.0;
+                var green = Convert.ToInt32(color.Substring(color.Length - 4, 2), 16) / 255.0;
+                var blue = Convert.ToInt32(color.Substring(color.Length - 2, 2), 16) / 255.0;
+                static double Linearize(double channel) => channel <= 0.04045
+                    ? channel / 12.92
+                    : Math.Pow((channel + 0.055) / 1.055, 2.4);
+                return 0.2126 * Linearize(red) + 0.7152 * Linearize(green) + 0.0722 * Linearize(blue);
+            }
+
+            var first = Luminance(foreground);
+            var second = Luminance(background);
+            return (Math.Max(first, second) + 0.05) / (Math.Min(first, second) + 0.05);
         }
 
         [Fact]

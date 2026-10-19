@@ -265,7 +265,10 @@
                         <Border.Effect>
                             <DropShadowEffect Color="#00FF66" Direction="0" ShadowDepth="0" BlurRadius="3" Opacity="0.4" />
                         </Border.Effect>
-                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" />
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"
+                                      VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsFocused" Value="True">

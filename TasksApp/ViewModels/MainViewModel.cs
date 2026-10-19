@@ -371,6 +371,11 @@ namespace TasksApp.ViewModels
                 Tasks.Add(item);
             }
 
+            if (SortTasksByPriority())
+            {
+                SaveCurrentTasks();
+            }
+
             _dailyNotes = _storageService.LoadNotesForDate(_settings.DataDirectory, _currentDate);
             OnPropertyChanged(nameof(DailyNotes));
             NotesSaveStatus = string.IsNullOrWhiteSpace(_dailyNotes) ? string.Empty : "Saved";
@@ -380,31 +385,45 @@ namespace TasksApp.ViewModels
 
         private void OnTaskItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(TaskItem.IsCompleted))
+            if (e.PropertyName == nameof(TaskItem.IsCompleted) || e.PropertyName == nameof(TaskItem.IsHighPriority))
             {
-                UpdateCounts();
-                MoveCompletedTasksToBottom();
+                if (e.PropertyName == nameof(TaskItem.IsCompleted))
+                {
+                    UpdateCounts();
+                }
+
+                SortTasksByPriority();
                 SaveCurrentTasks();
             }
         }
 
-        private void MoveCompletedTasksToBottom()
+        private bool SortTasksByPriority()
         {
-            // Stable partition: keep the existing order within pending and completed tasks.
-            var orderedTasks = Tasks.OrderBy(task => task.IsCompleted).ToList();
+            var orderedTasks = Tasks.OrderBy(task => task.IsCompleted)
+                .ThenByDescending(task => task.IsHighPriority)
+                .ThenBy(task => task.OrderIndex)
+                .ToList();
+            var changed = false;
             for (var targetIndex = 0; targetIndex < orderedTasks.Count; targetIndex++)
             {
                 var currentIndex = Tasks.IndexOf(orderedTasks[targetIndex]);
                 if (currentIndex != targetIndex)
                 {
                     Tasks.Move(currentIndex, targetIndex);
+                    changed = true;
                 }
             }
 
             for (var i = 0; i < Tasks.Count; i++)
             {
-                Tasks[i].OrderIndex = i + 1;
+                if (Tasks[i].OrderIndex != i + 1)
+                {
+                    Tasks[i].OrderIndex = i + 1;
+                    changed = true;
+                }
             }
+
+            return changed;
         }
 
         public void AddNewTask(TaskItem newTask)
@@ -415,6 +434,7 @@ namespace TasksApp.ViewModels
             newTask.PropertyChanged += OnTaskItemPropertyChanged;
             Tasks.Add(newTask);
 
+            SortTasksByPriority();
             UpdateCounts();
             SaveCurrentTasks();
         }
@@ -546,6 +566,7 @@ namespace TasksApp.ViewModels
                 Tasks[i].OrderIndex = i + 1;
             }
 
+            SortTasksByPriority();
             SaveCurrentTasks();
         }
 
