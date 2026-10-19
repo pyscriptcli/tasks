@@ -150,6 +150,26 @@ namespace TasksApp.Services
             }
         }
 
+        public void EnsureDailyFiles(string dataDirectory, DateTime date)
+        {
+            if (string.IsNullOrWhiteSpace(dataDirectory)) return;
+
+            string taskName = $"Task_{date.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}";
+            string notesName = $"Notes_{date.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}";
+
+            if (!File.Exists(Path.Combine(dataDirectory, taskName + ".json")) &&
+                !File.Exists(Path.Combine(dataDirectory, taskName)))
+            {
+                SaveTasksForDate(dataDirectory, date, Array.Empty<TaskItem>());
+            }
+
+            if (!File.Exists(Path.Combine(dataDirectory, notesName + ".txt")) &&
+                !File.Exists(Path.Combine(dataDirectory, notesName)))
+            {
+                SaveNotesForDate(dataDirectory, date, string.Empty);
+            }
+        }
+
         private string GetTaskFileName(DateTime date)
         {
             // Format: Task_<Month> <Day> <Year> e.g. Task_October 7 2026.json
@@ -323,17 +343,8 @@ namespace TasksApp.Services
             {
                 EnsureDirectoryExists(dataDirectory);
                 string filePath = Path.Combine(dataDirectory, GetTaskFileName(date));
-                string rawName = $"Task_{date.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}";
-                string fallbackPath = Path.Combine(dataDirectory, rawName);
 
                 var taskList = tasks.ToList();
-                if (taskList.Count == 0)
-                {
-                    if (File.Exists(filePath)) File.Delete(filePath);
-                    if (File.Exists(fallbackPath)) File.Delete(fallbackPath);
-                    return true;
-                }
-
                 for (int i = 0; i < taskList.Count; i++)
                 {
                     taskList[i].OrderIndex = i + 1;
@@ -369,14 +380,7 @@ namespace TasksApp.Services
             {
                 try
                 {
-                    string content = File.ReadAllText(targetPath);
-                    if (string.IsNullOrWhiteSpace(content))
-                    {
-                        // Remove empty notes file from disk
-                        try { File.Delete(targetPath); } catch { }
-                        return string.Empty;
-                    }
-                    return content;
+                    return File.ReadAllText(targetPath);
                 }
                 catch (Exception ex)
                 {
@@ -395,22 +399,6 @@ namespace TasksApp.Services
             {
                 EnsureDirectoryExists(dataDirectory);
                 string filePath = Path.Combine(dataDirectory, GetNotesFileName(date));
-                string rawName = $"Notes_{date.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}";
-                string fallbackPath = Path.Combine(dataDirectory, rawName);
-
-                // Do not save an empty txt file (UR requirement)
-                if (string.IsNullOrWhiteSpace(content))
-                {
-                    if (File.Exists(filePath))
-                    {
-                        try { File.Delete(filePath); } catch { }
-                    }
-                    if (File.Exists(fallbackPath))
-                    {
-                        try { File.Delete(fallbackPath); } catch { }
-                    }
-                    return;
-                }
 
                 string tempPath = filePath + ".tmp";
                 File.WriteAllText(tempPath, content);

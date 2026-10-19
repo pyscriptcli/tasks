@@ -398,6 +398,7 @@ namespace TasksApp.ViewModels
             {
                 SaveCurrentTasks();
             }
+            _storageService.EnsureDailyFiles(_settings.DataDirectory, _currentDate);
 
             _dailyNotes = _storageService.LoadNotesForDate(_settings.DataDirectory, _currentDate);
             OnPropertyChanged(nameof(DailyNotes));

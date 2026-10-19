@@ -297,26 +297,34 @@ namespace TasksApp.Tests
         }
 
         [Fact]
-        public void EmptyNotes_NeverSavesEmptyTxtFile_AndDeletesExistingIfCleared()
+        public void LoadingDay_CreatesDailyFiles_AndKeepsCompletedTasksAndEmptyNotes()
         {
             var storage = new StorageService();
+            var vm = new MainViewModel(storage, new ReminderService(), new AppSettings { DataDirectory = _testDir });
             DateTime testDate = new DateTime(2026, 10, 8);
+            vm.CurrentDate = testDate;
+
+            string taskFile = Path.Combine(_testDir, $"Task_{testDate.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}.json");
             string noteFile = Path.Combine(_testDir, $"Notes_{testDate.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}.txt");
+            Assert.True(File.Exists(taskFile), "Loading a day should create its task file even when empty.");
+            Assert.Equal("[]", File.ReadAllText(taskFile).Trim());
+            Assert.True(File.Exists(noteFile), "Loading a day should create its notes file even when empty.");
+            Assert.Empty(File.ReadAllText(noteFile));
 
-            // Attempt saving empty notes
-            storage.SaveNotesForDate(_testDir, testDate, "");
-            Assert.False(File.Exists(noteFile), "Empty note should NOT create a .txt file on disk.");
+            var completedTask = new TaskItem { Title = "Completed task", IsCompleted = true };
+            vm.AddNewTask(completedTask);
+            Assert.True(storage.LoadTasksForDate(_testDir, testDate).Single().IsCompleted);
 
-            storage.SaveNotesForDate(_testDir, testDate, "   ");
-            Assert.False(File.Exists(noteFile), "Whitespace-only note should NOT create a .txt file on disk.");
+            vm.DailyNotes = "A note";
+            vm.FlushNotesSave();
+            vm.DailyNotes = string.Empty;
+            vm.LoadDayData();
 
-            // Save real note
-            storage.SaveNotesForDate(_testDir, testDate, "Some actual note");
-            Assert.True(File.Exists(noteFile));
-
-            // Clear the note
-            storage.SaveNotesForDate(_testDir, testDate, "");
-            Assert.False(File.Exists(noteFile), "Clearing a note must remove the file from disk.");
+            Assert.Single(vm.Tasks);
+            Assert.True(vm.Tasks.Single().IsCompleted);
+            Assert.True(storage.LoadTasksForDate(_testDir, testDate).Single().IsCompleted);
+            Assert.True(File.Exists(noteFile), "Clearing notes should keep the daily notes file.");
+            Assert.Empty(File.ReadAllText(noteFile));
         }
 
         [Fact]
