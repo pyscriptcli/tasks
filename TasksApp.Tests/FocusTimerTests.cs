@@ -1,9 +1,16 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using System.Xml.Linq;
 using TasksApp.Models;
 using TasksApp.Services;
+using TasksApp.Views;
 
 namespace TasksApp.Tests;
 
@@ -83,6 +90,55 @@ public sealed class FocusTimerTests : IDisposable
     }
 
     [Fact]
+    public void FocusTimerSettings_DefaultAndRoundTripThroughJson()
+    {
+        var defaults = new AppSettings();
+
+        Assert.True(defaults.FocusTimerFreeDrag);
+        Assert.Equal(100, defaults.FocusTimerOpacity);
+        Assert.Equal(34, defaults.FocusTimerClockFontSize);
+        Assert.Equal(12, defaults.FocusTimerTaskFontSize);
+
+        var path = Path.Combine(_testDir, "settings.json");
+        var storage = new StorageService(path);
+        storage.SaveSettings(new AppSettings
+        {
+            DataDirectory = _testDir,
+            FocusTimerFreeDrag = false,
+            FocusTimerLeft = 325.5,
+            FocusTimerTop = 188.25,
+            FocusTimerOpacity = 72,
+            FocusTimerClockFontSize = 42,
+            FocusTimerTaskFontSize = 14
+        });
+
+        var loaded = storage.LoadSettings();
+
+        Assert.False(loaded.FocusTimerFreeDrag);
+        Assert.Equal(325.5, loaded.FocusTimerLeft);
+        Assert.Equal(188.25, loaded.FocusTimerTop);
+        Assert.Equal(72, loaded.FocusTimerOpacity);
+        Assert.Equal(42, loaded.FocusTimerClockFontSize);
+        Assert.Equal(14, loaded.FocusTimerTaskFontSize);
+    }
+
+    [Fact]
+    public void FocusTimerSettings_OlderSettingsFileUsesDefaults()
+    {
+        var path = Path.Combine(_testDir, "legacy-settings.json");
+        File.WriteAllText(path, "{\"dataDirectory\":\"legacy-data\",\"theme\":\"Default\"}");
+
+        var loaded = new StorageService(path).LoadSettings();
+
+        Assert.True(loaded.FocusTimerFreeDrag);
+        Assert.True(double.IsNaN(loaded.FocusTimerLeft));
+        Assert.True(double.IsNaN(loaded.FocusTimerTop));
+        Assert.Equal(100, loaded.FocusTimerOpacity);
+        Assert.Equal(34, loaded.FocusTimerClockFontSize);
+        Assert.Equal(12, loaded.FocusTimerTaskFontSize);
+    }
+
+    [Fact]
     public void TimerWindow_IsCompactReadableAndUsesAccessibleIconControls()
     {
         var root = new DirectoryInfo(AppContext.BaseDirectory);
@@ -97,6 +153,10 @@ public sealed class FocusTimerTests : IDisposable
         Assert.Equal("None", (string?)window.Attribute("WindowStyle"));
         Assert.Equal("CanResizeWithGrip", (string?)window.Attribute("ResizeMode"));
         Assert.Equal("False", (string?)window.Attribute("ShowInTaskbar"));
+        Assert.Equal("240", (string?)window.Attribute("Width"));
+        Assert.Equal("140", (string?)window.Attribute("Height"));
+        Assert.Equal("220", (string?)window.Attribute("MinWidth"));
+        Assert.Equal("132", (string?)window.Attribute("MinHeight"));
 
         var elements = window.Descendants().ToList();
         var taskTitle = elements.Single(element => (string?)element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml")) == "TaskTitleText");
@@ -118,6 +178,13 @@ public sealed class FocusTimerTests : IDisposable
         Assert.Contains(elements, element =>
             element.Name.LocalName == "Border" && element.Attribute("MouseLeftButtonDown")?.Value == "OnWindowMouseLeftButtonDown");
 
+        var settingsWindow = XDocument.Load(Path.Combine(root.FullName, "TasksApp", "Views", "SettingsWindow.xaml"));
+        foreach (var name in new[] { "CmbFocusTimerPosition", "SldFocusTimerOpacity", "CmbFocusTimerClockSize", "CmbFocusTimerTaskSize" })
+        {
+            Assert.Contains(settingsWindow.Descendants(), element =>
+                (string?)element.Attribute(XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml")) == name);
+        }
+
         foreach (var name in new[] { "PauseResumeButton", "FinishButton", "HideButton" })
         {
             var button = Assert.Single(elements.Where(element =>
@@ -136,6 +203,120 @@ public sealed class FocusTimerTests : IDisposable
         var mainWindow = XDocument.Load(Path.Combine(root.FullName, "TasksApp", "MainWindow.xaml"));
         Assert.Contains(mainWindow.Descendants(), element =>
             element.Name.LocalName == "Button" && ((string?)element.Attribute("Command"))?.Contains("OpenFocusTimerCommand") == true);
+    }
+
+    [Fact]
+    public void TimerWindow_RendersAtCompactSizeWithLargePresetAndOpacity()
+    {
+        RunOnSta(() =>
+        {
+            var settings = new AppSettings
+            {
+                FocusTimerOpacity = 50,
+                FocusTimerClockFontSize = 42,
+                FocusTimerTaskFontSize = 14
+            };
+            var timer = new FocusTimerService(new StorageService(), _testDir);
+            var window = new FocusTimerWindow(timer, settings, (_, _) => { });
+            try
+            {
+                window.Show();
+                window.Width = 240;
+                window.Height = 140;
+                window.UpdateLayout();
+
+                var bitmap = new RenderTargetBitmap(480, 280, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
+                bitmap.Render(window);
+
+                Assert.Equal(0.5, window.Opacity);
+                Assert.True(bitmap.PixelWidth > 0);
+                Assert.Equal(42, window.FindName("ElapsedText") is System.Windows.Controls.TextBlock elapsed ? elapsed.FontSize : 0);
+                Assert.Equal(14, window.FindName("TaskTitleText") is System.Windows.Controls.TextBlock title ? title.FontSize : 0);
+            }
+            finally
+            {
+                window.CloseForAppExit();
+            }
+        });
+    }
+
+    [Fact]
+    public void FocusTimerSettings_PreviewsAppearanceAndCancelRestoresPriorValues()
+    {
+        RunOnSta(() =>
+        {
+            var original = new AppSettings { DataDirectory = _testDir, FocusTimerOpacity = 100, FocusTimerClockFontSize = 34, FocusTimerTaskFontSize = 12 };
+            AppSettings? previewed = null;
+            AppSettings? restored = null;
+            var window = new SettingsWindow(original, new StorageService(Path.Combine(_testDir, "settings.json")),
+                settings => previewed = new AppSettings { FocusTimerOpacity = settings.FocusTimerOpacity, FocusTimerClockFontSize = settings.FocusTimerClockFontSize, FocusTimerTaskFontSize = settings.FocusTimerTaskFontSize },
+                settings => restored = settings);
+            var driveControls = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
+            driveControls.Tick += (_, _) =>
+            {
+                driveControls.Stop();
+                ((Slider)window.FindName("SldFocusTimerOpacity")!).Value = 70;
+                ((ComboBox)window.FindName("CmbFocusTimerClockSize")!).SelectedIndex = 2;
+                ((ComboBox)window.FindName("CmbFocusTimerTaskSize")!).SelectedIndex = 0;
+                ((Button)window.FindName("BtnCancelSettings")!).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            };
+            driveControls.Start();
+
+            Assert.False(window.ShowDialog() ?? true);
+            Assert.NotNull(previewed);
+            Assert.Equal(70, previewed!.FocusTimerOpacity);
+            Assert.Equal(42, previewed.FocusTimerClockFontSize);
+            Assert.Equal(10, previewed.FocusTimerTaskFontSize);
+            Assert.Same(original, restored);
+        });
+    }
+
+    [Fact]
+    public void FocusTimerSettings_SavePersistsPositionAndAppearance()
+    {
+        RunOnSta(() =>
+        {
+            var path = Path.Combine(_testDir, "saved-settings.json");
+            var current = new AppSettings { DataDirectory = _testDir };
+            var window = new SettingsWindow(current, new StorageService(path));
+            var driveControls = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
+            driveControls.Tick += (_, _) =>
+            {
+                driveControls.Stop();
+                ((ComboBox)window.FindName("CmbFocusTimerPosition")!).SelectedIndex = 1;
+                ((Slider)window.FindName("SldFocusTimerOpacity")!).Value = 60;
+                ((ComboBox)window.FindName("CmbFocusTimerClockSize")!).SelectedIndex = 0;
+                ((ComboBox)window.FindName("CmbFocusTimerTaskSize")!).SelectedIndex = 2;
+                ((Button)window.FindName("BtnSaveSettings")!).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            };
+            driveControls.Start();
+
+            Assert.True(window.ShowDialog() ?? false);
+            Assert.False(window.UpdatedSettings.FocusTimerFreeDrag);
+            Assert.Equal(60, window.UpdatedSettings.FocusTimerOpacity);
+            Assert.Equal(26, window.UpdatedSettings.FocusTimerClockFontSize);
+            Assert.Equal(14, window.UpdatedSettings.FocusTimerTaskFontSize);
+
+            var saved = new StorageService(path).LoadSettings();
+            Assert.False(saved.FocusTimerFreeDrag);
+            Assert.Equal(60, saved.FocusTimerOpacity);
+            Assert.Equal(26, saved.FocusTimerClockFontSize);
+            Assert.Equal(14, saved.FocusTimerTaskFontSize);
+        });
+    }
+
+    private static void RunOnSta(Action action)
+    {
+        Exception? failure = null;
+        var thread = new Thread(() =>
+        {
+            try { action(); }
+            catch (Exception ex) { failure = ex; }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+        if (failure != null) ExceptionDispatchInfo.Capture(failure).Throw();
     }
 
     public void Dispose()

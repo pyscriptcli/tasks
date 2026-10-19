@@ -40,5 +40,23 @@ namespace TasksApp.Models
 
         [JsonPropertyName("theme")]
         public string Theme { get; set; } = "Default";
+
+        [JsonPropertyName("focusTimerFreeDrag")]
+        public bool FocusTimerFreeDrag { get; set; } = true;
+
+        [JsonPropertyName("focusTimerLeft")]
+        public double FocusTimerLeft { get; set; } = double.NaN;
+
+        [JsonPropertyName("focusTimerTop")]
+        public double FocusTimerTop { get; set; } = double.NaN;
+
+        [JsonPropertyName("focusTimerOpacity")]
+        public double FocusTimerOpacity { get; set; } = 100;
+
+        [JsonPropertyName("focusTimerClockFontSize")]
+        public int FocusTimerClockFontSize { get; set; } = 34;
+
+        [JsonPropertyName("focusTimerTaskFontSize")]
+        public int FocusTimerTaskFontSize { get; set; } = 12;
     }
 }

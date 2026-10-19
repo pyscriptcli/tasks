@@ -13,13 +13,24 @@ namespace TasksApp.Views;
 public partial class FocusTimerWindow : Window
 {
     private readonly FocusTimerService _focusTimer;
+    private readonly AppSettings _settings;
+    private readonly Action<double, double> _savePosition;
     private readonly DispatcherTimer _displayTimer;
     private bool _allowClose;
 
-    public FocusTimerWindow(FocusTimerService focusTimer)
+    public FocusTimerWindow(FocusTimerService focusTimer, AppSettings settings, Action<double, double> savePosition)
     {
         InitializeComponent();
         _focusTimer = focusTimer;
+        _settings = settings;
+        _savePosition = savePosition;
+        if (double.IsFinite(settings.FocusTimerLeft) && double.IsFinite(settings.FocusTimerTop))
+        {
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            Left = settings.FocusTimerLeft;
+            Top = settings.FocusTimerTop;
+        }
+        ApplyAppearance(settings);
         _focusTimer.Changed += OnFocusTimerChanged;
         _displayTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _displayTimer.Tick += (_, _) => RefreshDisplay();
@@ -35,7 +46,11 @@ public partial class FocusTimerWindow : Window
                 _displayTimer.Stop();
             }
         };
-        Loaded += (_, _) => ClampToVirtualScreen();
+        Loaded += (_, _) =>
+        {
+            ClampToVirtualScreen();
+            SavePosition();
+        };
         LocationChanged += (_, _) => ClampToVirtualScreen();
         SizeChanged += (_, _) => ClampToVirtualScreen();
         Closed += (_, _) =>
@@ -102,10 +117,38 @@ public partial class FocusTimerWindow : Window
 
     private void OnWindowMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        if (e.OriginalSource is DependencyObject source && !IsInsideButton(source))
+        if (_settings.FocusTimerFreeDrag && e.OriginalSource is DependencyObject source && !IsInsideButton(source))
         {
             DragMove();
+            ClampToVirtualScreen();
+            SavePosition();
         }
+    }
+
+    public void ApplyAppearance(AppSettings settings)
+    {
+        Opacity = Math.Clamp(double.IsFinite(settings.FocusTimerOpacity) ? settings.FocusTimerOpacity : 100, 50, 100) / 100d;
+        ElapsedText.FontSize = settings.FocusTimerClockFontSize is 26 or 34 or 42 ? settings.FocusTimerClockFontSize : 34;
+        TaskTitleText.FontSize = settings.FocusTimerTaskFontSize is 10 or 12 or 14 ? settings.FocusTimerTaskFontSize : 12;
+    }
+
+    public void ApplySettings(AppSettings settings)
+    {
+        _settings.FocusTimerFreeDrag = settings.FocusTimerFreeDrag;
+        _settings.FocusTimerLeft = settings.FocusTimerLeft;
+        _settings.FocusTimerTop = settings.FocusTimerTop;
+        _settings.FocusTimerOpacity = settings.FocusTimerOpacity;
+        _settings.FocusTimerClockFontSize = settings.FocusTimerClockFontSize;
+        _settings.FocusTimerTaskFontSize = settings.FocusTimerTaskFontSize;
+        ApplyAppearance(settings);
+    }
+
+    private void SavePosition()
+    {
+        if (!IsLoaded || !double.IsFinite(Left) || !double.IsFinite(Top)) return;
+        _settings.FocusTimerLeft = Left;
+        _settings.FocusTimerTop = Top;
+        _savePosition(Left, Top);
     }
 
     private static bool IsInsideButton(DependencyObject element)

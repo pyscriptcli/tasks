@@ -242,7 +242,7 @@ namespace TasksApp
 
             if (_focusTimerWindow == null)
             {
-                _focusTimerWindow = new FocusTimerWindow(_viewModel.FocusTimer);
+                _focusTimerWindow = new FocusTimerWindow(_viewModel.FocusTimer, _settings, SaveFocusTimerPosition);
                 _focusTimerWindow.Closed += (_, _) => _focusTimerWindow = null;
             }
 
@@ -499,18 +499,28 @@ namespace TasksApp
 
         private void OpenSettingsDialog()
         {
-            var settingsWin = new SettingsWindow(_settings, _storageService) { Owner = this };
+            var settingsWin = new SettingsWindow(_settings, _storageService,
+                settings => _focusTimerWindow?.ApplyAppearance(settings),
+                settings => _focusTimerWindow?.ApplyAppearance(settings)) { Owner = this };
             if (settingsWin.ShowDialog() == true)
             {
                 _settings = settingsWin.UpdatedSettings;
                 _viewModel.UpdateSettings(_settings);
                 Topmost = _settings.AlwaysOnTop;
                 ThemeManager.ApplyTheme(_settings.Theme);
+                _focusTimerWindow?.ApplySettings(_settings);
             }
             else
             {
                 ThemeManager.ApplyTheme(_settings.Theme);
             }
+        }
+
+        private void SaveFocusTimerPosition(double left, double top)
+        {
+            _settings.FocusTimerLeft = left;
+            _settings.FocusTimerTop = top;
+            _storageService.SaveSettings(_settings);
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)

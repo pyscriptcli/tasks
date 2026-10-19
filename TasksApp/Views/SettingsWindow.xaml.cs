@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using TasksApp.Models;
@@ -12,6 +13,9 @@ namespace TasksApp.Views
     public partial class SettingsWindow : Window
     {
         private readonly StorageService _storageService;
+        private readonly AppSettings _originalSettings;
+        private readonly Action<AppSettings>? _previewFocusTimer;
+        private readonly Action<AppSettings>? _restoreFocusTimer;
         private readonly UpdateService _updateService = new UpdateService();
         private UpdateInfo? _latestUpdateInfo;
 
@@ -22,10 +26,14 @@ namespace TasksApp.Views
 
         public string OriginalTheme { get; private set; }
 
-        public SettingsWindow(AppSettings currentSettings, StorageService storageService)
+        public SettingsWindow(AppSettings currentSettings, StorageService storageService,
+            Action<AppSettings>? previewFocusTimer = null, Action<AppSettings>? restoreFocusTimer = null)
         {
             InitializeComponent();
             _storageService = storageService;
+            _originalSettings = currentSettings;
+            _previewFocusTimer = previewFocusTimer;
+            _restoreFocusTimer = restoreFocusTimer;
             OriginalStoragePath = currentSettings.DataDirectory;
             OriginalTheme = currentSettings.Theme ?? ThemeManager.DefaultTheme;
 
@@ -45,12 +53,23 @@ namespace TasksApp.Views
                 WindowTop = currentSettings.WindowTop,
                 WindowWidth = currentSettings.WindowWidth,
                 WindowHeight = currentSettings.WindowHeight,
-                IsMaximized = currentSettings.IsMaximized
+                IsMaximized = currentSettings.IsMaximized,
+                FocusTimerFreeDrag = currentSettings.FocusTimerFreeDrag,
+                FocusTimerLeft = currentSettings.FocusTimerLeft,
+                FocusTimerTop = currentSettings.FocusTimerTop,
+                FocusTimerOpacity = currentSettings.FocusTimerOpacity,
+                FocusTimerClockFontSize = currentSettings.FocusTimerClockFontSize,
+                FocusTimerTaskFontSize = currentSettings.FocusTimerTaskFontSize
             };
 
             TxtStoragePath.Text = UpdatedSettings.DataDirectory;
             ChkRemindersEnabled.IsChecked = UpdatedSettings.RemindersEnabled;
             ChkAlwaysOnTop.IsChecked = UpdatedSettings.AlwaysOnTop;
+            CmbFocusTimerPosition.SelectedIndex = UpdatedSettings.FocusTimerFreeDrag ? 0 : 1;
+            SldFocusTimerOpacity.Value = Math.Clamp(UpdatedSettings.FocusTimerOpacity, 50, 100);
+            CmbFocusTimerClockSize.SelectedIndex = UpdatedSettings.FocusTimerClockFontSize switch { 26 => 0, 42 => 2, _ => 1 };
+            CmbFocusTimerTaskSize.SelectedIndex = UpdatedSettings.FocusTimerTaskFontSize switch { 10 => 0, 14 => 2, _ => 1 };
+            TxtFocusTimerOpacity.Text = $"{SldFocusTimerOpacity.Value:0}%";
 
             if (string.Equals(UpdatedSettings.Theme, ThemeManager.Win95Theme, StringComparison.OrdinalIgnoreCase))
             {
@@ -193,6 +212,8 @@ namespace TasksApp.Views
             UpdatedSettings.RemindersEnabled = ChkRemindersEnabled.IsChecked ?? true;
             UpdatedSettings.ReminderIntervalSeconds = totalSeconds;
             UpdatedSettings.AlwaysOnTop = ChkAlwaysOnTop.IsChecked ?? false;
+            UpdatedSettings.FocusTimerFreeDrag = CmbFocusTimerPosition.SelectedIndex == 0;
+            ReadFocusTimerAppearance();
             if (RbThemeWin95.IsChecked == true)
             {
                 UpdatedSettings.Theme = ThemeManager.Win95Theme;
@@ -240,6 +261,34 @@ namespace TasksApp.Views
             ThemeManager.ApplyTheme(selected);
         }
 
+        private void OnFocusTimerPositionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoaded)
+                UpdatedSettings.FocusTimerFreeDrag = CmbFocusTimerPosition.SelectedIndex == 0;
+        }
+
+        private void OnFocusTimerAppearanceChanged(object sender, RoutedEventArgs e)
+        {
+            if (!IsLoaded) return;
+            ReadFocusTimerAppearance();
+            _previewFocusTimer?.Invoke(UpdatedSettings);
+        }
+
+        private void ReadFocusTimerAppearance()
+        {
+            UpdatedSettings.FocusTimerOpacity = SldFocusTimerOpacity.Value;
+            TxtFocusTimerOpacity.Text = $"{SldFocusTimerOpacity.Value:0}%";
+            UpdatedSettings.FocusTimerClockFontSize = SelectedSize(CmbFocusTimerClockSize, 34);
+            UpdatedSettings.FocusTimerTaskFontSize = SelectedSize(CmbFocusTimerTaskSize, 12);
+        }
+
+        private static int SelectedSize(ComboBox combo, int fallback)
+        {
+            return combo.SelectedItem is ComboBoxItem item && int.TryParse(item.Tag?.ToString(), out var size)
+                ? size
+                : fallback;
+        }
+
         private void ShowIntervalError(string message)
         {
             TxtIntervalError.Text = message;
@@ -249,6 +298,7 @@ namespace TasksApp.Views
         private void OnCancelClick(object sender, RoutedEventArgs e)
         {
             ThemeManager.ApplyTheme(OriginalTheme);
+            _restoreFocusTimer?.Invoke(_originalSettings);
             DialogResult = false;
             Close();
         }

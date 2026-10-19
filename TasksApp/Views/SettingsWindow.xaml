@@ -218,6 +218,70 @@
                         </StackPanel>
                     </Border>
 
+                    <!-- Section: Focus Timer -->
+                    <Border Style="{DynamicResource AppGroupBoxStyle}">
+                        <StackPanel>
+                            <TextBlock Text="FOCUS TIMER" FontSize="11" FontWeight="Bold"
+                                       Foreground="{DynamicResource AppPrimaryColor}" Margin="0,0,0,4" />
+                            <TextBlock Text="Fixed locks the current position. Position applies on Save; opacity and text sizes preview on the timer."
+                                       FontSize="11" Foreground="{DynamicResource AppTextForeground}" Margin="0,0,0,8" />
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Text="Position" FontSize="11" Foreground="{DynamicResource AppTextForeground}"
+                                           VerticalAlignment="Center" Margin="0,0,16,8" />
+                                <ComboBox x:Name="CmbFocusTimerPosition" Grid.Row="0" Grid.Column="1" Height="26" Margin="0,0,0,8"
+                                          SelectionChanged="OnFocusTimerPositionChanged">
+                                    <ComboBoxItem Content="Free drag" />
+                                    <ComboBoxItem Content="Fixed" />
+                                </ComboBox>
+
+                                <TextBlock Grid.Row="1" Text="Opacity" FontSize="11" Foreground="{DynamicResource AppTextForeground}"
+                                           VerticalAlignment="Center" Margin="0,0,16,8" />
+                                <Grid Grid.Row="1" Grid.Column="1" Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Slider x:Name="SldFocusTimerOpacity" Minimum="50" Maximum="100" TickFrequency="10"
+                                            IsSnapToTickEnabled="True" VerticalAlignment="Center"
+                                            ValueChanged="OnFocusTimerAppearanceChanged" />
+                                    <TextBlock x:Name="TxtFocusTimerOpacity" Grid.Column="1" Width="42" Text="100%"
+                                               TextAlignment="Right" FontSize="11" Foreground="{DynamicResource AppTextForeground}"
+                                               VerticalAlignment="Center" Margin="8,0,0,0" />
+                                </Grid>
+
+                                <TextBlock Grid.Row="2" Text="Clock size" FontSize="11" Foreground="{DynamicResource AppTextForeground}"
+                                           VerticalAlignment="Center" Margin="0,0,16,8" />
+                                <ComboBox x:Name="CmbFocusTimerClockSize" Grid.Row="2" Grid.Column="1" Height="26" Margin="0,0,0,8"
+                                          SelectionChanged="OnFocusTimerAppearanceChanged">
+                                    <ComboBoxItem Content="Small" Tag="26" />
+                                    <ComboBoxItem Content="Medium" Tag="34" />
+                                    <ComboBoxItem Content="Large" Tag="42" />
+                                </ComboBox>
+
+                                <TextBlock Grid.Row="3" Text="Task name size" FontSize="11" Foreground="{DynamicResource AppTextForeground}"
+                                           VerticalAlignment="Center" Margin="0,0,16,0" />
+                                <ComboBox x:Name="CmbFocusTimerTaskSize" Grid.Row="3" Grid.Column="1" Height="26"
+                                          SelectionChanged="OnFocusTimerAppearanceChanged">
+                                    <ComboBoxItem Content="Small" Tag="10" />
+                                    <ComboBoxItem Content="Medium" Tag="12" />
+                                    <ComboBoxItem Content="Large" Tag="14" />
+                                </ComboBox>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
                     <!-- Section: Storage Location -->
                     <Border Style="{DynamicResource AppGroupBoxStyle}">
                         <StackPanel>
@@ -374,9 +438,9 @@
             <Border Grid.Row="2" Background="{DynamicResource AppPanelBackground}"
                     BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="0,1,0,0" Padding="16,10">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="CANCEL" Style="{DynamicResource SecondaryActionBtn}"
+                    <Button x:Name="BtnCancelSettings" Content="CANCEL" Style="{DynamicResource SecondaryActionBtn}"
                             Margin="0,0,8,0" Padding="14,6" Click="OnCancelClick" />
-                    <Button Content="SAVE PREFERENCES" Style="{DynamicResource PrimaryActionBtn}"
+                    <Button x:Name="BtnSaveSettings" Content="SAVE PREFERENCES" Style="{DynamicResource PrimaryActionBtn}"
                             Padding="18,6" Click="OnSaveClick" />
                 </StackPanel>
             </Border>
