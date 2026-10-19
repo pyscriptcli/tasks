@@ -31,6 +31,7 @@ public partial class FocusTimerWindow : Window
             Top = settings.FocusTimerTop;
         }
         ApplyAppearance(settings);
+        ApplyPositionMode(settings.FocusTimerFreeDrag);
         _focusTimer.Changed += OnFocusTimerChanged;
         _displayTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _displayTimer.Tick += (_, _) => RefreshDisplay();
@@ -127,7 +128,7 @@ public partial class FocusTimerWindow : Window
 
     public void ApplyAppearance(AppSettings settings)
     {
-        TimerContent.Opacity = Math.Clamp(double.IsFinite(settings.FocusTimerOpacity) ? settings.FocusTimerOpacity : 100, 50, 100) / 100d;
+        TimerContent.Opacity = Math.Clamp(double.IsFinite(settings.FocusTimerOpacity) ? settings.FocusTimerOpacity : 100, 10, 100) / 100d;
         ElapsedText.FontSize = settings.FocusTimerClockFontSize is 26 or 34 or 42 ? settings.FocusTimerClockFontSize : 34;
         TaskTitleText.FontSize = settings.FocusTimerTaskFontSize is 10 or 12 or 14 ? settings.FocusTimerTaskFontSize : 12;
     }
@@ -140,8 +141,12 @@ public partial class FocusTimerWindow : Window
         _settings.FocusTimerOpacity = settings.FocusTimerOpacity;
         _settings.FocusTimerClockFontSize = settings.FocusTimerClockFontSize;
         _settings.FocusTimerTaskFontSize = settings.FocusTimerTaskFontSize;
+        ApplyPositionMode(settings.FocusTimerFreeDrag);
         ApplyAppearance(settings);
     }
+
+    private void ApplyPositionMode(bool freeDrag) =>
+        TimerControls.Visibility = freeDrag ? Visibility.Visible : Visibility.Collapsed;
 
     private void SavePosition()
     {

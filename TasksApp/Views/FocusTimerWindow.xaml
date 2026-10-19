@@ -49,7 +49,7 @@
                        Foreground="{DynamicResource AppToolbarForeground}" TextTrimming="CharacterEllipsis"
                        ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,3,0,0">
+            <StackPanel x:Name="TimerControls" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,3,0,0">
                 <Button x:Name="PauseResumeButton" Style="{StaticResource FocusIconButton}"
                         AutomationProperties.Name="Pause" ToolTip="Pause"
                         Click="OnPauseResumeClick">

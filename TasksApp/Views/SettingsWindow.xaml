@@ -253,7 +253,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <Slider x:Name="SldFocusTimerOpacity" Minimum="50" Maximum="100" TickFrequency="10"
+                                    <Slider x:Name="SldFocusTimerOpacity" Minimum="10" Maximum="100" TickFrequency="10"
                                             IsSnapToTickEnabled="True" VerticalAlignment="Center"
                                             ValueChanged="OnFocusTimerAppearanceChanged" />
                                     <TextBlock x:Name="TxtFocusTimerOpacity" Grid.Column="1" Width="42" Text="100%"

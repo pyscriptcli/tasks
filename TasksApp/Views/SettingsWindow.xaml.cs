@@ -66,7 +66,7 @@ namespace TasksApp.Views
             ChkRemindersEnabled.IsChecked = UpdatedSettings.RemindersEnabled;
             ChkAlwaysOnTop.IsChecked = UpdatedSettings.AlwaysOnTop;
             CmbFocusTimerPosition.SelectedIndex = UpdatedSettings.FocusTimerFreeDrag ? 0 : 1;
-            SldFocusTimerOpacity.Value = Math.Clamp(UpdatedSettings.FocusTimerOpacity, 50, 100);
+            SldFocusTimerOpacity.Value = Math.Clamp(UpdatedSettings.FocusTimerOpacity, 10, 100);
             CmbFocusTimerClockSize.SelectedIndex = UpdatedSettings.FocusTimerClockFontSize switch { 26 => 0, 42 => 2, _ => 1 };
             CmbFocusTimerTaskSize.SelectedIndex = UpdatedSettings.FocusTimerTaskFontSize switch { 10 => 0, 14 => 2, _ => 1 };
             TxtFocusTimerOpacity.Text = $"{SldFocusTimerOpacity.Value:0}%";

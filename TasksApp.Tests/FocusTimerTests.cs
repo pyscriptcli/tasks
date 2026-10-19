@@ -217,7 +217,7 @@ public sealed class FocusTimerTests : IDisposable
         {
             var settings = new AppSettings
             {
-                FocusTimerOpacity = 50,
+                FocusTimerOpacity = 10,
                 FocusTimerClockFontSize = 42,
                 FocusTimerTaskFontSize = 14
             };
@@ -235,10 +235,32 @@ public sealed class FocusTimerTests : IDisposable
                 bitmap.Render(window);
 
                 Assert.Equal(1, window.Opacity);
-                Assert.Equal(0.5, timerContent.Opacity);
+                Assert.Equal(0.1, timerContent.Opacity);
                 Assert.True(bitmap.PixelWidth > 0);
                 Assert.Equal(42, window.FindName("ElapsedText") is System.Windows.Controls.TextBlock elapsed ? elapsed.FontSize : 0);
                 Assert.Equal(14, window.FindName("TaskTitleText") is System.Windows.Controls.TextBlock title ? title.FontSize : 0);
+            }
+            finally
+            {
+                window.CloseForAppExit();
+            }
+        });
+    }
+
+    [Fact]
+    public void FixedTimer_HidesAllPopupButtons_AndFreeDragShowsThem()
+    {
+        RunOnSta(() =>
+        {
+            var timer = new FocusTimerService(new StorageService(), _testDir);
+            var window = new FocusTimerWindow(timer, new AppSettings { FocusTimerFreeDrag = false }, (_, _) => { });
+            try
+            {
+                Assert.Equal(Visibility.Collapsed, ((StackPanel)window.FindName("TimerControls")!).Visibility);
+
+                window.ApplySettings(new AppSettings { FocusTimerFreeDrag = true });
+
+                Assert.Equal(Visibility.Visible, ((StackPanel)window.FindName("TimerControls")!).Visibility);
             }
             finally
             {
@@ -291,7 +313,7 @@ public sealed class FocusTimerTests : IDisposable
             {
                 driveControls.Stop();
                 ((ComboBox)window.FindName("CmbFocusTimerPosition")!).SelectedIndex = 1;
-                ((Slider)window.FindName("SldFocusTimerOpacity")!).Value = 60;
+                ((Slider)window.FindName("SldFocusTimerOpacity")!).Value = 10;
                 ((ComboBox)window.FindName("CmbFocusTimerClockSize")!).SelectedIndex = 0;
                 ((ComboBox)window.FindName("CmbFocusTimerTaskSize")!).SelectedIndex = 2;
                 ((Button)window.FindName("BtnSaveSettings")!).RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
@@ -300,13 +322,13 @@ public sealed class FocusTimerTests : IDisposable
 
             Assert.True(window.ShowDialog() ?? false);
             Assert.False(window.UpdatedSettings.FocusTimerFreeDrag);
-            Assert.Equal(60, window.UpdatedSettings.FocusTimerOpacity);
+            Assert.Equal(10, window.UpdatedSettings.FocusTimerOpacity);
             Assert.Equal(26, window.UpdatedSettings.FocusTimerClockFontSize);
             Assert.Equal(14, window.UpdatedSettings.FocusTimerTaskFontSize);
 
             var saved = new StorageService(path).LoadSettings();
             Assert.False(saved.FocusTimerFreeDrag);
-            Assert.Equal(60, saved.FocusTimerOpacity);
+            Assert.Equal(10, saved.FocusTimerOpacity);
             Assert.Equal(26, saved.FocusTimerClockFontSize);
             Assert.Equal(14, saved.FocusTimerTaskFontSize);
         });
