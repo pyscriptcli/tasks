@@ -738,6 +738,105 @@ namespace TasksApp.Tests
         }
 
         [Fact]
+        public void DeleteCarriedTask_StaysDeletedAfterNavigatingAwayAndBack()
+        {
+            var storage = new StorageService();
+            var reminder = new ReminderService();
+            var sourceDate = DateTime.Today.AddDays(-1);
+            var targetDate = DateTime.Today;
+            var sourceTask = new TaskItem { Title = "Carried task" };
+            storage.SaveTasksForDate(_testDir, sourceDate, new[] { sourceTask });
+
+            var settings = new AppSettings { DataDirectory = _testDir };
+            var viewModel = new MainViewModel(storage, reminder, settings);
+            viewModel.LoadDayData();
+            Assert.Contains(viewModel.Tasks, task => task.Id == sourceTask.Id);
+
+            viewModel.DeleteTaskCommand.Execute(viewModel.Tasks.Single(task => task.Id == sourceTask.Id));
+            viewModel.CurrentDate = targetDate.AddDays(1);
+            viewModel.CurrentDate = targetDate;
+
+            Assert.DoesNotContain(viewModel.Tasks, task => task.Id == sourceTask.Id);
+        }
+
+        [Fact]
+        public void DeleteCarriedTask_DoesNotRollForwardAgainOnTheNextDay()
+        {
+            var storage = new StorageService();
+            var sourceDate = DateTime.Today.AddDays(-1);
+            var deletedDate = DateTime.Today;
+            var sourceTask = new TaskItem { Title = "Carried task" };
+            storage.SaveTasksForDate(_testDir, sourceDate, new[] { sourceTask });
+            storage.CarryOverPendingTasks(_testDir, deletedDate);
+
+            var carriedTask = storage.LoadTasksForDate(_testDir, deletedDate).Single();
+            Assert.True(storage.DeleteTaskForDate(_testDir, deletedDate, carriedTask));
+            storage.CarryOverPendingTasks(_testDir, deletedDate.AddDays(1));
+
+            Assert.DoesNotContain(storage.LoadTasksForDate(_testDir, deletedDate.AddDays(1)), task => task.Id == sourceTask.Id);
+        }
+
+        [Fact]
+        public void DeletedTask_RemainsDeletedAfterStorageMigrationAndLegacyImport()
+        {
+            var storage = new StorageService();
+            var date = new DateTime(2099, 10, 19);
+            string legacyDirectory = Path.Combine(_testDir, "Legacy");
+            string activeDirectory = Path.Combine(_testDir, "Active");
+            string migratedDirectory = Path.Combine(_testDir, "Migrated");
+            Directory.CreateDirectory(legacyDirectory);
+            string legacyFile = Path.Combine(legacyDirectory, $"Task_{date.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}.json");
+            File.WriteAllText(legacyFile, "[{\"title\":\"Imported task\",\"details\":\"Legacy details\",\"isHighPriority\":false,\"isCompleted\":false,\"order\":1}]");
+
+            var importedTask = Assert.Single(storage.LoadTasksForDate(legacyDirectory, date));
+            storage.MergeTaskIntoDate(activeDirectory, date, importedTask);
+            var editedImportedTask = Assert.Single(storage.LoadTasksForDate(activeDirectory, date));
+            editedImportedTask.Title = "Edited imported task";
+            editedImportedTask.Details = "Edited details";
+            storage.SaveTasksForDate(activeDirectory, date, new[] { editedImportedTask });
+
+            var settings = new AppSettings { DataDirectory = activeDirectory };
+            var viewModel = new MainViewModel(storage, new ReminderService(), settings);
+            viewModel.CurrentDate = date;
+            viewModel.LoadDayData();
+            var taskToDelete = Assert.Single(viewModel.Tasks);
+
+            viewModel.DeleteTaskCommand.Execute(taskToDelete);
+            storage.MigrateData(activeDirectory, migratedDirectory);
+            var reimportedTask = Assert.Single(storage.LoadTasksForDate(legacyDirectory, date));
+            storage.MergeTaskIntoDate(migratedDirectory, date, reimportedTask);
+
+            Assert.Empty(storage.LoadTasksForDate(migratedDirectory, date));
+
+            var newlyCreatedTask = new TaskItem { Title = "Edited imported task", Details = "Edited details" };
+            storage.SaveTasksForDate(migratedDirectory, date, new[] { newlyCreatedTask });
+
+            Assert.Equal(newlyCreatedTask.Id, Assert.Single(storage.LoadTasksForDate(migratedDirectory, date)).Id);
+        }
+
+        [Fact]
+        public void StorageMigration_MergesDeletionRecordsWhenDestinationAlreadyHasSome()
+        {
+            var storage = new StorageService();
+            var date = new DateTime(2099, 10, 19);
+            string sourceDirectory = Path.Combine(_testDir, "Source");
+            string targetDirectory = Path.Combine(_testDir, "Target");
+            var sourceTask = new TaskItem { Id = "source-task", Title = "Source task" };
+            var targetTask = new TaskItem { Id = "target-task", Title = "Target task" };
+
+            storage.SaveTasksForDate(sourceDirectory, date, new[] { sourceTask });
+            Assert.True(storage.DeleteTaskForDate(sourceDirectory, date, sourceTask));
+            storage.SaveTasksForDate(targetDirectory, date, new[] { targetTask });
+            Assert.True(storage.DeleteTaskForDate(targetDirectory, date, targetTask));
+
+            storage.MigrateData(sourceDirectory, targetDirectory);
+            storage.MergeTaskIntoDate(targetDirectory, date, sourceTask);
+            storage.MergeTaskIntoDate(targetDirectory, date, targetTask);
+
+            Assert.Empty(storage.LoadTasksForDate(targetDirectory, date));
+        }
+
+        [Fact]
         public void ChristmasTheme_CanBeSavedAndLoadedInSettings()
         {
             string customSettingsFile = Path.Combine(_testDir, "test_settings.json");
@@ -774,6 +873,15 @@ namespace TasksApp.Tests
             // Newer version is newer
             Assert.True(UpdateService.IsVersionNewer("v8", "7"));
             Assert.True(UpdateService.IsVersionNewer("v10", "7"));
+        }
+
+        [Fact]
+        public void UpdateService_CurrentVersionIncludesMinorAndPatchForLatestReleaseComparison()
+        {
+            var assemblyVersion = typeof(UpdateService).Assembly.GetName().Version;
+
+            Assert.NotNull(assemblyVersion);
+            Assert.Equal(assemblyVersion!.ToString(3), UpdateService.CurrentVersion);
         }
     }
 }

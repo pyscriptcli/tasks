@@ -19,9 +19,9 @@ namespace TasksApp.Services
                 var asmVer = typeof(UpdateService).Assembly.GetName().Version;
                 if (asmVer != null && asmVer.Major > 0)
                 {
-                    return asmVer.Major.ToString();
+                    return asmVer.ToString(3);
                 }
-                return "8";
+                return "8.0.0";
             }
         }
         public const string GitHubRepo = "pyscriptcli/tasks";

@@ -48,6 +48,7 @@ namespace TasksApp.ViewModels
         public event Action<TaskItem>? RequestEditTask;
         public event Action? RequestAddTaskModal;
         public event Action? RequestOpenSettings;
+        public event Action<string>? RequestStorageError;
 
         public AppSettings Settings => _settings;
 
@@ -435,10 +436,15 @@ namespace TasksApp.ViewModels
         private void ExecuteDeleteTask(TaskItem? task)
         {
             if (task == null) return;
+            if (!_storageService.DeleteTaskForDate(_settings.DataDirectory, _currentDate, task))
+            {
+                RequestStorageError?.Invoke("The task could not be deleted because its deletion record could not be saved.");
+                return;
+            }
+
             task.PropertyChanged -= OnTaskItemPropertyChanged;
             Tasks.Remove(task);
             UpdateCounts();
-            SaveCurrentTasks();
         }
 
         private void ExecuteToggleTaskStatus(TaskItem? task)

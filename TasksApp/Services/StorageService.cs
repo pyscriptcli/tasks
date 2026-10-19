@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,6 +15,12 @@ namespace TasksApp.Services
 {
     public class StorageService
     {
+        private sealed class DeletedTaskMarker
+        {
+            public string Id { get; set; } = string.Empty;
+            public string Signature { get; set; } = string.Empty;
+        }
+
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
             WriteIndented = true,
@@ -117,6 +125,70 @@ namespace TasksApp.Services
             return $"Notes_{date.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}.txt";
         }
 
+        private string GetDeletedTasksFileName(DateTime date)
+        {
+            return $"Task_{date.ToString("MMMM d yyyy", CultureInfo.InvariantCulture)}.deleted.json";
+        }
+
+        private List<DeletedTaskMarker> LoadDeletedTaskMarkers(string dataDirectory, DateTime date)
+        {
+            string path = Path.Combine(dataDirectory, GetDeletedTasksFileName(date));
+            if (!File.Exists(path)) return new List<DeletedTaskMarker>();
+
+            return JsonSerializer.Deserialize<List<DeletedTaskMarker>>(File.ReadAllText(path), JsonOptions)
+                ?? new List<DeletedTaskMarker>();
+        }
+
+        private void SaveDeletedTaskMarkers(string dataDirectory, DateTime date, List<DeletedTaskMarker> markers)
+        {
+            string path = Path.Combine(dataDirectory, GetDeletedTasksFileName(date));
+            string temporaryPath = path + ".tmp";
+            File.WriteAllText(temporaryPath, JsonSerializer.Serialize(markers, JsonOptions));
+            File.Move(temporaryPath, path, true);
+        }
+
+        private static string GetTaskSignature(TaskItem task)
+        {
+            string identity = string.Join("\n", task.Title.Trim(), task.Details.Trim(), task.IsHighPriority ? "1" : "0");
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(identity)));
+        }
+
+        private static string CreateStableLegacyTaskId(string sourceFilePath, DateTime date, int index, TaskItem task)
+        {
+            string identity = string.Join("\n",
+                Path.GetFullPath(sourceFilePath).ToUpperInvariant(),
+                date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                index.ToString(CultureInfo.InvariantCulture),
+                GetTaskSignature(task));
+            byte[] hash = SHA256.HashData(Encoding.UTF8.GetBytes(identity));
+            return "legacy-" + Convert.ToHexString(hash.AsSpan(0, 16)).ToLowerInvariant();
+        }
+
+        private static bool HasExplicitTaskId(JsonElement element)
+        {
+            if (element.ValueKind != JsonValueKind.Object) return false;
+
+            foreach (var property in element.EnumerateObject())
+            {
+                if (property.Name.Equals("id", StringComparison.OrdinalIgnoreCase) &&
+                    property.Value.ValueKind == JsonValueKind.String &&
+                    !string.IsNullOrWhiteSpace(property.Value.GetString()))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsTaskMarkedDeleted(IEnumerable<DeletedTaskMarker> markers, TaskItem task, bool includeSignature)
+        {
+            string signature = includeSignature ? GetTaskSignature(task) : string.Empty;
+            return markers.Any(marker =>
+                string.Equals(marker.Id, task.Id, StringComparison.OrdinalIgnoreCase) ||
+                (includeSignature && string.Equals(marker.Signature, signature, StringComparison.Ordinal)));
+        }
+
         public List<TaskItem> LoadTasksForDate(string dataDirectory, DateTime date)
         {
             var result = new List<TaskItem>();
@@ -139,7 +211,26 @@ namespace TasksApp.Services
                     var items = JsonSerializer.Deserialize<List<TaskItem>>(json, JsonOptions);
                     if (items != null)
                     {
-                        result = items.OrderBy(t => t.OrderIndex).ToList();
+                        using var document = JsonDocument.Parse(json);
+                        if (document.RootElement.ValueKind == JsonValueKind.Array)
+                        {
+                            int itemIndex = 0;
+                            foreach (var element in document.RootElement.EnumerateArray())
+                            {
+                                if (itemIndex >= items.Count) break;
+                                if (!HasExplicitTaskId(element))
+                                {
+                                    items[itemIndex].Id = CreateStableLegacyTaskId(targetPath, date, itemIndex, items[itemIndex]);
+                                }
+                                itemIndex++;
+                            }
+                        }
+
+                        var deletedMarkers = LoadDeletedTaskMarkers(dataDirectory, date);
+                        result = items
+                            .Where(task => !IsTaskMarkedDeleted(deletedMarkers, task, includeSignature: false))
+                            .OrderBy(t => t.OrderIndex)
+                            .ToList();
                     }
                 }
                 catch (Exception ex)
@@ -151,9 +242,45 @@ namespace TasksApp.Services
             return result;
         }
 
+        public bool DeleteTaskForDate(string dataDirectory, DateTime date, TaskItem task)
+        {
+            if (string.IsNullOrWhiteSpace(dataDirectory) || task == null) return false;
+
+            try
+            {
+                EnsureDirectoryExists(dataDirectory);
+                var markers = LoadDeletedTaskMarkers(dataDirectory, date);
+                if (!markers.Any(marker => string.Equals(marker.Id, task.Id, StringComparison.OrdinalIgnoreCase)))
+                {
+                    markers.Add(new DeletedTaskMarker
+                    {
+                        Id = task.Id,
+                        Signature = GetTaskSignature(task)
+                    });
+                    SaveDeletedTaskMarkers(dataDirectory, date, markers);
+                }
+
+                // The marker is authoritative. If removing the old task file fails,
+                // LoadTasksForDate still filters the deleted identity.
+                var remainingTasks = LoadTasksForDate(dataDirectory, date);
+                SaveTasksForDate(dataDirectory, date, remainingTasks);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to record task deletion: {ex.Message}");
+                return false;
+            }
+        }
+
         public void SaveTasksForDate(string dataDirectory, DateTime date, IEnumerable<TaskItem> tasks)
         {
-            if (string.IsNullOrWhiteSpace(dataDirectory)) return;
+            TrySaveTasksForDate(dataDirectory, date, tasks);
+        }
+
+        private bool TrySaveTasksForDate(string dataDirectory, DateTime date, IEnumerable<TaskItem> tasks)
+        {
+            if (string.IsNullOrWhiteSpace(dataDirectory)) return false;
 
             try
             {
@@ -165,9 +292,9 @@ namespace TasksApp.Services
                 var taskList = tasks.ToList();
                 if (taskList.Count == 0)
                 {
-                    if (File.Exists(filePath)) try { File.Delete(filePath); } catch { }
-                    if (File.Exists(fallbackPath)) try { File.Delete(fallbackPath); } catch { }
-                    return;
+                    if (File.Exists(filePath)) File.Delete(filePath);
+                    if (File.Exists(fallbackPath)) File.Delete(fallbackPath);
+                    return true;
                 }
 
                 for (int i = 0; i < taskList.Count; i++)
@@ -179,10 +306,12 @@ namespace TasksApp.Services
                 string tempPath = filePath + ".tmp";
                 File.WriteAllText(tempPath, json);
                 File.Move(tempPath, filePath, true);
+                return true;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Failed to write tasks file: {ex.Message}");
+                return false;
             }
         }
 
@@ -265,6 +394,27 @@ namespace TasksApp.Services
 
             foreach (var file in Directory.GetFiles(sourceDir, "Task_*"))
             {
+                if (TryParseDeletedTasksFileDate(file, out var deletedDate))
+                {
+                    var sourceMarkers = LoadDeletedTaskMarkers(sourceDir, deletedDate);
+                    var targetMarkers = LoadDeletedTaskMarkers(targetDir, deletedDate);
+                    foreach (var marker in sourceMarkers)
+                    {
+                        var existing = targetMarkers.FirstOrDefault(item =>
+                            string.Equals(item.Id, marker.Id, StringComparison.OrdinalIgnoreCase));
+                        if (existing == null)
+                        {
+                            targetMarkers.Add(marker);
+                        }
+                        else if (string.IsNullOrWhiteSpace(existing.Signature))
+                        {
+                            existing.Signature = marker.Signature;
+                        }
+                    }
+                    SaveDeletedTaskMarkers(targetDir, deletedDate, targetMarkers);
+                    continue;
+                }
+
                 string dest = Path.Combine(targetDir, Path.GetFileName(file));
                 if (!File.Exists(dest))
                 {
@@ -286,6 +436,9 @@ namespace TasksApp.Services
         {
             if (string.IsNullOrWhiteSpace(activeDataDirectory)) return;
             EnsureDirectoryExists(activeDataDirectory);
+
+            var deletedMarkers = LoadDeletedTaskMarkers(activeDataDirectory, date);
+            if (IsTaskMarkedDeleted(deletedMarkers, task, includeSignature: true)) return;
 
             var activeTasks = LoadTasksForDate(activeDataDirectory, date);
             bool exists = activeTasks.Any(t =>
@@ -403,6 +556,17 @@ namespace TasksApp.Services
                 result.Add(current);
             }
 
+            if (TryParseTaskFileDate(filePath, out var taskDate))
+            {
+                for (int i = 0; i < result.Count; i++)
+                {
+                    if (!result[i].Id.StartsWith("legacy-txt-", StringComparison.OrdinalIgnoreCase))
+                    {
+                        result[i].Id = CreateStableLegacyTaskId(filePath, taskDate, i, result[i]);
+                    }
+                }
+            }
+
             return result;
         }
 
@@ -429,6 +593,7 @@ namespace TasksApp.Services
                     using var cmd = conn.CreateCommand();
                     cmd.CommandText = "SELECT * FROM tasks;";
                     using var reader = cmd.ExecuteReader();
+                    int rowIndex = 0;
                     int dateCol = -1, titleCol = -1, detailsCol = -1, statusCol = -1, prioCol = -1;
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
@@ -442,6 +607,7 @@ namespace TasksApp.Services
 
                     while (reader.Read())
                     {
+                        int currentRowIndex = rowIndex++;
                         string dateStr = dateCol >= 0 && !reader.IsDBNull(dateCol) ? reader.GetValue(dateCol).ToString() ?? "" : "";
                         string title = titleCol >= 0 && !reader.IsDBNull(titleCol) ? reader.GetValue(titleCol).ToString() ?? "" : "";
                         string details = detailsCol >= 0 && !reader.IsDBNull(detailsCol) ? reader.GetValue(detailsCol).ToString() ?? "" : "";
@@ -459,12 +625,14 @@ namespace TasksApp.Services
 
                         var task = new TaskItem
                         {
-                            Id = "legacy-sqlite-" + Guid.NewGuid().ToString("N").Substring(0, 8),
+                            Id = string.Empty,
                             Title = title.Trim(),
                             Details = details.Trim(),
                             IsCompleted = status.Equals("completed", StringComparison.OrdinalIgnoreCase),
                             IsHighPriority = priority.Contains("high", StringComparison.OrdinalIgnoreCase) || priority.Equals("1")
                         };
+
+                        task.Id = CreateStableLegacyTaskId(dbPath, taskDate, currentRowIndex, task);
 
                         MergeTaskIntoDate(activeDataDirectory, taskDate, task);
                     }
@@ -619,6 +787,23 @@ namespace TasksApp.Services
             }
         }
 
+        private static bool TryParseDeletedTasksFileDate(string filePath, out DateTime date)
+        {
+            date = default;
+            string fileName = Path.GetFileName(filePath);
+            const string prefix = "Task_";
+            const string suffix = ".deleted.json";
+            if (!fileName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) ||
+                !fileName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            string datePart = fileName.Substring(prefix.Length, fileName.Length - prefix.Length - suffix.Length);
+            string[] formats = { "yyyy-MM-dd", "MMMM d yyyy" };
+            return DateTime.TryParseExact(datePart, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
+        }
+
         public static bool TryParseTaskFileDate(string filePath, out DateTime date)
         {
             date = default;
@@ -666,6 +851,8 @@ namespace TasksApp.Services
             {
                 var files = Directory.GetFiles(dataDirectory, "Task_*.json");
                 var pastFiles = new List<(DateTime Date, string Path)>();
+                var sourceUpdates = new List<(DateTime Date, List<TaskItem> Tasks)>();
+                var deletedMarkers = LoadDeletedTaskMarkers(dataDirectory, targetDate);
 
                 foreach (var file in files)
                 {
@@ -691,26 +878,31 @@ namespace TasksApp.Services
                         bool updatedPast = false;
                         foreach (var p in pending)
                         {
-                            if (string.IsNullOrEmpty(p.CarriedForwardTo))
+                            if (!string.IsNullOrEmpty(p.CarriedForwardTo))
                             {
-                                p.CarriedForwardTo = targetDate.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture);
-                                updatedPast = true;
+                                continue;
                             }
 
                             var targetItem = p.Clone();
                             targetItem.CarriedOverFrom = pastDate.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture);
                             targetItem.CarriedForwardTo = null;
-                            carriedOver.Add(targetItem);
+                            p.CarriedForwardTo = targetDate.ToString("MMMM d, yyyy", CultureInfo.InvariantCulture);
+                            updatedPast = true;
+
+                            if (!IsTaskMarkedDeleted(deletedMarkers, targetItem, includeSignature: true))
+                            {
+                                carriedOver.Add(targetItem);
+                            }
                         }
 
-                        // Preserve historical day records so past days are NEVER deleted!
                         if (updatedPast)
                         {
-                            SaveTasksForDate(dataDirectory, pastDate, pastTasks);
+                            sourceUpdates.Add((pastDate, pastTasks));
                         }
                     }
                 }
 
+                bool targetSaved = true;
                 if (carriedOver.Count > 0)
                 {
                     var targetTasks = LoadTasksForDate(dataDirectory, targetDate);
@@ -737,7 +929,18 @@ namespace TasksApp.Services
                             targetTasks[i].OrderIndex = i + 1;
                         }
 
-                        SaveTasksForDate(dataDirectory, targetDate, targetTasks);
+                        targetSaved = TrySaveTasksForDate(dataDirectory, targetDate, targetTasks);
+                    }
+                }
+
+                // Persist source markers only after the destination is safely stored.
+                // If a source write fails, the next carry-over pass sees the existing
+                // destination item and can retry without creating a duplicate.
+                if (targetSaved)
+                {
+                    foreach (var (sourceDate, sourceTasks) in sourceUpdates)
+                    {
+                        TrySaveTasksForDate(dataDirectory, sourceDate, sourceTasks);
                     }
                 }
             }

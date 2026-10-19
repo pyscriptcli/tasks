@@ -75,6 +75,8 @@ namespace TasksApp
             _viewModel.RequestEditTask += OpenEditTaskDialog;
             _viewModel.RequestAddTaskModal += OpenAddTaskDialog;
             _viewModel.RequestOpenSettings += OpenSettingsDialog;
+            _viewModel.RequestStorageError += message =>
+                MessageBox.Show(this, message, "Tasks", MessageBoxButton.OK, MessageBoxImage.Error);
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
             RestoreWindowBounds();
