@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Threading;
 using TasksApp.Models;
 using TasksApp.Services;
@@ -97,6 +99,25 @@ public partial class FocusTimerWindow : Window
     }
 
     private void OnHideClick(object sender, RoutedEventArgs e) => Hide();
+
+    private void OnWindowMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (e.OriginalSource is DependencyObject source && !IsInsideButton(source))
+        {
+            DragMove();
+        }
+    }
+
+    private static bool IsInsideButton(DependencyObject element)
+    {
+        while (element != null)
+        {
+            if (element is ButtonBase) return true;
+            element = VisualTreeHelper.GetParent(element);
+        }
+
+        return false;
+    }
 
     private void ClampToVirtualScreen()
     {
