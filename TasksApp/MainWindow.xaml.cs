@@ -23,6 +23,7 @@ namespace TasksApp
         private AppSettings _settings;
         private readonly MainViewModel _viewModel;
         private readonly TrayIconManager _trayManager;
+        private FocusTimerWindow? _focusTimerWindow;
 
         private bool _isExplicitExit = false;
         private Point _dragStartPoint;
@@ -80,6 +81,8 @@ namespace TasksApp
                 MessageBox.Show(this, message, "Tasks", MessageBoxButton.OK, MessageBoxImage.Error);
             _viewModel.RequestOpenDataFolder += OpenDataFolder;
             _viewModel.RequestMinimize += MinimizeForReminderDismissal;
+            _viewModel.RequestStartFocus += StartFocusSession;
+            _viewModel.RequestOpenFocusTimer += ShowFocusTimer;
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
             RestoreWindowBounds();
@@ -211,6 +214,41 @@ namespace TasksApp
             }
 
             await _viewModel.InitializeStartupAsync();
+            if (_viewModel.HasFocusSession)
+            {
+                ShowFocusTimer();
+            }
+        }
+
+        private void StartFocusSession(TaskItem task)
+        {
+            if (_viewModel.CurrentFocusSession != null)
+            {
+                var answer = MessageBox.Show(this,
+                    $"Finish the current focus session and start one for \"{task.Title}\"?",
+                    "Focus Timer", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (answer != MessageBoxResult.Yes) return;
+
+                _viewModel.FinishFocusSession();
+            }
+
+            _viewModel.StartFocusSession(task);
+            ShowFocusTimer();
+        }
+
+        private void ShowFocusTimer()
+        {
+            if (_viewModel.CurrentFocusSession == null) return;
+
+            if (_focusTimerWindow == null)
+            {
+                _focusTimerWindow = new FocusTimerWindow(_viewModel.FocusTimer);
+                _focusTimerWindow.Closed += (_, _) => _focusTimerWindow = null;
+            }
+
+            if (!_focusTimerWindow.IsVisible) _focusTimerWindow.Show();
+            _focusTimerWindow.Topmost = true;
+            _focusTimerWindow.Activate();
         }
 
         private void RestoreWindowBounds()
@@ -309,6 +347,7 @@ namespace TasksApp
                 _viewModel.FlushNotesSave();
                 _viewModel.SaveCurrentTasks();
                 SaveWindowBounds();
+                _focusTimerWindow?.CloseForAppExit();
                 _trayManager.Dispose();
                 ThemeManager.ThemeChanged -= OnThemeChanged;
                 base.OnClosing(e);

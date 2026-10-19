@@ -1,0 +1,119 @@
+using System;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Threading;
+using TasksApp.Models;
+using TasksApp.Services;
+
+namespace TasksApp.Views;
+
+public partial class FocusTimerWindow : Window
+{
+    private readonly FocusTimerService _focusTimer;
+    private readonly DispatcherTimer _displayTimer;
+    private bool _allowClose;
+
+    public FocusTimerWindow(FocusTimerService focusTimer)
+    {
+        InitializeComponent();
+        _focusTimer = focusTimer;
+        _focusTimer.Changed += OnFocusTimerChanged;
+        _displayTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _displayTimer.Tick += (_, _) => RefreshDisplay();
+        IsVisibleChanged += (_, _) =>
+        {
+            if (IsVisible)
+            {
+                RefreshDisplay();
+                _displayTimer.Start();
+            }
+            else
+            {
+                _displayTimer.Stop();
+            }
+        };
+        Loaded += (_, _) => ClampToVirtualScreen();
+        LocationChanged += (_, _) => ClampToVirtualScreen();
+        SizeChanged += (_, _) => ClampToVirtualScreen();
+        Closed += (_, _) =>
+        {
+            _displayTimer.Stop();
+            _focusTimer.Changed -= OnFocusTimerChanged;
+        };
+        RefreshDisplay();
+    }
+
+    public void CloseForAppExit()
+    {
+        _allowClose = true;
+        Close();
+    }
+
+    private void OnFocusTimerChanged(object? sender, EventArgs e)
+    {
+        Dispatcher.Invoke(RefreshDisplay);
+    }
+
+    private void RefreshDisplay()
+    {
+        var session = _focusTimer.CurrentSession;
+        if (session == null)
+        {
+            TaskTitleText.Text = string.Empty;
+            ElapsedText.Text = "00:00:00";
+            return;
+        }
+
+        TaskTitleText.Text = session.TaskTitle;
+        var elapsed = _focusTimer.Elapsed;
+        ElapsedText.Text = $"{(int)elapsed.TotalHours:00}:{elapsed.Minutes:00}:{elapsed.Seconds:00}";
+        PauseResumeButton.Content = session.Status == FocusSessionStatus.Paused ? "RESUME" : "PAUSE";
+    }
+
+    private void OnPauseResumeClick(object sender, RoutedEventArgs e)
+    {
+        if (_focusTimer.CurrentSession?.Status == FocusSessionStatus.Paused)
+        {
+            _focusTimer.Resume();
+        }
+        else
+        {
+            _focusTimer.Pause();
+        }
+    }
+
+    private void OnFinishClick(object sender, RoutedEventArgs e)
+    {
+        if (_focusTimer.CurrentSession != null)
+        {
+            _focusTimer.Finish();
+            Hide();
+        }
+    }
+
+    private void OnHideClick(object sender, RoutedEventArgs e) => Hide();
+
+    private void ClampToVirtualScreen()
+    {
+        if (!IsLoaded || WindowState != WindowState.Normal) return;
+
+        double minLeft = SystemParameters.VirtualScreenLeft;
+        double minTop = SystemParameters.VirtualScreenTop;
+        double maxLeft = minLeft + SystemParameters.VirtualScreenWidth - ActualWidth;
+        double maxTop = minTop + SystemParameters.VirtualScreenHeight - ActualHeight;
+        Left = Math.Clamp(Left, minLeft, Math.Max(minLeft, maxLeft));
+        Top = Math.Clamp(Top, minTop, Math.Max(minTop, maxTop));
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        if (!_allowClose)
+        {
+            e.Cancel = true;
+            Hide();
+            return;
+        }
+
+        base.OnClosing(e);
+    }
+}

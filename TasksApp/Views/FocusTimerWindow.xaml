@@ -1,0 +1,46 @@
+<Window x:Class="TasksApp.Views.FocusTimerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Focus Timer" Width="320" Height="220" MinWidth="280" MinHeight="190"
+        WindowStyle="ToolWindow" ResizeMode="CanResizeWithGrip" ShowInTaskbar="False"
+        Topmost="True" WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AppWindowBackground}" FontFamily="{DynamicResource AppBaseFontFamily}">
+    <Border Background="{DynamicResource AppPanelBackground}"
+            BorderBrush="{DynamicResource AppPanelBorder}" BorderThickness="1" Padding="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="FOCUSING ON" FontSize="10" FontWeight="Bold"
+                           Foreground="{DynamicResource AppAccentColor}" />
+                <TextBlock x:Name="TaskTitleText" Margin="0,5,0,0" FontSize="13" FontWeight="SemiBold"
+                           Foreground="{DynamicResource AppTextForeground}" TextTrimming="CharacterEllipsis"
+                           ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+            </StackPanel>
+
+            <TextBlock x:Name="ElapsedText" Grid.Row="1" Text="00:00:00" HorizontalAlignment="Center"
+                       VerticalAlignment="Center" FontSize="38" FontWeight="SemiBold"
+                       FontFamily="{DynamicResource AppMetricFontFamily}"
+                       Foreground="{DynamicResource AppPrimaryColor}" />
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="PauseResumeButton" Grid.Column="0" Content="PAUSE"
+                        Style="{DynamicResource SecondaryActionBtn}" Margin="0,0,8,0"
+                        Click="OnPauseResumeClick" />
+                <Button Grid.Column="1" Content="FINISH" Style="{DynamicResource GoldActionBtn}"
+                        Margin="0,0,8,0" Click="OnFinishClick" />
+                <Button Grid.Column="2" Content="HIDE" Style="{DynamicResource SecondaryActionBtn}"
+                        Click="OnHideClick" />
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

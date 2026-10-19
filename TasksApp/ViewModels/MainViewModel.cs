@@ -17,6 +17,7 @@ namespace TasksApp.ViewModels
     {
         private readonly StorageService _storageService;
         private readonly ReminderService _reminderService;
+        private readonly FocusTimerService _focusTimerService;
         private AppSettings _settings;
 
         private DateTime _currentDate = DateTime.Today;
@@ -42,6 +43,11 @@ namespace TasksApp.ViewModels
 
         public ObservableCollection<TaskItem> Tasks { get; } = new();
 
+        public FocusTimerService FocusTimer => _focusTimerService;
+        public FocusSession? CurrentFocusSession => _focusTimerService.CurrentSession;
+        public bool HasFocusSession => CurrentFocusSession != null;
+        public string FocusTimerButtonText => CurrentFocusSession?.Status == FocusSessionStatus.Paused ? "FOCUS PAUSED" : "FOCUS TIMER";
+
         public event PropertyChangedEventHandler? PropertyChanged;
         public event Action? RequestCenterAndActivate;
         public event Action? RequestStopForcingFront;
@@ -51,6 +57,8 @@ namespace TasksApp.ViewModels
         public event Action<string>? RequestStorageError;
         public event Action<string>? RequestOpenDataFolder;
         public event Action? RequestMinimize;
+        public event Action<TaskItem>? RequestStartFocus;
+        public event Action? RequestOpenFocusTimer;
 
         public AppSettings Settings => _settings;
 
@@ -254,12 +262,22 @@ namespace TasksApp.ViewModels
         public ICommand SnoozeReminderCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public ICommand OpenDataFolderCommand { get; }
+        public ICommand StartFocusCommand { get; }
+        public ICommand OpenFocusTimerCommand { get; }
 
         public MainViewModel(StorageService storageService, ReminderService reminderService, AppSettings settings)
         {
             _storageService = storageService;
             _reminderService = reminderService;
             _settings = settings;
+            _focusTimerService = new FocusTimerService(_storageService, _settings.DataDirectory);
+            _focusTimerService.Changed += (_, _) =>
+            {
+                OnPropertyChanged(nameof(CurrentFocusSession));
+                OnPropertyChanged(nameof(HasFocusSession));
+                OnPropertyChanged(nameof(FocusTimerButtonText));
+                CommandManager.InvalidateRequerySuggested();
+            };
 
             _notesSaveDebounceTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             _notesSaveDebounceTimer.Tick += (s, e) =>
@@ -303,6 +321,11 @@ namespace TasksApp.ViewModels
             SnoozeReminderCommand = new RelayCommand(p => ExecuteSnoozeReminder(p));
             OpenSettingsCommand = new RelayCommand(() => RequestOpenSettings?.Invoke());
             OpenDataFolderCommand = new RelayCommand(() => RequestOpenDataFolder?.Invoke(_settings.DataDirectory));
+            StartFocusCommand = new RelayCommand(p =>
+            {
+                if (p is TaskItem task) RequestStartFocus?.Invoke(task);
+            });
+            OpenFocusTimerCommand = new RelayCommand(() => RequestOpenFocusTimer?.Invoke(), () => HasFocusSession);
 
             ThemeManager.ThemeChanged += _ => OnPropertyChanged(nameof(IsWin95Theme));
         }
@@ -396,6 +419,10 @@ namespace TasksApp.ViewModels
                 SaveCurrentTasks();
             }
         }
+
+        public void StartFocusSession(TaskItem task) => _focusTimerService.Start(task, _currentDate);
+
+        public FocusSession FinishFocusSession() => _focusTimerService.Finish();
 
         private bool SortTasksByPriority()
         {
@@ -700,6 +727,7 @@ namespace TasksApp.ViewModels
 
             if (pathChanged)
             {
+                _focusTimerService.ChangeDataDirectory(_settings.DataDirectory);
                 _storageService.EnsureDirectoryExists(_settings.DataDirectory);
                 _storageService.CaptureTasksFromOtherVersions(_settings.DataDirectory);
                 _storageService.CarryOverPendingTasks(_settings.DataDirectory, DateTime.Today);

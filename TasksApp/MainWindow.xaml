@@ -964,6 +964,14 @@
                     <!-- Top Action Icons (Reminders Bell & Settings) -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0"
                                 WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Button Content="{Binding FocusTimerButtonText}"
+                                Height="26" Margin="0,0,8,0" Padding="8,2"
+                                Background="{DynamicResource AppAccentColor}" BorderThickness="0" Cursor="Hand"
+                                FontSize="9" FontWeight="Bold" Foreground="{DynamicResource AppAccentForeground}"
+                                Command="{Binding OpenFocusTimerCommand}"
+                                ToolTip="Open the active focus timer"
+                                Visibility="{Binding HasFocusSession, Converter={StaticResource BoolToVis}}" />
+
                         <!-- Update Available Alert Pill (opens Settings to update) -->
                         <Button ToolTip="New update available! Click to view and install update in Settings"
                                 Height="26" Margin="0,0,8,0" Padding="8,2"
@@ -1413,6 +1421,19 @@
                                                                    FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppTextMuted}" />
                                                     </StackPanel>
                                                 </Border>
+
+                                                <Button ToolTip="Start focus timer" Width="28" Height="28" Background="Transparent"
+                                                        BorderThickness="0" Cursor="Hand" Margin="0,0,2,0"
+                                                        Command="{Binding DataContext.StartFocusCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                        CommandParameter="{Binding}">
+                                                    <Viewbox Width="14" Height="14">
+                                                        <Canvas Width="24" Height="24">
+                                                            <Path Data="M 12,3 A 9,9 0 1,1 12,21 A 9,9 0 1,1 12,3 Z M 12,7 L 12,12 L 16,14"
+                                                                  Stroke="{DynamicResource AppPrimaryColor}" StrokeThickness="2"
+                                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" />
+                                                        </Canvas>
+                                                    </Viewbox>
+                                                </Button>
 
                                                 <!-- SVG Edit Pencil Button (UR-004) -->
                                                 <Button ToolTip="Edit Task" Width="28" Height="28" Background="Transparent"

@@ -105,6 +105,43 @@ namespace TasksApp.Services
             }
         }
 
+        public List<FocusSession> LoadFocusSessions(string dataDirectory)
+        {
+            if (string.IsNullOrWhiteSpace(dataDirectory)) return new List<FocusSession>();
+
+            string path = Path.Combine(dataDirectory, "FocusSessions.json");
+            if (!File.Exists(path)) return new List<FocusSession>();
+
+            try
+            {
+                return JsonSerializer.Deserialize<List<FocusSession>>(File.ReadAllText(path), JsonOptions)
+                    ?? new List<FocusSession>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to read focus sessions: {ex.Message}");
+                return new List<FocusSession>();
+            }
+        }
+
+        public void SaveFocusSessions(string dataDirectory, IEnumerable<FocusSession> sessions)
+        {
+            if (string.IsNullOrWhiteSpace(dataDirectory)) return;
+
+            try
+            {
+                EnsureDirectoryExists(dataDirectory);
+                string path = Path.Combine(dataDirectory, "FocusSessions.json");
+                string temporaryPath = path + ".tmp";
+                File.WriteAllText(temporaryPath, JsonSerializer.Serialize(sessions, JsonOptions));
+                File.Move(temporaryPath, path, true);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to save focus sessions: {ex.Message}");
+            }
+        }
+
         public void EnsureDirectoryExists(string path)
         {
             if (!string.IsNullOrWhiteSpace(path) && !Directory.Exists(path))
@@ -391,6 +428,13 @@ namespace TasksApp.Services
             if (string.IsNullOrWhiteSpace(targetDir)) return;
 
             EnsureDirectoryExists(targetDir);
+
+            string focusSessionsPath = Path.Combine(sourceDir, "FocusSessions.json");
+            string targetFocusSessionsPath = Path.Combine(targetDir, "FocusSessions.json");
+            if (File.Exists(focusSessionsPath) && !File.Exists(targetFocusSessionsPath))
+            {
+                File.Copy(focusSessionsPath, targetFocusSessionsPath);
+            }
 
             foreach (var file in Directory.GetFiles(sourceDir, "Task_*"))
             {
