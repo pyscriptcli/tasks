@@ -246,6 +246,40 @@ namespace TasksApp.Services
                 (includeSignature && string.Equals(marker.Signature, signature, StringComparison.Ordinal)));
         }
 
+        private static DateTime FindEarliestTaskDateById(string dataDirectory, string taskId, DateTime fallbackDate)
+        {
+            DateTime earliestDate = fallbackDate.Date;
+
+            foreach (string file in Directory.GetFiles(dataDirectory, "Task_*.json"))
+            {
+                if (!TryParseTaskFileDate(file, out DateTime fileDate)) continue;
+
+                try
+                {
+                    using var document = JsonDocument.Parse(File.ReadAllText(file));
+                    if (document.RootElement.ValueKind != JsonValueKind.Array) continue;
+
+                    bool containsTask = document.RootElement.EnumerateArray().Any(element =>
+                        element.ValueKind == JsonValueKind.Object &&
+                        element.EnumerateObject().Any(property =>
+                            property.Name.Equals("id", StringComparison.OrdinalIgnoreCase) &&
+                            property.Value.ValueKind == JsonValueKind.String &&
+                            string.Equals(property.Value.GetString(), taskId, StringComparison.OrdinalIgnoreCase)));
+
+                    if (containsTask && fileDate.Date < earliestDate)
+                    {
+                        earliestDate = fileDate.Date;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Failed to inspect legacy task history: {ex.Message}");
+                }
+            }
+
+            return earliestDate;
+        }
+
         public List<TaskItem> LoadTasksForDate(string dataDirectory, DateTime date)
         {
             var result = new List<TaskItem>();
@@ -279,6 +313,13 @@ namespace TasksApp.Services
                                 {
                                     items[itemIndex].Id = CreateStableLegacyTaskId(targetPath, date, itemIndex, items[itemIndex]);
                                 }
+
+                                items[itemIndex].DisplayDate = date;
+                                if (!items[itemIndex].HasStoredCreatedAt)
+                                {
+                                    items[itemIndex].CreatedAt = FindEarliestTaskDateById(dataDirectory, items[itemIndex].Id, date);
+                                }
+
                                 itemIndex++;
                             }
                         }

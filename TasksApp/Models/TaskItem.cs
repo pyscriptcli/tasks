@@ -15,6 +15,8 @@ namespace TasksApp.Models
         private DateTime? _completedAt;
         private int _orderIndex;
         private DateTime _createdAt = DateTime.Now;
+        private DateTime _displayDate = DateTime.Today;
+        private bool _hasStoredCreatedAt;
 
         [JsonPropertyName("id")]
         public string Id
@@ -81,8 +83,47 @@ namespace TasksApp.Models
         public DateTime CreatedAt
         {
             get => _createdAt;
-            set { _createdAt = value; OnPropertyChanged(); }
+            set
+            {
+                _createdAt = value;
+                _hasStoredCreatedAt = true;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CarryOverDays));
+                OnPropertyChanged(nameof(CarryOverLabel));
+                OnPropertyChanged(nameof(CarryOverTooltip));
+            }
         }
+
+        [JsonIgnore]
+        public bool HasStoredCreatedAt => _hasStoredCreatedAt;
+
+        [JsonIgnore]
+        public DateTime DisplayDate
+        {
+            get => _displayDate;
+            set
+            {
+                _displayDate = value.Date;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CarryOverDays));
+                OnPropertyChanged(nameof(CarryOverLabel));
+                OnPropertyChanged(nameof(CarryOverTooltip));
+            }
+        }
+
+        [JsonIgnore]
+        public int CarryOverDays => IsCarriedOver ? GetCarryOverDaysAsOf(DisplayDate) : 0;
+
+        [JsonIgnore]
+        public string CarryOverLabel => CarryOverDays == 1
+            ? "CARRIED OVER · 1 DAY"
+            : $"CARRIED OVER · {CarryOverDays} DAYS";
+
+        [JsonIgnore]
+        public string CarryOverTooltip => $"Created {CreatedAt.ToString("MMMM d, yyyy", System.Globalization.CultureInfo.InvariantCulture)}";
+
+        public int GetCarryOverDaysAsOf(DateTime taskDate) =>
+            Math.Max(0, (taskDate.Date - CreatedAt.Date).Days);
 
         [JsonPropertyName("carriedOverFrom")]
         public string? CarriedOverFrom
@@ -93,6 +134,9 @@ namespace TasksApp.Models
                 _carriedOverFrom = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsCarriedOver));
+                OnPropertyChanged(nameof(CarryOverDays));
+                OnPropertyChanged(nameof(CarryOverLabel));
+                OnPropertyChanged(nameof(CarryOverTooltip));
             }
         }
 
@@ -186,6 +230,7 @@ namespace TasksApp.Models
                 IsCompleted = this.IsCompleted,
                 CompletedAt = this.CompletedAt,
                 CreatedAt = this.CreatedAt,
+                DisplayDate = this.DisplayDate,
                 CarriedOverFrom = this.CarriedOverFrom,
                 CarriedForwardTo = this.CarriedForwardTo
             };

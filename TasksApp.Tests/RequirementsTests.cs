@@ -58,6 +58,42 @@ namespace TasksApp.Tests
         }
 
         [Fact]
+        public void CarriedOverTask_AgeUsesDisplayedTaskDate()
+        {
+            var task = new TaskItem
+            {
+                CreatedAt = new DateTime(2026, 10, 19, 15, 30, 0),
+                CarriedOverFrom = "October 19, 2026",
+                DisplayDate = new DateTime(2026, 10, 22)
+            };
+
+            Assert.Equal(3, task.GetCarryOverDaysAsOf(new DateTime(2026, 10, 22)));
+            Assert.Equal(1, task.GetCarryOverDaysAsOf(new DateTime(2026, 10, 20)));
+            Assert.Equal("CARRIED OVER · 3 DAYS", task.CarryOverLabel);
+            Assert.Equal("Created October 19, 2026", task.CarryOverTooltip);
+
+            task.DisplayDate = new DateTime(2026, 10, 20);
+            Assert.Equal("CARRIED OVER · 1 DAY", task.CarryOverLabel);
+        }
+
+        [Fact]
+        public void LoadTasksForDate_LegacyTaskWithoutCreatedAtUsesEarliestKnownTaskDate()
+        {
+            string taskId = "legacy-task-1";
+            File.WriteAllText(
+                Path.Combine(_testDir, "Task_October 19 2026.json"),
+                "[{\"id\":\"legacy-task-1\",\"title\":\"Prepare report\",\"isCompleted\":false}]");
+            File.WriteAllText(
+                Path.Combine(_testDir, "Task_October 21 2026.json"),
+                "[{\"id\":\"legacy-task-1\",\"title\":\"Prepare report\",\"isCompleted\":false,\"carriedOverFrom\":\"October 20, 2026\"}]");
+
+            var loaded = new StorageService().LoadTasksForDate(_testDir, new DateTime(2026, 10, 21));
+
+            Assert.Equal(taskId, loaded.Single().Id);
+            Assert.Equal(new DateTime(2026, 10, 19), loaded.Single().CreatedAt.Date);
+        }
+
+        [Fact]
         public void UR006_MarkTaskDoneAndUndo_TogglesCompletionStatus()
         {
             var task = new TaskItem { Title = "Deliver shipment" };

@@ -9,9 +9,9 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
     <AssemblyName>Tasks</AssemblyName>
     <RootNamespace>TasksApp</RootNamespace>
-    <Version>9.1.7</Version>
-    <AssemblyVersion>9.1.7.0</AssemblyVersion>
-    <FileVersion>9.1.7.0</FileVersion>
+    <Version>9.1.8</Version>
+    <AssemblyVersion>9.1.8.0</AssemblyVersion>
+    <FileVersion>9.1.8.0</FileVersion>
 
     <!-- Shippable strictly as a single self-contained EXE file with no external files or symbols -->
     <PublishSingleFile>true</PublishSingleFile>

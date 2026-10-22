@@ -1379,7 +1379,7 @@
                                                 <!-- Carried Over Badge -->
                                                 <Border Background="{DynamicResource AppSurfaceBackground}" BorderBrush="{DynamicResource AppPrimaryColor}" BorderThickness="1"
                                                         Padding="6,3" Margin="0,0,8,0"
-                                                        ToolTip="{Binding CarriedOverFrom, StringFormat='Carried over from {0}'}">
+                                                        ToolTip="{Binding CarryOverTooltip}">
                                                     <Border.Style>
                                                         <Style TargetType="Border">
                                                             <Setter Property="Visibility" Value="Collapsed" />
@@ -1397,7 +1397,7 @@
                                                                       Fill="{DynamicResource AppPrimaryColor}" />
                                                             </Canvas>
                                                         </Viewbox>
-                                                        <TextBlock Text="CARRIED OVER" FontSize="9" FontWeight="SemiBold"
+                                                        <TextBlock Text="{Binding CarryOverLabel}" FontSize="9" FontWeight="SemiBold"
                                                                    FontFamily="{DynamicResource AppBaseFontFamily}" Foreground="{DynamicResource AppPrimaryColor}" />
                                                     </StackPanel>
                                                 </Border>
